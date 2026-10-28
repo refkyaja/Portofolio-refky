@@ -3037,5 +3037,823 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // =========================================================================
+  // RELAX MODE CONTROLLER & ATMOSPHERIC CANVAS
+  // =========================================================================
+  const relaxToggle = document.getElementById('relaxToggle');
+  const relaxConfirmModalOverlay = document.getElementById('relaxConfirmModalOverlay');
+  const relaxConfirmYesBtn = document.getElementById('relaxConfirmYesBtn');
+  const relaxConfirmCancelBtn = document.getElementById('relaxConfirmCancelBtn');
+  const relaxHideDockBtn = document.getElementById('relaxHideDockBtn');
+  const relaxUnhideDockBtn = document.getElementById('relaxUnhideDockBtn');
+  const relaxDock = document.getElementById('relaxDock');
+  const relaxPrevBtn = document.getElementById('relaxPrevBtn');
+  const relaxPlayBtn = document.getElementById('relaxPlayBtn');
+  const relaxPlayIcon = document.getElementById('relaxPlayIcon');
+  const relaxNextBtn = document.getElementById('relaxNextBtn');
+  const relaxTrackBtn = document.getElementById('relaxTrackBtn');
+  const relaxCurrentTrackLabel = document.getElementById('relaxCurrentTrackLabel');
+  const relaxTrackMenu = document.getElementById('relaxTrackMenu');
+  const relaxProgressBar = document.getElementById('relaxProgressBar');
+  const relaxCurrentTime = document.getElementById('relaxCurrentTime');
+  const relaxDuration = document.getElementById('relaxDuration');
+  const relaxVolumeBtn = document.getElementById('relaxVolumeBtn');
+  const relaxVolIcon = document.getElementById('relaxVolIcon');
+  const relaxVolumeBar = document.getElementById('relaxVolumeBar');
+  const relaxVolumeVal = document.getElementById('relaxVolumeVal');
+  let relaxPreviousVolume = savedBgmVolume || 70;
+  const relaxThemeToggleBtn = document.getElementById('relaxThemeToggleBtn');
+  const relaxThemeIcon = document.getElementById('relaxThemeIcon');
+  const relaxSceneryBtn = document.getElementById('relaxSceneryBtn');
+  const relaxSceneryIcon = document.getElementById('relaxSceneryIcon');
+  const relaxSceneryText = document.getElementById('relaxSceneryText');
+  const relaxSceneryThumb = document.getElementById('relaxSceneryThumb');
+  const relaxSceneryMenu = document.getElementById('relaxSceneryMenu');
+  const relaxSettingsBtn = document.getElementById('relaxSettingsBtn');
+  const relaxExitDockBtn = document.getElementById('relaxExitDockBtn');
+  const relaxExitConfirmModalOverlay = document.getElementById('relaxExitConfirmModalOverlay');
+  const relaxExitConfirmYesBtn = document.getElementById('relaxExitConfirmYesBtn');
+  const relaxExitConfirmCancelBtn = document.getElementById('relaxExitConfirmCancelBtn');
+  const relaxAtmosphereCanvas = document.getElementById('relaxAtmosphereCanvas');
+
+  let isRelaxModeActive = false;
+  let activeRelaxScenery = localStorage.getItem('rfm_relax_scenery') || 'stars';
+  let relaxAnimFrameId = null;
+  let isUserSeekingRelax = false;
+
+  const relaxTrackList = [
+    'Assets/music/music 1.mp3',
+    'Assets/music/music 2.mp3',
+    'Assets/music/music 3.mp3',
+    'Assets/music/music 4.mp4',
+    'Assets/music/music 5.mp3'
+  ];
+
+  const sceneryMeta = {
+    stars: {
+      svg: '<svg viewBox="0 0 24 24" width="15" height="15" fill="#ffd278"><path d="M12 2l2.4 7.2h7.6l-6.2 4.6 2.4 7.2-6.2-4.6-6.2 4.6 2.4-7.2-6.2-4.6h7.6z"/></svg>',
+      thumbSvg: '<svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg"><rect width="36" height="24" rx="3" fill="#0b1730"/><polygon points="0,24 10,14 18,24" fill="#070e20"/><polygon points="12,24 22,11 32,24" fill="#132342"/><polygon points="20,24 28,15 36,24" fill="#070e20"/><rect x="23" y="9" width="3" height="10" fill="#ffd278" opacity="0.85"/><polygon points="21.5,9 24.5,4 27.5,9" fill="#ffd278"/><circle cx="6" cy="5" r="0.8" fill="#ffffff"/><circle cx="15" cy="4" r="1" fill="#ffeaa7"/><circle cx="31" cy="6" r="0.8" fill="#ffffff"/><circle cx="28" cy="3" r="0.6" fill="#ffeaa7"/><line x1="4" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="0.8" stroke-linecap="round" opacity="0.75"/></svg>',
+      label: 'Bintang Jatuh'
+    },
+    fireflies: {
+      svg: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#ffd278" stroke-width="2"><circle cx="12" cy="12" r="5" fill="#ffd278"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+      thumbSvg: '<svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg"><rect width="36" height="24" rx="3" fill="#051512"/><path d="M0,24 Q9,14 18,24 Q27,15 36,24 Z" fill="#030c0a"/><circle cx="8" cy="11" r="1.4" fill="#a3e635"/><circle cx="18" cy="7" r="1.8" fill="#bef264"/><circle cx="27" cy="13" r="1.5" fill="#a3e635"/><circle cx="31" cy="6" r="1.2" fill="#84cc16"/></svg>',
+      label: 'Kunang-kunang'
+    },
+    rain: {
+      svg: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#ffd278" stroke-width="2" stroke-linecap="round"><path d="M16 13a4 4 0 0 0-8 0"/><line x1="8" y1="17" x2="8" y2="21"/><line x1="12" y1="16" x2="12" y2="20"/><line x1="16" y1="17" x2="16" y2="21"/></svg>',
+      thumbSvg: '<svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg"><rect width="36" height="24" rx="3" fill="#0b172a"/><polygon points="0,24 12,14 22,24" fill="#070e1b"/><polygon points="18,24 27,13 36,24" fill="#070e1b"/><line x1="7" y1="3" x2="5" y2="10" stroke="#60a5fa" stroke-width="0.9" opacity="0.8"/><line x1="17" y1="5" x2="15" y2="13" stroke="#93c5fd" stroke-width="0.9" opacity="0.85"/><line x1="28" y1="2" x2="26" y2="9" stroke="#60a5fa" stroke-width="0.9" opacity="0.8"/><line x1="33" y1="8" x2="31" y2="15" stroke="#93c5fd" stroke-width="0.9" opacity="0.85"/></svg>',
+      label: 'Hujan Rintik'
+    },
+    petals: {
+      svg: '<svg viewBox="0 0 24 24" width="15" height="15" fill="#ffd278"><path d="M12 2C8 6 6 10 12 16C18 10 16 6 12 2Z"/></svg>',
+      thumbSvg: '<svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg"><rect width="36" height="24" rx="3" fill="#1a1024"/><polygon points="0,24 14,15 26,24" fill="#0f0717"/><polygon points="20,24 29,14 36,24" fill="#0f0717"/><path d="M7 6 C5 4, 10 3, 9 7 C8 9, 5 8, 7 6 Z" fill="#f472b6"/><path d="M19 11 C17 9, 22 8, 21 12 C20 14, 17 13, 19 11 Z" fill="#fb7185"/><path d="M29 5 C27 3, 32 2, 31 6 C30 8, 27 7, 29 5 Z" fill="#f472b6"/></svg>',
+      label: 'Kelopak Sakura'
+    },
+    none: {
+      svg: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#ffd278" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="5" y1="19" x2="19" y2="5"/></svg>',
+      thumbSvg: '<svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg"><rect width="36" height="24" rx="3" fill="#0d1424"/><polygon points="0,24 15,16 28,24" fill="#080c16"/><polygon points="20,24 30,15 36,24" fill="#080c16"/></svg>',
+      label: 'Hening Polos'
+    }
+  };
+
+  // Open confirmation modal
+  if (relaxToggle) {
+    relaxToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('blip');
+      if (relaxConfirmModalOverlay) {
+        relaxConfirmModalOverlay.classList.add('active');
+      }
+    });
+  }
+
+  // Cancel confirmation modal
+  if (relaxConfirmCancelBtn) {
+    relaxConfirmCancelBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('click');
+      if (relaxConfirmModalOverlay) {
+        relaxConfirmModalOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  if (relaxConfirmModalOverlay) {
+    relaxConfirmModalOverlay.addEventListener('click', (e) => {
+      if (e.target === relaxConfirmModalOverlay) {
+        playSound('click');
+        relaxConfirmModalOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  // Enter Relax Mode
+  function enterRelaxMode() {
+    isRelaxModeActive = true;
+    document.body.classList.add('relax-mode-active');
+    if (relaxConfirmModalOverlay) {
+      relaxConfirmModalOverlay.classList.remove('active');
+    }
+
+    // Reset dock hidden state so dock appears
+    if (relaxDock) relaxDock.classList.remove('dock-hidden');
+
+    // Close any other open modals/menus
+    if (settingsModalBackdrop) settingsModalBackdrop.classList.remove('active');
+    closeAllRelaxDropdowns();
+
+    // Start atmosphere rendering
+    startAtmosphereEngine();
+
+    // Sync controls
+    updateRelaxPlayBtnState();
+    updateRelaxTrackUI();
+    updateRelaxThemeUI();
+    updateRelaxSceneryUI();
+    updateRelaxProgressUI();
+    updateRelaxVolumeUI();
+
+    // Autoplay music if available
+    if (bgmAudio) {
+      isBgmActive = true;
+      if (bgmAudio.paused) {
+        startBgmPlayback();
+      }
+    }
+
+    playSound('toggle');
+    showToast('Masuk ke Relax Mode... Selamat bersantai.');
+  }
+
+  // Exit Relax Mode
+  function exitRelaxMode() {
+    if (!isRelaxModeActive) return;
+    isRelaxModeActive = false;
+    document.body.classList.remove('relax-mode-active');
+    if (relaxDock) relaxDock.classList.remove('dock-hidden');
+    closeAllRelaxDropdowns();
+    stopAtmosphereEngine();
+
+    playSound('roll');
+    showToast('Kembali ke kerajaan utama.');
+  }
+
+  // Confirm Yes button
+  if (relaxConfirmYesBtn) {
+    relaxConfirmYesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      enterRelaxMode();
+    });
+  }
+
+  // Hide Dock button
+  if (relaxHideDockBtn) {
+    relaxHideDockBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllRelaxDropdowns();
+      if (relaxDock) relaxDock.classList.add('dock-hidden');
+      playSound('blip');
+      showToast('Menu kontrol disembunyikan. Klik Menu Kontrol di bawah untuk membuka kembali.');
+    });
+  }
+
+  // Unhide / Restore Dock button
+  if (relaxUnhideDockBtn) {
+    relaxUnhideDockBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (relaxDock) relaxDock.classList.remove('dock-hidden');
+      playSound('click');
+    });
+  }
+
+  // Settings button in Relax Dock
+  if (relaxSettingsBtn) {
+    relaxSettingsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('click');
+      closeAllRelaxDropdowns();
+      if (typeof openSettingsModal === 'function') {
+        openSettingsModal();
+      } else if (settingsModalBackdrop) {
+        settingsModalBackdrop.classList.add('active');
+      }
+    });
+  }
+
+  // Exit dock button (opens confirmation modal)
+  if (relaxExitDockBtn) {
+    relaxExitDockBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('blip');
+      closeAllRelaxDropdowns();
+      if (relaxExitConfirmModalOverlay) {
+        relaxExitConfirmModalOverlay.classList.add('active');
+      } else {
+        exitRelaxMode();
+      }
+    });
+  }
+
+  // Cancel exit confirmation
+  if (relaxExitConfirmCancelBtn) {
+    relaxExitConfirmCancelBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('click');
+      if (relaxExitConfirmModalOverlay) {
+        relaxExitConfirmModalOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  // Confirm exit action
+  if (relaxExitConfirmYesBtn) {
+    relaxExitConfirmYesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (relaxExitConfirmModalOverlay) {
+        relaxExitConfirmModalOverlay.classList.remove('active');
+      }
+      exitRelaxMode();
+    });
+  }
+
+  if (relaxExitConfirmModalOverlay) {
+    relaxExitConfirmModalOverlay.addEventListener('click', (e) => {
+      if (e.target === relaxExitConfirmModalOverlay) {
+        playSound('click');
+        relaxExitConfirmModalOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  // Sync play/pause state
+  function updateRelaxPlayBtnState() {
+    if (!relaxPlayBtn || !relaxPlayIcon) return;
+    const isPlaying = bgmAudio && !bgmAudio.paused;
+    const svgPlay = relaxPlayIcon.querySelector('.svg-play');
+    const svgPause = relaxPlayIcon.querySelector('.svg-pause');
+    if (svgPlay) svgPlay.style.display = isPlaying ? 'none' : 'block';
+    if (svgPause) svgPause.style.display = isPlaying ? 'block' : 'none';
+    relaxPlayBtn.classList.toggle('is-playing', isPlaying);
+    relaxPlayBtn.setAttribute('title', isPlaying ? 'Jeda Musik' : 'Putar Musik');
+  }
+
+  if (bgmAudio) {
+    bgmAudio.addEventListener('play', updateRelaxPlayBtnState);
+    bgmAudio.addEventListener('pause', updateRelaxPlayBtnState);
+  }
+
+  if (relaxPlayBtn) {
+    relaxPlayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!bgmAudio) return;
+      playSound('click');
+      if (bgmAudio.paused) {
+        isBgmActive = true;
+        bgmAudio.play().then(() => updateRelaxPlayBtnState()).catch(() => {});
+      } else {
+        isBgmActive = false;
+        bgmAudio.pause();
+        updateRelaxPlayBtnState();
+      }
+    });
+  }
+
+  // Music Progress & Seeking logic
+  function updateRelaxProgressUI() {
+    if (!bgmAudio || isUserSeekingRelax) return;
+    const cur = bgmAudio.currentTime || 0;
+    const dur = bgmAudio.duration || 0;
+    if (relaxCurrentTime) relaxCurrentTime.textContent = formatAudioTime(cur);
+    if (relaxDuration) relaxDuration.textContent = (dur && !isNaN(dur)) ? formatAudioTime(dur) : '0:00';
+    if (relaxProgressBar && dur > 0) {
+      const pct = (cur / dur) * 100;
+      relaxProgressBar.value = pct;
+      relaxProgressBar.style.setProperty('--seek-percent', pct + '%');
+    }
+  }
+
+  if (bgmAudio) {
+    bgmAudio.addEventListener('timeupdate', updateRelaxProgressUI);
+    bgmAudio.addEventListener('loadedmetadata', () => {
+      if (relaxDuration && bgmAudio.duration) {
+        relaxDuration.textContent = formatAudioTime(bgmAudio.duration);
+      }
+    });
+  }
+
+  if (relaxProgressBar) {
+    relaxProgressBar.addEventListener('input', () => {
+      isUserSeekingRelax = true;
+      if (bgmAudio && bgmAudio.duration) {
+        const targetTime = (parseFloat(relaxProgressBar.value) / 100) * bgmAudio.duration;
+        if (relaxCurrentTime) relaxCurrentTime.textContent = formatAudioTime(targetTime);
+        relaxProgressBar.style.setProperty('--seek-percent', relaxProgressBar.value + '%');
+      }
+    });
+
+    relaxProgressBar.addEventListener('change', () => {
+      if (bgmAudio && bgmAudio.duration) {
+        const targetTime = (parseFloat(relaxProgressBar.value) / 100) * bgmAudio.duration;
+        bgmAudio.currentTime = targetTime;
+      }
+      isUserSeekingRelax = false;
+    });
+  }
+
+  // Volume Control in Relax Dock
+  function updateRelaxVolumeUI(vol = savedBgmVolume) {
+    if (relaxVolumeBar) {
+      relaxVolumeBar.value = vol;
+      relaxVolumeBar.style.setProperty('--vol-percent', vol + '%');
+    }
+    if (relaxVolumeVal) {
+      relaxVolumeVal.textContent = vol + '%';
+    }
+    if (relaxVolIcon) {
+      if (vol === 0) {
+        relaxVolIcon.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="#ffd278">
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>`;
+      } else if (vol < 50) {
+        relaxVolIcon.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="#ffd278">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+        </svg>`;
+      } else {
+        relaxVolIcon.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="#ffd278">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>`;
+      }
+    }
+  }
+
+  function applyRelaxVolume(newVol) {
+    savedBgmVolume = newVol;
+    try { localStorage.setItem('rfm_bgm_volume', newVol); } catch (e) {}
+    if (bgmAudio) bgmAudio.volume = newVol / 100;
+    if (settingBgmVolume) settingBgmVolume.value = newVol;
+    if (bgmVolumeVal) bgmVolumeVal.textContent = newVol + '%';
+    updateRelaxVolumeUI(newVol);
+  }
+
+  if (relaxVolumeBar) {
+    relaxVolumeBar.addEventListener('input', () => {
+      const vol = parseInt(relaxVolumeBar.value, 10);
+      applyRelaxVolume(vol);
+      if (vol > 0) relaxPreviousVolume = vol;
+    });
+  }
+
+  if (relaxVolumeBtn) {
+    relaxVolumeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('blip');
+      if (savedBgmVolume > 0) {
+        relaxPreviousVolume = savedBgmVolume;
+        applyRelaxVolume(0);
+      } else {
+        applyRelaxVolume(relaxPreviousVolume || 70);
+      }
+    });
+  }
+
+  // Change Track Helper
+  function switchRelaxTrack(newTrack) {
+    savedBgmTrack = newTrack;
+    try {
+      localStorage.setItem('rfm_bgm_track', newTrack);
+      localStorage.setItem('rfm_bgm_track_custom', 'true');
+    } catch (e) {}
+
+    if (settingBgmTrack) {
+      settingBgmTrack.value = newTrack;
+      if (typeof updatePreviewTitle === 'function') updatePreviewTitle();
+    }
+
+    if (bgmAudio) {
+      bgmAudio.src = newTrack;
+      isBgmActive = true;
+      if (relaxProgressBar) {
+        relaxProgressBar.value = 0;
+        relaxProgressBar.style.setProperty('--seek-percent', '0%');
+      }
+      bgmAudio.play().then(() => updateRelaxPlayBtnState()).catch(() => {});
+    }
+
+    updateRelaxTrackUI();
+  }
+
+  function updateRelaxTrackUI() {
+    const curTrack = savedBgmTrack || 'Assets/music/music 5.mp3';
+    const cleanTitle = trackTitles[curTrack] || 'Music 5';
+    if (relaxCurrentTrackLabel) {
+      relaxCurrentTrackLabel.textContent = cleanTitle;
+    }
+    if (relaxTrackMenu) {
+      const items = relaxTrackMenu.querySelectorAll('.relax-menu-item');
+      items.forEach(item => {
+        const trk = item.getAttribute('data-track');
+        item.classList.toggle('active', curTrack.includes(trk) || trk.includes(curTrack));
+      });
+    }
+  }
+
+  // Prev / Next track buttons
+  if (relaxPrevBtn) {
+    relaxPrevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('blip');
+      let idx = relaxTrackList.findIndex(t => (savedBgmTrack || '').includes(t));
+      if (idx === -1) idx = 4;
+      const prevIdx = (idx - 1 + relaxTrackList.length) % relaxTrackList.length;
+      switchRelaxTrack(relaxTrackList[prevIdx]);
+    });
+  }
+
+  if (relaxNextBtn) {
+    relaxNextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('blip');
+      let idx = relaxTrackList.findIndex(t => (savedBgmTrack || '').includes(t));
+      if (idx === -1) idx = 4;
+      const nextIdx = (idx + 1) % relaxTrackList.length;
+      switchRelaxTrack(relaxTrackList[nextIdx]);
+    });
+  }
+
+  // Dropdown toggle helpers
+  function closeAllRelaxDropdowns() {
+    document.querySelectorAll('.relax-dropdown-wrap').forEach(wrap => wrap.classList.remove('open'));
+  }
+
+  if (relaxTrackBtn) {
+    relaxTrackBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('click');
+      const wrap = relaxTrackBtn.closest('.relax-dropdown-wrap');
+      const wasOpen = wrap.classList.contains('open');
+      closeAllRelaxDropdowns();
+      if (!wasOpen) wrap.classList.add('open');
+    });
+  }
+
+  if (relaxTrackMenu) {
+    relaxTrackMenu.querySelectorAll('.relax-menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playSound('click');
+        const track = item.getAttribute('data-track');
+        if (track) switchRelaxTrack(track);
+        closeAllRelaxDropdowns();
+      });
+    });
+  }
+
+  // Theme toggle inside relax dock (ICON ONLY, NO TEXT)
+  function updateRelaxThemeUI() {
+    const isNight = document.body.classList.contains('theme-night');
+    if (relaxThemeIcon) {
+      relaxThemeIcon.innerHTML = isNight
+        ? `<svg viewBox="0 0 24 24" width="18" height="18">
+             <circle cx="12" cy="12" r="5" fill="#f5b73b"/>
+             <path d="M12 1v3M12 20v3M1 12h3M20 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="#f5b73b" stroke-width="2.2" stroke-linecap="round"/>
+           </svg>`
+        : `<svg viewBox="0 0 24 24" width="18" height="18" fill="#f5b73b">
+             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+           </svg>`;
+    }
+    if (relaxThemeToggleBtn) {
+      relaxThemeToggleBtn.setAttribute('title', isNight ? 'Ubah ke Mode Terang (Siang)' : 'Ubah ke Mode Gelap (Malam)');
+    }
+  }
+
+  if (relaxThemeToggleBtn) {
+    relaxThemeToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isNight = document.body.classList.contains('theme-night');
+      const nextTheme = isNight ? 'day' : 'night';
+      setTheme(nextTheme);
+      updateRelaxThemeUI();
+      playSound('toggle');
+      showToast(nextTheme === 'day' ? 'Suasana siang yang cerah' : 'Suasana malam berbintang');
+    });
+  }
+
+  // Scenery selector
+  function updateRelaxSceneryUI() {
+    const meta = sceneryMeta[activeRelaxScenery] || sceneryMeta.stars;
+    if (relaxSceneryIcon) relaxSceneryIcon.innerHTML = meta.svg;
+    if (relaxSceneryText) relaxSceneryText.textContent = meta.label;
+    if (relaxSceneryThumb && meta.thumbSvg) {
+      relaxSceneryThumb.innerHTML = meta.thumbSvg;
+    }
+    if (relaxSceneryMenu) {
+      relaxSceneryMenu.querySelectorAll('.relax-menu-item').forEach(item => {
+        item.classList.toggle('active', item.getAttribute('data-scenery') === activeRelaxScenery);
+      });
+    }
+  }
+
+  if (relaxSceneryBtn) {
+    relaxSceneryBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSound('click');
+      const wrap = relaxSceneryBtn.closest('.relax-dropdown-wrap');
+      const wasOpen = wrap.classList.contains('open');
+      closeAllRelaxDropdowns();
+      if (!wasOpen) wrap.classList.add('open');
+    });
+  }
+
+  if (relaxSceneryMenu) {
+    relaxSceneryMenu.querySelectorAll('.relax-menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playSound('click');
+        const scen = item.getAttribute('data-scenery');
+        if (scen) {
+          activeRelaxScenery = scen;
+          try { localStorage.setItem('rfm_relax_scenery', scen); } catch (err) {}
+          updateRelaxSceneryUI();
+          initSceneryParticles();
+        }
+        closeAllRelaxDropdowns();
+      });
+    });
+  }
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    closeAllRelaxDropdowns();
+  });
+
+  // Global Esc Handler for Relax Mode
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (relaxConfirmModalOverlay && relaxConfirmModalOverlay.classList.contains('active')) {
+        relaxConfirmModalOverlay.classList.remove('active');
+      } else if (relaxExitConfirmModalOverlay && relaxExitConfirmModalOverlay.classList.contains('active')) {
+        relaxExitConfirmModalOverlay.classList.remove('active');
+      } else if (document.querySelector('.relax-dropdown-wrap.open')) {
+        closeAllRelaxDropdowns();
+      } else if (isRelaxModeActive) {
+        exitRelaxMode();
+      }
+    }
+  });
+
+  // -------------------------------------------------------------------------
+  // Dynamic Canvas Atmosphere Engine (Shooting stars, fireflies, rain, petals)
+  // -------------------------------------------------------------------------
+  let starsData = [];
+  let shootingStars = [];
+  let firefliesData = [];
+  let raindrops = [];
+  let petalsData = [];
+  let nextShootingStarTime = 0;
+
+  function resizeAtmosphereCanvas() {
+    if (!relaxAtmosphereCanvas) return;
+    relaxAtmosphereCanvas.width = window.innerWidth;
+    relaxAtmosphereCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeAtmosphereCanvas);
+
+  function initSceneryParticles() {
+    resizeAtmosphereCanvas();
+    const w = relaxAtmosphereCanvas ? relaxAtmosphereCanvas.width : window.innerWidth;
+    const h = relaxAtmosphereCanvas ? relaxAtmosphereCanvas.height : window.innerHeight;
+
+    if (activeRelaxScenery === 'stars') {
+      starsData = [];
+      const starCount = Math.floor(w * 0.05);
+      for (let i = 0; i < starCount; i++) {
+        starsData.push({
+          x: Math.random() * w,
+          y: Math.random() * (h * 0.75),
+          size: Math.random() * 2 + 0.8,
+          alpha: Math.random(),
+          speed: Math.random() * 0.03 + 0.01,
+          color: Math.random() > 0.3 ? '#ffd875' : '#ffffff'
+        });
+      }
+      shootingStars = [];
+      nextShootingStarTime = performance.now() + 800;
+    } else if (activeRelaxScenery === 'fireflies') {
+      firefliesData = [];
+      for (let i = 0; i < 35; i++) {
+        firefliesData.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 2.5 + 1.5,
+          angle: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.5 + 0.3,
+          glow: Math.random() * 0.5 + 0.5,
+          glowSpeed: Math.random() * 0.04 + 0.02
+        });
+      }
+    } else if (activeRelaxScenery === 'rain') {
+      raindrops = [];
+      for (let i = 0; i < 90; i++) {
+        raindrops.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          length: Math.random() * 18 + 12,
+          speed: Math.random() * 8 + 14,
+          opacity: Math.random() * 0.35 + 0.25
+        });
+      }
+    } else if (activeRelaxScenery === 'petals') {
+      petalsData = [];
+      for (let i = 0; i < 30; i++) {
+        petalsData.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 7 + 6,
+          angle: Math.random() * Math.PI * 2,
+          angularSpeed: (Math.random() - 0.5) * 0.03,
+          speedX: Math.random() * 1.5 + 0.8,
+          speedY: Math.random() * 1.8 + 1.2,
+          opacity: Math.random() * 0.35 + 0.55
+        });
+      }
+    }
+  }
+
+  function startAtmosphereEngine() {
+    initSceneryParticles();
+    if (relaxAnimFrameId) cancelAnimationFrame(relaxAnimFrameId);
+
+    function renderLoop(timestamp) {
+      if (!isRelaxModeActive) return;
+      if (!relaxAtmosphereCanvas) return;
+      const ctx = relaxAtmosphereCanvas.getContext('2d');
+      if (!ctx) return;
+
+      const w = relaxAtmosphereCanvas.width;
+      const h = relaxAtmosphereCanvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      if (activeRelaxScenery === 'stars') {
+        // Draw static twinkling stars
+        starsData.forEach(s => {
+          s.alpha += s.speed;
+          const currentAlpha = 0.3 + Math.abs(Math.sin(s.alpha)) * 0.7;
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = currentAlpha;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Spawn Shooting Stars
+        if (timestamp > nextShootingStarTime) {
+          shootingStars.push({
+            x: Math.random() * (w * 0.8),
+            y: Math.random() * (h * 0.35),
+            length: Math.random() * 110 + 70,
+            speed: Math.random() * 9 + 11,
+            angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2, // ~45 deg
+            opacity: 1,
+            color: Math.random() > 0.4 ? '#ffeaa7' : '#ffffff'
+          });
+          nextShootingStarTime = timestamp + Math.random() * 2200 + 1200;
+        }
+
+        // Render & Update Shooting Stars
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+          const ss = shootingStars[i];
+          const tailX = ss.x - Math.cos(ss.angle) * ss.length;
+          const tailY = ss.y - Math.sin(ss.angle) * ss.length;
+
+          const grad = ctx.createLinearGradient(tailX, tailY, ss.x, ss.y);
+          grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+          grad.addColorStop(1, ss.color);
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2.2;
+          ctx.lineCap = 'round';
+          ctx.globalAlpha = Math.max(0, ss.opacity);
+
+          ctx.beginPath();
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(ss.x, ss.y);
+          ctx.stroke();
+
+          // Star head spark
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(ss.x, ss.y, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+
+          ss.x += Math.cos(ss.angle) * ss.speed;
+          ss.y += Math.sin(ss.angle) * ss.speed;
+          ss.opacity -= 0.016;
+
+          if (ss.opacity <= 0 || ss.x > w + 100 || ss.y > h + 100) {
+            shootingStars.splice(i, 1);
+          }
+        }
+      } else if (activeRelaxScenery === 'fireflies') {
+        firefliesData.forEach(f => {
+          f.angle += 0.02;
+          f.x += Math.cos(f.angle) * f.speed;
+          f.y += Math.sin(f.angle * 0.8) * f.speed;
+
+          if (f.x < -20) f.x = w + 20;
+          if (f.x > w + 20) f.x = -20;
+          if (f.y < -20) f.y = h + 20;
+          if (f.y > h + 20) f.y = -20;
+
+          f.glow += f.glowSpeed;
+          const pulse = (Math.sin(f.glow) + 1) * 0.5;
+          const currentAlpha = 0.2 + pulse * 0.7;
+
+          // Glow halo
+          const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius * 4.5);
+          grad.addColorStop(0, `rgba(255, 220, 100, ${currentAlpha})`);
+          grad.addColorStop(0.5, `rgba(245, 183, 59, ${currentAlpha * 0.4})`);
+          grad.addColorStop(1, 'rgba(245, 183, 59, 0)');
+
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = 1;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.radius * 4.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Center bright firefly core
+          ctx.fillStyle = '#fffbe8';
+          ctx.globalAlpha = currentAlpha;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.radius * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      } else if (activeRelaxScenery === 'rain') {
+        ctx.strokeStyle = 'rgba(186, 215, 255, 0.5)';
+        ctx.lineWidth = 1.2;
+        ctx.lineCap = 'round';
+
+        raindrops.forEach(r => {
+          ctx.globalAlpha = r.opacity;
+          ctx.beginPath();
+          ctx.moveTo(r.x, r.y);
+          ctx.lineTo(r.x + 2, r.y + r.length);
+          ctx.stroke();
+
+          r.x += 1.8;
+          r.y += r.speed;
+
+          if (r.y > h) {
+            r.y = -20;
+            r.x = Math.random() * w;
+          }
+        });
+      } else if (activeRelaxScenery === 'petals') {
+        petalsData.forEach(p => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.angle += p.angularSpeed;
+
+          if (p.y > h + 20) {
+            p.y = -20;
+            p.x = Math.random() * w;
+          }
+          if (p.x > w + 20) {
+            p.x = -20;
+          }
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = 'rgba(255, 192, 203, 0.75)';
+          ctx.globalAlpha = p.opacity;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(p.size / 2, -p.size / 2, p.size, 0, 0, p.size * 1.5);
+          ctx.bezierCurveTo(-p.size, 0, -p.size / 2, -p.size / 2, 0, 0);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      ctx.globalAlpha = 1;
+      relaxAnimFrameId = requestAnimationFrame(renderLoop);
+    }
+
+    relaxAnimFrameId = requestAnimationFrame(renderLoop);
+  }
+
+  function stopAtmosphereEngine() {
+    if (relaxAnimFrameId) {
+      cancelAnimationFrame(relaxAnimFrameId);
+      relaxAnimFrameId = null;
+    }
+    if (relaxAtmosphereCanvas) {
+      const ctx = relaxAtmosphereCanvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, relaxAtmosphereCanvas.width, relaxAtmosphereCanvas.height);
+    }
+  }
 });
 

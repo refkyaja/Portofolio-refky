@@ -215,13 +215,13 @@ body {
   overflow: hidden;
   background-size: auto 100%;
   background-position: left top;
-  background-image: url("Assets/Images/island_tl.png?v=2");
+  background-image: url("Assets/Images/island_tl.png?v=4");
   transition: width .45s cubic-bezier(.3, 1.25, .5, 1);
   aspect-ratio: auto;
 }
 
 .isl.open .tl {
-  width: calc(var(--h) * 241 / 194);
+  width: calc(var(--h) * 370 / 194);
 }
 
 .isl .tl .in {
@@ -229,7 +229,7 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  width: calc(var(--h) * 241 / 194);
+  width: calc(var(--h) * 370 / 194);
 }
 
 .gm {
@@ -6144,3 +6144,838 @@ body.first-scroll-active .hero-greeting .pixel-prefix {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   RELAX MODE (Clean Scenic Mode with Atmospheric Effects & Minimal Controls)
+   ========================================================================== */
+
+/* Smooth exit transitions for normal sections when toggling Relax Mode */
+#home,
+#about,
+#education,
+#projects,
+#sertifikat,
+#gallery,
+#comments,
+#contact,
+.footer,
+.guild-banner,
+.dock {
+  transition: transform 0.85s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.65s ease;
+  will-change: transform, opacity;
+}
+
+/* Relax Mode Activated: Clean Stage */
+body.relax-mode-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+/* Navbar exits upwards into the sky */
+body.relax-mode-active .dock {
+  transform: translateY(-220%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Alternate sections slide out left and right */
+body.relax-mode-active #home,
+body.relax-mode-active #education,
+body.relax-mode-active #sertifikat,
+body.relax-mode-active #comments,
+body.relax-mode-active .guild-banner.banner-left {
+  transform: translateX(-120vw) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body.relax-mode-active #about,
+body.relax-mode-active #projects,
+body.relax-mode-active #gallery,
+body.relax-mode-active #contact,
+body.relax-mode-active .footer,
+body.relax-mode-active .guild-banner.banner-right {
+  transform: translateX(120vw) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Floating mascots, dragons, quick navigation fade out */
+body.relax-mode-active .floor,
+body.relax-mode-active .stage,
+body.relax-mode-active .dragon,
+body.relax-mode-active .quick-nav,
+body.relax-mode-active .pixel-toast,
+body.relax-mode-active .settings-modal-backdrop,
+body.relax-mode-active .cert-modal-backdrop {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.5s ease !important;
+}
+
+/* Allow settings modal to be opened inside Relax Mode */
+body.relax-mode-active .settings-modal-backdrop.active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 999999 !important;
+}
+
+/* Atmospheric Dynamic Canvas (Shooting stars, fireflies, rain, petals) */
+.relax-atmosphere-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+body.relax-mode-active .relax-atmosphere-canvas {
+  opacity: 1;
+}
+
+/* Confirmation Modal Backdrop */
+.relax-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 16, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+  padding: 16px;
+}
+
+.relax-confirm-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Confirmation Card (Exact Match to User Reference) */
+.relax-confirm-card {
+  background: radial-gradient(circle at 50% 15%, #08142b 0%, #040916 100%);
+  border: 1.2px solid #c99e52;
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 24px rgba(201, 158, 82, 0.15);
+  padding: 24px 26px 22px;
+  max-width: 410px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.92) translateY(14px);
+  transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.relax-confirm-backdrop.active .relax-confirm-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Top and Bottom Ornamental Crests */
+.relax-card-crest {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.relax-card-crest.crest-top {
+  top: -12px;
+}
+
+.relax-card-crest.crest-bottom {
+  bottom: -9px;
+}
+
+/* Golden Moon & Star Icon */
+.relax-confirm-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px auto 10px;
+}
+
+.relax-moon-svg {
+  display: block;
+}
+
+/* Title */
+.relax-confirm-title {
+  font-family: 'MedievalSharp', 'Georgia', 'Times New Roman', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffe6a3;
+  margin: 8px 0 12px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(255, 210, 120, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: none;
+  font-variant: normal;
+}
+
+/* Description */
+.relax-confirm-desc {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.84rem;
+  color: #9cb3d3;
+  line-height: 1.58;
+  margin: 0 auto 24px;
+  max-width: 350px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  font-variant: normal;
+}
+
+/* Actions Row */
+.relax-confirm-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Button Base */
+.relax-confirm-btn {
+  flex: 1;
+  max-width: 155px;
+  height: 42px;
+  border-radius: 10px;
+  font-family: 'MedievalSharp', 'Georgia', 'Times New Roman', serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+  outline: none;
+  position: relative;
+  text-transform: none;
+  font-variant: normal;
+  /* Fantasy corner notches */
+  clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0% calc(100% - 6px), 0% 6px);
+}
+
+/* Button 'Batal' (Dark navy with subtle border) */
+.relax-confirm-btn-no {
+  background: linear-gradient(180deg, #0d1b32 0%, #071020 100%);
+  color: #9cb3d3;
+  border: 1.2px solid #283d63;
+  box-shadow: inset 0 0 0 1px rgba(40, 61, 99, 0.4);
+}
+
+.relax-confirm-btn-no:hover {
+  background: linear-gradient(180deg, #142848 0%, #0b182f 100%);
+  color: #ffffff;
+  border-color: #4b6a9c;
+  box-shadow: 0 0 14px rgba(75, 106, 156, 0.35);
+  transform: translateY(-2px);
+}
+
+.relax-confirm-btn-no:active {
+  transform: translateY(1px);
+}
+
+/* Button 'Ya, Aktifkan' (Solid glowing golden amber) */
+.relax-confirm-btn-yes {
+  background: linear-gradient(180deg, #f5b73b 0%, #d89620 100%);
+  color: #0f1828;
+  border: 1.2px solid #ffe18c;
+  box-shadow: 0 4px 14px rgba(216, 150, 32, 0.45);
+}
+
+.relax-confirm-btn-yes:hover {
+  background: linear-gradient(180deg, #ffd366 0%, #e5a42b 100%);
+  color: #080e18;
+  border-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(245, 183, 59, 0.65);
+  transform: translateY(-2px);
+}
+
+.relax-confirm-btn-yes:active {
+  transform: translateY(1px);
+}
+
+/* Floating Bottom Dock (Screenshot: Medieval RPG Fantasy HUD Music Bar) */
+.relax-dock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(140px);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(180deg, rgba(10, 18, 33, 0.95) 0%, rgba(5, 10, 20, 0.98) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid #c99e52;
+  border-radius: 6px;
+  padding: 6px 14px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.85), 0 0 16px rgba(201, 158, 82, 0.2), inset 0 0 0 1px rgba(201, 158, 82, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.45s ease;
+}
+
+/* Ornamental Diamond Finials on left and right tips */
+.relax-dock-finial {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%) rotate(45deg);
+  background: #060b17;
+  border: 1.5px solid #c99e52;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.relax-dock-finial::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: #c99e52;
+}
+
+.relax-dock-finial.finial-left {
+  left: -6px;
+}
+
+.relax-dock-finial.finial-right {
+  right: -6px;
+}
+
+/* When Relax Mode is active, dock slides in */
+body.relax-mode-active .relax-dock {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* When dock is collapsed / hidden by user */
+body.relax-mode-active .relax-dock.dock-hidden {
+  transform: translateX(-50%) translateY(140px) scale(0.95) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Button to Unhide / Restore Dock (Floating Bottom Bar with Finials) */
+.relax-unhide-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(110px);
+  z-index: 10001;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(8, 16, 30, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid #c99e52;
+  border-radius: 6px;
+  padding: 7px 18px;
+  color: #ffd278;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.75), 0 0 14px rgba(201, 158, 82, 0.35);
+  user-select: none;
+}
+
+.relax-unhide-btn .relax-unhide-finial {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translateY(-50%) rotate(45deg);
+  background: #081124;
+  border: 1.5px solid #c99e52;
+}
+
+.relax-unhide-btn .relax-unhide-finial::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: #c99e52;
+}
+
+.relax-unhide-btn .relax-unhide-finial.finial-left {
+  left: -6px;
+}
+
+.relax-unhide-btn .relax-unhide-finial.finial-right {
+  right: -6px;
+}
+
+body.relax-mode-active .relax-dock.dock-hidden ~ .relax-unhide-btn {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.relax-unhide-btn:hover {
+  background: #14243b;
+  border-color: #ffd278;
+  transform: translateX(-50%) translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.8), 0 0 18px rgba(245, 183, 59, 0.5);
+}
+
+.relax-unhide-btn:active {
+  transform: translateX(-50%) translateY(1px);
+}
+
+.relax-unhide-icon {
+  font-size: 0.7rem;
+  color: #ffd278;
+  animation: unhideBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes unhideBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Sections and Dividers */
+.relax-dock-section {
+  display: flex;
+  align-items: center;
+}
+
+.relax-dock-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, rgba(201, 158, 82, 0.45), transparent);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* Section 1: Now Playing Info */
+.relax-now-playing-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.relax-note-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd278;
+  filter: drop-shadow(0 0 6px rgba(245, 183, 59, 0.45));
+}
+
+.relax-track-text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+  min-width: 85px;
+  max-width: 140px;
+}
+
+.relax-now-playing-sub {
+  font-family: 'Cinzel', 'Courier Prime', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.relax-now-playing-title {
+  font-family: 'Courier Prime', monospace, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffd278;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.3px;
+}
+
+/* Section 2: Playback Controls & Seek Bar */
+.relax-playback-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Hollow Golden Circle Play Button */
+.relax-play-circle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.8px solid #c99e52;
+  color: #ffd278;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 2px;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.relax-play-circle-btn:hover {
+  border-color: #ffe082;
+  color: #ffffff;
+  background: rgba(201, 158, 82, 0.15);
+  box-shadow: 0 0 12px rgba(245, 183, 59, 0.5);
+  transform: scale(1.1);
+}
+
+.relax-play-circle-btn:active {
+  transform: scale(0.96);
+}
+
+.relax-play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Seek Bar Wrap */
+.relax-seek-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 2px;
+}
+
+.relax-time-val {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.64rem;
+  color: #64748b;
+  font-weight: 600;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.relax-progress-box {
+  width: 90px;
+}
+
+/* Volume Control Wrap (Screenshot Style: Speaker + Slider) */
+.relax-volume-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+}
+
+.relax-vol-btn {
+  background: transparent;
+  border: none;
+  color: #ffd278;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 2px;
+  outline: none;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.relax-vol-btn:hover {
+  transform: scale(1.18);
+  color: #ffffff;
+  filter: drop-shadow(0 0 6px rgba(245, 183, 59, 0.6));
+}
+
+.relax-volume-box {
+  width: 75px;
+}
+
+.relax-vol-badge {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.64rem;
+  color: #94a3b8;
+  font-weight: 600;
+  user-select: none;
+  white-space: nowrap;
+  min-width: 28px;
+}
+
+.relax-slider-box {
+  display: flex;
+  align-items: center;
+}
+
+.relax-progress-bar {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #ffd278 0%, #ffd278 var(--seek-percent, 0%), #1e293b var(--seek-percent, 0%), #1e293b 100%);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.relax-volume-bar {
+  background: linear-gradient(to right, #ffd278 0%, #ffd278 var(--vol-percent, 70%), #1e293b var(--vol-percent, 70%), #1e293b 100%);
+}
+
+.relax-progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #ffd278;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.relax-progress-bar::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.relax-progress-bar::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #ffd278;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+/* Section 3: Action Icons (Playlist, Theme, Hide, Exit) */
+.relax-actions-section {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.relax-icon-btn {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid rgba(201, 158, 82, 0.28);
+  border-radius: 5px;
+  color: #ffd278;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.relax-icon-btn:hover {
+  border-color: #ffd278;
+  background: rgba(201, 158, 82, 0.15);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 8px rgba(245, 183, 59, 0.35);
+}
+
+.relax-icon-btn:active {
+  transform: translateY(1px);
+}
+
+.relax-exit-icon-btn:hover {
+  border-color: #f87171;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.35);
+}
+
+.relax-icon-btn svg {
+  display: block;
+}
+
+/* Section 4: Scenery Selector Pill with Miniature Pixel Art */
+.relax-scenery-pill {
+  background: rgba(10, 20, 38, 0.88);
+  border: 1px solid rgba(201, 158, 82, 0.35);
+  border-radius: 8px;
+  padding: 3px 4px 3px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.relax-scenery-pill:hover {
+  border-color: #ffd278;
+  background: rgba(16, 32, 60, 0.95);
+  box-shadow: 0 0 12px rgba(245, 183, 59, 0.3);
+}
+
+.relax-scenery-pill-label {
+  font-family: 'Cinzel', serif, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.4px;
+}
+
+.relax-scenery-caret {
+  display: flex;
+  align-items: center;
+  color: #94a3b8;
+  transition: transform 0.2s ease;
+}
+
+.relax-dropdown-wrap.open .relax-scenery-caret {
+  transform: rotate(180deg);
+  color: #ffd278;
+}
+
+.relax-scenery-thumb {
+  width: 44px;
+  height: 28px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 158, 82, 0.45);
+  background: #081124;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.relax-scenery-thumb .scenery-thumb-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Dropdown Menus */
+.relax-dropdown-wrap {
+  position: relative;
+}
+
+.relax-menu {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #091322;
+  border: 1.5px solid #c99e52;
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 180px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 16px rgba(201, 158, 82, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10005;
+}
+
+.relax-dropdown-wrap.open .relax-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.relax-menu-item {
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 12px;
+  color: #cbd5e1;
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.relax-menu-item:hover,
+.relax-menu-item.active {
+  background: #14243b;
+  color: #ffd278;
+}
+
+.relax-menu-item.active::after {
+  content: '✓';
+  margin-left: auto;
+  color: #ffd278;
+  font-weight: 800;
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+  .relax-dock {
+    padding: 5px 10px;
+    gap: 8px;
+    transform: translateX(-50%) translateY(140px) scale(0.92);
+  }
+  body.relax-mode-active .relax-dock {
+    transform: translateX(-50%) translateY(0) scale(0.92);
+  }
+  .relax-progress-box {
+    width: 70px;
+  }
+  .relax-volume-box {
+    width: 60px;
+  }
+  .relax-vol-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .relax-dock {
+    bottom: 12px;
+    max-width: 98vw;
+    padding: 5px 8px;
+    gap: 5px;
+    transform: translateX(-50%) translateY(140px) scale(0.85);
+  }
+  body.relax-mode-active .relax-dock {
+    transform: translateX(-50%) translateY(0) scale(0.85);
+  }
+  .relax-now-playing-section {
+    display: none;
+  }
+  .relax-progress-box {
+    width: 55px;
+  }
+  .relax-volume-box {
+    width: 50px;
+  }
+}
+

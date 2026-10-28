@@ -12,11 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Courier+Prime:wght@700&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
   
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=36">
+  <link rel="stylesheet" href="style.css?v=43">
   <style>
     .isl.open .tl,
     .isl .tl .in {
-      width: calc(var(--h) * 241 / 194) !important;
+      width: calc(var(--h) * 370 / 194) !important;
     }
   </style>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD278'><path d='M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z'/></svg>">
@@ -54,7 +54,8 @@
       </div>
       <div class="p tl">
         <div class="in">
-          <button class="hit" id="themeToggle" aria-label="Ganti tema" style="left:39.21%">
+          <button class="hit" id="relaxToggle" aria-label="Mode Santai (Relax Mode)" title="Mode Santai" style="left:27.43%"></button>
+          <button class="hit" id="themeToggle" aria-label="Ganti tema" style="left:60.54%">
             <span class="theme-sun-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="100%" height="100%">
                 <circle cx="12" cy="12" r="5" fill="#f5b73b" />
@@ -62,7 +63,7 @@
               </svg>
             </span>
           </button>
-          <button class="hit" id="settingsToggle" aria-label="Pengaturan" style="left:86.51%"></button>
+          <button class="hit" id="settingsToggle" aria-label="Pengaturan" style="left:91.35%"></button>
         </div>
       </div>
       <div class="p cr"></div>
@@ -1260,11 +1261,322 @@
     </i>
   </div>
 
+  <!-- Atmospheric Dynamic Canvas for Relax Mode (Shooting stars, fireflies, rain, petals) -->
+  <canvas id="relaxAtmosphereCanvas" class="relax-atmosphere-canvas" aria-hidden="true"></canvas>
+
+  <!-- Relax Mode Confirmation Modal (Exact Match to User Reference) -->
+  <div class="relax-confirm-backdrop" id="relaxConfirmModalOverlay" aria-hidden="true">
+    <div class="relax-confirm-card" role="dialog" aria-modal="true" aria-labelledby="relaxConfirmTitle">
+      <!-- Top Crest Ornament -->
+      <div class="relax-card-crest crest-top" aria-hidden="true">
+        <svg viewBox="0 0 100 24" width="100" height="24" fill="none">
+          <rect x="25" y="10" width="50" height="8" fill="#08142b"/>
+          <path d="M10 14 C 22 14, 28 17, 36 17 C 42 17, 44 14, 48 11" stroke="#c99e52" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M90 14 C 78 14, 72 17, 64 17 C 58 17, 56 14, 52 11" stroke="#c99e52" stroke-width="1.3" stroke-linecap="round"/>
+          <polygon points="50,2 54.5,11 60,13.5 54.5,16 50,23 45.5,16 40,13.5 45.5,11" fill="#ffd278" stroke="#c99e52" stroke-width="0.8"/>
+          <circle cx="50" cy="13.5" r="1.2" fill="#ffffff"/>
+        </svg>
+      </div>
+
+      <!-- Golden Crescent Moon & Star Icon -->
+      <div class="relax-confirm-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 36 36" width="36" height="36" class="relax-moon-svg">
+          <path d="M21 5 C 13.5 5, 7.5 11, 7.5 18.5 C 7.5 26, 13.5 32, 21 32 C 23.8 32, 26.4 31.1 28.5 29.6 C 21.8 28.2 16.8 22.3 16.8 15.2 C 16.8 11.2 18.8 7.7 21.8 5.4 C 21.5 5.3 21.3 5 21 5 Z" fill="#ffd278" filter="drop-shadow(0 0 8px rgba(255, 210, 120, 0.6))"/>
+          <polygon points="27.5,7 28.5,10 31.5,11 28.5,12 27.5,15 26.5,12 23.5,11 26.5,10" fill="#ffd278"/>
+          <circle cx="30" cy="18" r="0.7" fill="#ffeaa7"/>
+        </svg>
+      </div>
+
+      <h3 class="relax-confirm-title" id="relaxConfirmTitle">Aktifkan Relax Mode?</h3>
+      <p class="relax-confirm-desc">
+        Semua elemen di halaman akan menghilang, menyisakan hanya latar belakang. Nikmati ketenangan dengan musik dan pemandangan pilihanmu.
+      </p>
+
+      <div class="relax-confirm-actions">
+        <button type="button" class="relax-confirm-btn relax-confirm-btn-no" id="relaxConfirmCancelBtn">
+          <span>Batal</span>
+        </button>
+        <button type="button" class="relax-confirm-btn relax-confirm-btn-yes" id="relaxConfirmYesBtn">
+          <span>Ya, Aktifkan</span>
+        </button>
+      </div>
+
+      <!-- Bottom Crest Accent -->
+      <div class="relax-card-crest crest-bottom" aria-hidden="true">
+        <svg viewBox="0 0 80 18" width="80" height="18" fill="none">
+          <rect x="25" y="0" width="30" height="6" fill="#040916"/>
+          <path d="M18 2 C 28 2, 34 5, 40 5 C 46 5, 52 2, 62 2" stroke="#c99e52" stroke-width="1.2" stroke-linecap="round"/>
+          <polygon points="40,14 43.5,6 40,1 36.5,6" fill="#ffd278" stroke="#c99e52" stroke-width="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Relax Mode Exit Confirmation Modal -->
+  <div class="relax-confirm-backdrop" id="relaxExitConfirmModalOverlay" aria-hidden="true">
+    <div class="relax-confirm-card" role="dialog" aria-modal="true" aria-labelledby="relaxExitConfirmTitle">
+      <!-- Top Crest Ornament -->
+      <div class="relax-card-crest crest-top" aria-hidden="true">
+        <svg viewBox="0 0 100 24" width="100" height="24" fill="none">
+          <rect x="25" y="10" width="50" height="8" fill="#08142b"/>
+          <path d="M10 14 C 22 14, 28 17, 36 17 C 42 17, 44 14, 48 11" stroke="#c99e52" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M90 14 C 78 14, 72 17, 64 17 C 58 17, 56 14, 52 11" stroke="#c99e52" stroke-width="1.3" stroke-linecap="round"/>
+          <polygon points="50,2 54.5,11 60,13.5 54.5,16 50,23 45.5,16 40,13.5 45.5,11" fill="#ffd278" stroke="#c99e52" stroke-width="0.8"/>
+          <circle cx="50" cy="13.5" r="1.2" fill="#ffffff"/>
+        </svg>
+      </div>
+
+      <!-- Exit Door Icon -->
+      <div class="relax-confirm-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ffd278" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 210, 120, 0.5));">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </div>
+
+      <h3 class="relax-confirm-title" id="relaxExitConfirmTitle">Keluar dari Relax Mode?</h3>
+      <p class="relax-confirm-desc">
+        Semua elemen halaman dan navigasi utama kerajaan akan ditampilkan kembali.
+      </p>
+
+      <div class="relax-confirm-actions">
+        <button type="button" class="relax-confirm-btn relax-confirm-btn-no" id="relaxExitConfirmCancelBtn">
+          <span>Batal</span>
+        </button>
+        <button type="button" class="relax-confirm-btn relax-confirm-btn-yes" id="relaxExitConfirmYesBtn">
+          <span>Ya, Keluar</span>
+        </button>
+      </div>
+
+      <!-- Bottom Crest Accent -->
+      <div class="relax-card-crest crest-bottom" aria-hidden="true">
+        <svg viewBox="0 0 80 18" width="80" height="18" fill="none">
+          <rect x="25" y="0" width="30" height="6" fill="#040916"/>
+          <path d="M18 2 C 28 2, 34 5, 40 5 C 46 5, 52 2, 62 2" stroke="#c99e52" stroke-width="1.2" stroke-linecap="round"/>
+          <polygon points="40,14 43.5,6 40,1 36.5,6" fill="#ffd278" stroke="#c99e52" stroke-width="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Relax Mode Floating Bottom Dock (Medieval RPG Fantasy Music Player) -->
+  <aside class="relax-dock" id="relaxDock" aria-label="Kontrol Relax Mode">
+    <!-- Ornamental Edge Finials -->
+    <span class="relax-dock-finial finial-left" aria-hidden="true"></span>
+    <span class="relax-dock-finial finial-right" aria-hidden="true"></span>
+
+    <!-- Left: Now Playing Info -->
+    <div class="relax-dock-section relax-now-playing-section">
+      <div class="relax-note-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="#f5b73b">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+      </div>
+      <div class="relax-track-text-box">
+        <span class="relax-now-playing-sub">Now Playing</span>
+        <span class="relax-now-playing-title" id="relaxCurrentTrackLabel">Music 5</span>
+      </div>
+    </div>
+
+    <div class="relax-dock-divider" aria-hidden="true"></div>
+
+    <!-- Center-Left: Playback & Seek Slider -->
+    <div class="relax-dock-section relax-playback-section">
+      <button type="button" class="relax-icon-btn" id="relaxPrevBtn" title="Lagu Sebelumnya" aria-label="Lagu Sebelumnya">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M6 6h2.5v12H6zm3.5 6l9 6V6z"/>
+        </svg>
+      </button>
+
+      <button type="button" class="relax-play-circle-btn" id="relaxPlayBtn" title="Putar / Jeda Musik" aria-label="Putar / Jeda Musik">
+        <span class="relax-play-icon" id="relaxPlayIcon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="svg-play">
+            <polygon points="8,5 19,12 8,19"/>
+          </svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="svg-pause" style="display:none">
+            <rect x="7" y="5" width="3.5" height="14" rx="1"/>
+            <rect x="13.5" y="5" width="3.5" height="14" rx="1"/>
+          </svg>
+        </span>
+      </button>
+
+      <button type="button" class="relax-icon-btn" id="relaxNextBtn" title="Lagu Selanjutnya" aria-label="Lagu Selanjutnya">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M5.5 18l9-6-9-6v12zm10-12v12H18V6h-2.5z"/>
+        </svg>
+      </button>
+
+      <!-- Music Seek / Progress Slider -->
+      <div class="relax-seek-wrap" title="Atur Menit Lagu">
+        <span class="relax-time-val relax-time-cur" id="relaxCurrentTime">0:00</span>
+        <div class="relax-slider-box relax-progress-box">
+          <input type="range" class="relax-progress-bar" id="relaxProgressBar" min="0" max="100" value="0" step="0.1" aria-label="Progress Musik">
+        </div>
+        <span class="relax-time-val relax-time-dur" id="relaxDuration">0:00</span>
+      </div>
+
+      <!-- Volume Control (Screenshot Style: Speaker Icon + Slider) -->
+      <div class="relax-volume-wrap" title="Atur Volume Suara">
+        <button type="button" class="relax-vol-btn" id="relaxVolumeBtn" title="Bisukan / Nyalakan Suara" aria-label="Volume">
+          <span class="relax-vol-icon" id="relaxVolIcon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#ffd278">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </span>
+        </button>
+        <div class="relax-slider-box relax-volume-box">
+          <input type="range" class="relax-progress-bar relax-volume-bar" id="relaxVolumeBar" min="0" max="100" value="70" step="1" aria-label="Volume Musik">
+        </div>
+        <span class="relax-vol-badge" id="relaxVolumeVal">70%</span>
+      </div>
+    </div>
+
+    <div class="relax-dock-divider" aria-hidden="true"></div>
+
+    <!-- Center-Right: Quick Action Icons (Playlist, Theme, Hide, Exit) -->
+    <div class="relax-dock-section relax-actions-section">
+      <!-- Playlist Selector Button -->
+      <div class="relax-dropdown-wrap">
+        <button type="button" class="relax-icon-btn" id="relaxTrackBtn" aria-haspopup="true" aria-expanded="false" title="Daftar Putar Lagu">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <circle cx="4" cy="6" r="1.5" fill="currentColor"/>
+            <circle cx="4" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="4" cy="18" r="1.5" fill="currentColor"/>
+          </svg>
+        </button>
+        <div class="relax-menu relax-track-menu" id="relaxTrackMenu" role="menu">
+          <button type="button" class="relax-menu-item" data-track="Assets/music/music 1.mp3" role="menuitem">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f5b73b" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#f5b73b"/><circle cx="18" cy="16" r="3" fill="#f5b73b"/></svg>
+            <span>Music 1</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-track="Assets/music/music 2.mp3" role="menuitem">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f5b73b" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#f5b73b"/><circle cx="18" cy="16" r="3" fill="#f5b73b"/></svg>
+            <span>Music 2</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-track="Assets/music/music 3.mp3" role="menuitem">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f5b73b" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#f5b73b"/><circle cx="18" cy="16" r="3" fill="#f5b73b"/></svg>
+            <span>Music 3</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-track="Assets/music/music 4.mp4" role="menuitem">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f5b73b" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#f5b73b"/><circle cx="18" cy="16" r="3" fill="#f5b73b"/></svg>
+            <span>Music 4</span>
+          </button>
+          <button type="button" class="relax-menu-item active" data-track="Assets/music/music 5.mp3" role="menuitem">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f5b73b" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#f5b73b"/><circle cx="18" cy="16" r="3" fill="#f5b73b"/></svg>
+            <span>Music 5</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Theme Toggle (Day / Night) - ICON ONLY -->
+      <button type="button" class="relax-icon-btn" id="relaxThemeToggleBtn" title="Ganti Mode Terang / Gelap" aria-label="Ganti Tema">
+        <span class="relax-theme-icon" id="relaxThemeIcon">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <circle cx="12" cy="12" r="5" fill="#f5b73b"/>
+            <path d="M12 1v3M12 20v3M1 12h3M20 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="#f5b73b" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </button>
+
+      <!-- Sembunyikan Dock Button - ICON ONLY -->
+      <button type="button" class="relax-icon-btn" id="relaxHideDockBtn" title="Sembunyikan Menu Navigasi Bawah" aria-label="Sembunyikan Menu">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- Settings Button (to the left of exit button) -->
+      <button type="button" class="relax-icon-btn" id="relaxSettingsBtn" title="Buka Pengaturan (Settings)" aria-label="Pengaturan">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+
+      <!-- Exit Button -->
+      <button type="button" class="relax-icon-btn relax-exit-icon-btn" id="relaxExitDockBtn" title="Kembali ke Tampilan Utama (Keluar)" aria-label="Keluar">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="relax-dock-divider" aria-hidden="true"></div>
+
+    <!-- Right: Scenery Selector Pill with Miniature Graphic Preview -->
+    <div class="relax-dock-section relax-scenery-section">
+      <div class="relax-dropdown-wrap">
+        <button type="button" class="relax-scenery-pill" id="relaxSceneryBtn" aria-haspopup="true" aria-expanded="false" title="Pilih Pemandangan / Suasana">
+          <span class="relax-scenery-pill-label">Pemandangan</span>
+          <span class="relax-scenery-caret">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
+          <div class="relax-scenery-thumb" id="relaxSceneryThumb" aria-hidden="true">
+            <svg viewBox="0 0 36 24" width="36" height="24" class="scenery-thumb-svg">
+              <rect width="36" height="24" rx="3" fill="#0b1730"/>
+              <polygon points="0,24 10,14 18,24" fill="#070e20"/>
+              <polygon points="12,24 22,11 32,24" fill="#132342"/>
+              <polygon points="20,24 28,15 36,24" fill="#070e20"/>
+              <rect x="23" y="9" width="3" height="10" fill="#ffd278" opacity="0.8"/>
+              <polygon points="21.5,9 24.5,4 27.5,9" fill="#ffd278"/>
+              <circle cx="6" cy="5" r="0.8" fill="#ffffff"/>
+              <circle cx="15" cy="4" r="1" fill="#ffeaa7"/>
+              <circle cx="31" cy="6" r="0.8" fill="#ffffff"/>
+              <circle cx="28" cy="3" r="0.6" fill="#ffeaa7"/>
+            </svg>
+          </div>
+        </button>
+
+        <div class="relax-menu relax-scenery-menu" id="relaxSceneryMenu" role="menu">
+          <button type="button" class="relax-menu-item active" data-scenery="stars" role="menuitem">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#f5b73b"><path d="M12 2l2.4 7.2h7.6l-6.2 4.6 2.4 7.2-6.2-4.6-6.2 4.6 2.4-7.2-6.2-4.6h7.6z"/></svg>
+            <span>Bintang Jatuh</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-scenery="fireflies" role="menuitem">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f5b73b" stroke-width="2"><circle cx="12" cy="12" r="5" fill="#f5b73b"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <span>Kunang-kunang</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-scenery="rain" role="menuitem">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f5b73b" stroke-width="2" stroke-linecap="round"><path d="M16 13a4 4 0 0 0-8 0"/><line x1="8" y1="17" x2="8" y2="21"/><line x1="12" y1="16" x2="12" y2="20"/><line x1="16" y1="17" x2="16" y2="21"/></svg>
+            <span>Hujan Rintik</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-scenery="petals" role="menuitem">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#f5b73b"><path d="M12 2C8 6 6 10 12 16C18 10 16 6 12 2Z"/></svg>
+            <span>Kelopak Sakura</span>
+          </button>
+          <button type="button" class="relax-menu-item" data-scenery="none" role="menuitem">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f5b73b" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="5" y1="19" x2="19" y2="5"/></svg>
+            <span>Hening Polos</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Button to Unhide / Restore Dock -->
+  <button type="button" class="relax-unhide-btn" id="relaxUnhideDockBtn" title="Tampilkan Menu Kontrol" aria-label="Tampilkan Menu Kontrol">
+    <span class="relax-unhide-finial finial-left" aria-hidden="true"></span>
+    <span class="relax-unhide-finial finial-right" aria-hidden="true"></span>
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f5b73b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="relax-unhide-icon">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+    <span>Menu Kontrol</span>
+  </button>
+
   <!-- Background Music Audio & Preview Audio Elements -->
   <audio id="bgmAudio" loop preload="auto" autoplay src="Assets/music/music 5.mp3"></audio>
   <audio id="previewAudio" preload="none"></audio>
 
   <!-- Main JavaScript -->
-  <script src="script.js?v=33"></script>
+  <script src="script.js?v=43"></script>
 </body>
 </html>
