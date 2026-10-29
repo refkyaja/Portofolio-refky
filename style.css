@@ -1673,8 +1673,9 @@ body.theme-day .theme-toggle .moon-icon {
   transform: translateY(-50%) !important;
   width: min(320px, 35%) !important;
   height: auto !important;
-  max-height: calc(100% - 24px) !important;
-  overflow: visible !important;
+  min-height: 385px !important;
+  max-height: calc(100% - 70px) !important;
+  overflow: hidden !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   opacity: 0;
@@ -1712,8 +1713,13 @@ body.theme-day .theme-toggle .moon-icon {
 }
 
 .qi {
-  padding: 6px 18px 10px !important;
+  padding: 10px 18px 12px !important;
   color: #f3efe4;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  flex: 1 1 auto !important;
+  box-sizing: border-box !important;
 }
 
 .qk {
@@ -1736,7 +1742,7 @@ body.theme-day .theme-toggle .moon-icon {
 
 .qi p {
   margin: 0 0 6px;
-  line-height: 1.35;
+  line-height: 1.45;
   color: #c3cde4;
   font-size: 10px;
 }
@@ -1804,8 +1810,10 @@ body.theme-day .theme-toggle .moon-icon {
 
 .qph {
   position: relative;
-  aspect-ratio: 2.2 / 1;
-  margin: 0 0 6px;
+  aspect-ratio: 16 / 9.5;
+  flex: 0 0 auto;
+  max-height: 130px;
+  margin: 0 0 8px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -1942,7 +1950,8 @@ body.theme-day .theme-toggle .moon-icon {
     top: 50% !important;
     transform: translateY(-50%) !important;
     width: min(330px, 28vw) !important;
-    max-height: calc(100vh - 24px) !important;
+    height: calc(100vh - 60px) !important;
+    max-height: calc(100vh - 60px) !important;
   }
 }
 
@@ -1955,7 +1964,8 @@ body.theme-day .theme-toggle .moon-icon {
     top: 50% !important;
     transform: translateY(-50%) !important;
     width: min(290px, 44%) !important;
-    max-height: calc(100% - 20px) !important;
+    height: calc(100% - 40px) !important;
+    max-height: calc(100% - 40px) !important;
     --k: .26;
   }
   .qi {
@@ -2690,10 +2700,11 @@ body.theme-day .theme-toggle .moon-icon {
 
 /* Info Panel Card (Matches website's pixel-card theme & aligned straight) */
 .cert-panel {
-  background: var(--color-navy-card);
-  border: 2px solid var(--color-navy-card-border);
-  border-radius: var(--border-radius-lg);
-  padding: 28px;
+  --k: .30;
+  background: #02081c;
+  border: none;
+  border-radius: 0;
+  padding: 24px 28px 20px !important;
   height: 330px; /* Tinggi disamakan persis dengan kartu foto */
   min-height: 330px;
   box-sizing: border-box;
@@ -2702,10 +2713,35 @@ body.theme-day .theme-toggle .moon-icon {
   justify-content: space-between;
   align-items: flex-start;
   transition: opacity 0.25s ease, transform 0.25s ease;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 210, 120, 0.15);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 0 28px rgba(0, 0, 0, 0.65);
   position: relative;
+  overflow: visible !important;
   z-index: 5;
+}
+
+.cert-panel::before,
+.cert-panel::after {
+  display: block !important;
+  content: "";
+  position: absolute;
+  top: calc(64px * var(--k));
+  bottom: calc(58px * var(--k));
+  width: 2px;
+  background: linear-gradient(#f5b73b, #e5882a);
+  opacity: .55;
+  pointer-events: none;
+}
+
+.cert-panel::before { left: calc(36px * var(--k)); }
+.cert-panel::after { right: calc(36px * var(--k)); }
+
+.cert-panel .o.gl,
+.cert-panel .o.gr {
+  display: none !important;
+}
+
+.cert-panel:hover {
+  transform: none;
 }
 
 .cert-panel.swap {
@@ -2715,19 +2751,19 @@ body.theme-day .theme-toggle .moon-icon {
 
 .cert-title {
   font-family: var(--font-pixel);
-  font-size: clamp(0.92rem, 1.3vw, 1.25rem);
-  line-height: 1.55;
-  margin: 0 0 14px;
-  color: #FFFFFF;
-  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 210, 120, 0.25);
+  font-size: clamp(0.92rem, 1.25vw, 1.2rem);
+  line-height: 1.5;
+  margin: 0 0 12px;
+  color: #ffbf3f;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.9), 0 0 10px rgba(245, 183, 59, 0.3);
   letter-spacing: 0.5px;
 }
 
 .cert-desc {
   font-family: var(--font-retro);
-  color: var(--color-secondary-text);
+  color: #c3cde4;
   font-size: 1.45rem;
-  line-height: 1.45;
+  line-height: 1.5;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -2747,15 +2783,16 @@ body.theme-day .theme-toggle .moon-icon {
   gap: 8px;
   align-items: center;
   background: linear-gradient(180deg, #FFDE7A 0%, #F5B838 50%, #D49B22 100%);
-  color: #261404;
+  color: #07173a;
   font-family: var(--font-pixel);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
   border: 2px solid #5C3810;
-  border-radius: 999px;
-  padding: 10px 20px;
-  box-shadow: 0 4px 10px rgba(92, 56, 16, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  padding: 10px 22px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -2763,8 +2800,8 @@ body.theme-day .theme-toggle .moon-icon {
   background: linear-gradient(180deg, #FFF0A8 0%, #FFC850 50%, #E5A823 100%);
   border-color: #381E04;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(92, 56, 16, 0.5), 0 0 12px rgba(255, 210, 120, 0.5);
-  color: #1A0D03;
+  box-shadow: 0 6px 18px rgba(245, 183, 59, 0.5), 0 0 12px rgba(255, 210, 120, 0.6);
+  color: #07173a;
 }
 
 .cert-zoom-btn {

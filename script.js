@@ -917,9 +917,6 @@ const themeToggle = document.getElementById('themeToggle');
       timer = setInterval(() => {
         c++;
         tx.textContent = s.slice(0, c);
-        if (c % 3 === 0 && typeof playSound === 'function') {
-          playSound('blip');
-        }
         if (c >= s.length) {
           fin();
         }
@@ -3125,25 +3122,29 @@ const themeToggle = document.getElementById('themeToggle');
 
     });
 
-    return [...sortedUserQuests, ...defaultQuests]
+    // Cegah duplikasi default comments jika sudah ada di cloud database
+    const existingIds = new Set(sortedUserQuests.map(q => String(q.id)));
+    const filteredDefaults = defaultQuests.filter(q => !existingIds.has(String(q.id)));
+
+    return [...sortedUserQuests, ...filteredDefaults]
 
       .filter(quest => !deletedQuestIds.has(String(quest.id)))
 
       .map(quest => {
 
-      const isLiked = likedQuestIds.has(quest.id);
+      const isLiked = likedQuestIds.has(quest.id) || likedQuestIds.has(String(quest.id)) || likedQuestIds.has(Number(quest.id));
 
-      const base = quest.baseLikes !== undefined ? quest.baseLikes : (quest.likes || 0);
+      const total = quest.baseLikes !== undefined ? quest.baseLikes : (quest.likes || 0);
 
       return {
 
         ...quest,
 
-        baseLikes: base,
+        baseLikes: total,
 
         isLiked: isLiked,
 
-        likes: base + (isLiked ? 1 : 0)
+        likes: total
 
       };
 
@@ -3457,19 +3458,23 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
-  // Toggle Like on Quest Note
+  // Toggle Like on Quest Note (Sinkron ke Supabase Cloud Database)
 
-  function toggleQuestLike(id, btn) {
+  async function toggleQuestLike(id, btn) {
 
-    const isCurrentlyLiked = likedQuestIds.has(id);
+    const isCurrentlyLiked = likedQuestIds.has(id) || likedQuestIds.has(String(id)) || likedQuestIds.has(Number(id));
+    const delta = isCurrentlyLiked ? -1 : 1;
 
     if (isCurrentlyLiked) {
 
       likedQuestIds.delete(id);
+      likedQuestIds.delete(String(id));
+      likedQuestIds.delete(Number(id));
 
     } else {
 
       likedQuestIds.add(id);
+      likedQuestIds.add(String(id));
 
       playSound('heartbeat');
 
@@ -3481,15 +3486,27 @@ const themeToggle = document.getElementById('themeToggle');
 
     } catch (e) {}
 
-    questsList = getCompleteQuestsList();
+    // Update target quest di memori seketika untuk responsivitas instan di UI
+    const targetQuest = questsList.find(q => String(q.id) === String(id));
+    if (targetQuest) {
+      targetQuest.baseLikes = Math.max(0, (targetQuest.baseLikes || 0) + delta);
+      targetQuest.likes = targetQuest.baseLikes;
+      targetQuest.isLiked = !isCurrentlyLiked;
+    }
 
-    const countSpan = btn.querySelector('.like-count');
-
-    const targetQuest = questsList.find(q => q.id === id);
+    const targetUserQuest = userQuests.find(q => String(q.id) === String(id));
+    if (targetUserQuest) {
+      targetUserQuest.baseLikes = targetQuest ? targetQuest.baseLikes : Math.max(0, (targetUserQuest.baseLikes || 0) + delta);
+      try {
+        localStorage.setItem('rfm_user_guild_comments', JSON.stringify(userQuests));
+      } catch (e) {}
+    }
 
     if (btn) {
 
       btn.classList.toggle('liked', !isCurrentlyLiked);
+
+      const countSpan = btn.querySelector('.like-count');
 
       if (countSpan && targetQuest) {
 
@@ -3498,6 +3515,9 @@ const themeToggle = document.getElementById('themeToggle');
       }
 
     }
+
+    // Kirim sinkronisasi update like ke Supabase
+    updateCloudCommentLikes(id, delta);
 
   }
 
@@ -3581,6 +3601,55 @@ const themeToggle = document.getElementById('themeToggle');
 
     }
 
+  }
+
+  // Sinkronisasi update like komentar ke Supabase Cloud
+  async function updateCloudCommentLikes(commentId, delta) {
+    if (!GUILD_CLOUD_CONFIG.supabaseUrl || !GUILD_CLOUD_CONFIG.supabaseAnonKey) return;
+    try {
+      const cleanUrl = GUILD_CLOUD_CONFIG.supabaseUrl.replace(/\/+$/, '').replace(/\/rest\/v1\/?$/, '');
+
+      // 1. Ambil jumlah likes terkini dari cloud untuk multi-user / multi-device
+      const getRes = await fetch(`${cleanUrl}/rest/v1/${GUILD_CLOUD_CONFIG.tableName}?id=eq.${commentId}&select=likes`, {
+        headers: {
+          'apikey': GUILD_CLOUD_CONFIG.supabaseAnonKey,
+          'Authorization': `Bearer ${GUILD_CLOUD_CONFIG.supabaseAnonKey}`
+        }
+      });
+
+      if (getRes.ok) {
+        const rows = await getRes.json();
+        if (rows && rows.length > 0) {
+          const currentLikes = typeof rows[0].likes === 'number' ? rows[0].likes : 0;
+          const newLikes = Math.max(0, currentLikes + delta);
+
+          // 2. Kirim PATCH update ke Supabase
+          const patchRes = await fetch(`${cleanUrl}/rest/v1/${GUILD_CLOUD_CONFIG.tableName}?id=eq.${commentId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': GUILD_CLOUD_CONFIG.supabaseAnonKey,
+              'Authorization': `Bearer ${GUILD_CLOUD_CONFIG.supabaseAnonKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify({ likes: newLikes })
+          });
+
+          if (patchRes.ok) {
+            console.log(`[Supabase] Likes komentar ID ${commentId} berhasil di-update: ${newLikes}`);
+            const target = userQuests.find(q => String(q.id) === String(commentId));
+            if (target) {
+              target.baseLikes = newLikes;
+              try {
+                localStorage.setItem('rfm_user_guild_comments', JSON.stringify(userQuests));
+              } catch (e) {}
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[Supabase] Gagal sync like ke cloud:', err);
+    }
   }
 
   // =========================================================================
@@ -3691,6 +3760,10 @@ const themeToggle = document.getElementById('themeToggle');
           newQuest.id = cloudId;
           const delBtn = document.querySelector(`.quest-delete-btn[data-id="${oldId}"]`);
           if (delBtn) delBtn.setAttribute('data-id', cloudId);
+          const likeBtn = document.querySelector(`.quest-like-btn[data-id="${oldId}"]`);
+          if (likeBtn) likeBtn.setAttribute('data-id', cloudId);
+          const card = document.querySelector(`.quest-parchment-card[data-id="${oldId}"]`);
+          if (card) card.setAttribute('data-id', cloudId);
           try {
             const stored = JSON.parse(localStorage.getItem('rfm_user_guild_comments') || '[]');
             const idx = stored.findIndex(q => String(q.id) === String(oldId) || (q.author === newQuest.author && q.text === newQuest.text));
@@ -3877,6 +3950,17 @@ const themeToggle = document.getElementById('themeToggle');
   updateGuildSubmitButtonState();
 
   fetchCloudComments();
+
+  // Sinkronisasi otomatis komentar & likes secara berkala & saat tab aktif kembali
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      fetchCloudComments();
+    }
+  });
+  window.addEventListener('focus', () => {
+    fetchCloudComments();
+  });
+  setInterval(fetchCloudComments, 15000); // Poll setiap 15 detik untuk update like & pesan baru secara live
 
   function closeGuildModal() {
 
