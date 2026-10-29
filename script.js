@@ -5774,6 +5774,8 @@ const themeToggle = document.getElementById('themeToggle');
 
   let isToastAudioEnabled = localStorage.getItem('rfm_toast_sound') !== 'false';
 
+  let isDragonPointerShown = false;
+
   // Modal Open & Close Handlers
 
   function openSettingsModal() {
@@ -5964,7 +5966,29 @@ const themeToggle = document.getElementById('themeToggle');
 
     if (dr) {
 
-      dr.style.display = isDragonEnabled ? 'block' : 'none';
+      if (!isDragonEnabled) {
+
+        dr.style.display = 'none';
+
+      } else {
+
+        const isFine = window.matchMedia('(pointer:fine)').matches;
+
+        if (!isFine) {
+
+          dr.style.display = 'block';
+
+        } else if (isDragonPointerShown) {
+
+          dr.style.display = 'block';
+
+        } else {
+
+          dr.style.display = 'none';
+
+        }
+
+      }
 
     }
 
@@ -7714,17 +7738,25 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
-  // Flying Dragon Cursor (Desktop / Mouse Pointer)
+  // -------------------------------------------------------------------------
 
-  if (window.matchMedia('(pointer:fine)').matches) {
+  // Flying Dragon Companion (Desktop Cursor & Mobile Ambient Sky Patrol)
 
-    const dr = document.getElementById('dragon');
+  // -------------------------------------------------------------------------
 
-    if (dr) {
+  const dr = document.getElementById('dragon');
 
-      const di = dr.querySelector('i');
+  if (dr) {
 
-      let tx = 0, ty = 0, x = 0, y = 0, shown = false, face = 1;
+    const di = dr.querySelector('i');
+
+    const isFinePointer = window.matchMedia('(pointer:fine)').matches;
+
+    if (isFinePointer) {
+
+      // --- Desktop Mode: Follow Mouse Cursor ---
+
+      let tx = 0, ty = 0, x = 0, y = 0, face = 1;
 
       window.addEventListener('pointermove', e => {
 
@@ -7732,9 +7764,9 @@ const themeToggle = document.getElementById('themeToggle');
 
         if (e.pointerType !== 'mouse') return;
 
-        if (!shown) {
+        if (!isDragonPointerShown) {
 
-          shown = true;
+          isDragonPointerShown = true;
 
           x = tx = e.clientX;
 
@@ -7798,13 +7830,13 @@ const themeToggle = document.getElementById('themeToggle');
 
         dr.style.display = 'none';
 
-        shown = false;
+        isDragonPointerShown = false;
 
       });
 
-      (function tick() {
+      (function tickDesktop() {
 
-        if (isDragonEnabled) {
+        if (isDragonEnabled && isDragonPointerShown) {
 
           x += (tx - x) * 0.25;
 
@@ -7820,7 +7852,125 @@ const themeToggle = document.getElementById('themeToggle');
 
         }
 
-        requestAnimationFrame(tick);
+        requestAnimationFrame(tickDesktop);
+
+      })();
+
+    } else {
+
+      // --- Mobile Mode: Ambient Sky Patrol & Tap Fire Breath ---
+
+      let mobX = 15;
+
+      let mobY = 85;
+
+      let mobDir = 1; // 1 = terbang ke kanan, -1 = terbang ke kiri
+
+      const mobSpeed = 1.1; // Kecepatan jelajah naga di langit
+
+      let flightAngle = 0;
+
+      if (isDragonEnabled) {
+
+        dr.style.display = 'block';
+
+        if (di) di.style.transform = 'scaleX(-1)'; // Menghadap kanan saat meluncur
+
+      }
+
+      // Tap layar di mobile: Naga menyemburkan semburan api
+      let lastMobileFireT = 0;
+
+      window.addEventListener('pointerdown', e => {
+
+        if (!isDragonEnabled) return;
+
+        if (e.pointerType === 'mouse') return;
+
+        const now = performance.now();
+
+        if (now - lastMobileFireT < 1000) return; // Debounce 1s agar scroll biasa tidak spam
+
+        lastMobileFireT = now;
+
+        if (typeof playSound === 'function') playSound('fire');
+
+        requestAnimationFrame(() => {
+
+          const rect = dr.getBoundingClientRect();
+
+          const mouthX = mobDir === 1 ? rect.right - 8 : rect.left + 8;
+
+          const mouthY = rect.top + rect.height * 0.42;
+
+          for (let i = 0; i < 4; i++) {
+
+            const f = document.createElement('span');
+
+            f.className = 'fire';
+
+            f.textContent = '🔥';
+
+            f.style.left = (mouthX + randNum(-6, 6)) + 'px';
+
+            f.style.top = (mouthY + randNum(-6, 6)) + 'px';
+
+            f.style.setProperty('--dx', (mobDir * randNum(25, 60)) + 'px');
+
+            f.style.animationDelay = (i * 35) + 'ms';
+
+            document.body.appendChild(f);
+
+            setTimeout(() => f.remove(), 700 + i * 35);
+
+          }
+
+        });
+
+      }, { passive: true });
+
+      (function tickMobile() {
+
+        if (isDragonEnabled) {
+
+          flightAngle += 0.032;
+
+          mobX += mobSpeed * mobDir;
+
+          // Efek kepakan sayap: naik-turun halus secara sinusoidal
+          const currentY = mobY + Math.sin(flightAngle) * 12;
+
+          const screenW = window.innerWidth || 360;
+
+          const dragonW = dr.offsetWidth || 110;
+
+          // Batas kanan layar: naga berputar haluan ke kiri
+          if (mobDir === 1 && mobX >= screenW - dragonW - 12) {
+
+            mobDir = -1;
+
+            mobY = Math.max(70, Math.min(130, mobY + (Math.random() * 20 - 10)));
+
+            if (di) di.style.transform = 'scaleX(1)'; // Menghadap kiri
+
+          }
+
+          // Batas kiri layar: naga berputar haluan ke kanan
+          else if (mobDir === -1 && mobX <= 12) {
+
+            mobDir = 1;
+
+            mobY = Math.max(70, Math.min(130, mobY + (Math.random() * 20 - 10)));
+
+            if (di) di.style.transform = 'scaleX(-1)'; // Menghadap kanan
+
+          }
+
+          dr.style.transform = 'translate(' + mobX + 'px,' + currentY + 'px)';
+
+        }
+
+        requestAnimationFrame(tickMobile);
 
       })();
 

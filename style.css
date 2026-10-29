@@ -5181,6 +5181,12 @@ body:has(.cert-modal-backdrop.active) .relax-unhide-btn {
   overflow: visible;
 }
 
+@media (max-width: 768px) {
+  .dragon svg {
+    width: 105px;
+  }
+}
+
 .wing {
   transform-box: fill-box;
   transform-origin: 0% 100%;
