@@ -9,10 +9,10 @@
   <!-- Google Fonts: Cinzel, Courier Prime, Press Start 2P & VT323 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Courier+Prime:wght@700&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
   
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=43">
+  <link rel="stylesheet" href="style.css?v=61">
   <style>
     .isl.open .tl,
     .isl .tl .in {
@@ -572,143 +572,132 @@
           <p class="section-subtitle">Jejak Langkah &amp; Lembaran Perjalanan Akademik</p>
         </div>
 
-        <div class="book-wrap closed" id="wrap">
-            <div class="book" aria-label="Buku riwayat pendidikan">
-              <div class="page left">
-                <svg class="wm"><use href="#wm"/></svg>
-                <svg class="pc b-tl"><use href="#pc"/></svg>
-                <svg class="pc b-tr"><use href="#pc"/></svg>
-                <svg class="pc b-bl"><use href="#pc"/></svg>
-                <svg class="pc b-br"><use href="#pc"/></svg>
-                <i class="book-page-gm t"></i>
-                <i class="book-page-gm b"></i>
-                <div class="sheet" id="photo" style="align-items:center;justify-content:center"></div>
+        <!-- SVG Defs for Medieval Cover, Watermark, & Filigree Ornaments -->
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <defs>
+            <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6d887"/><stop offset="1" stop-color="#b8862b"/></linearGradient>
+            <symbol id="corner" viewBox="0 0 80 80"><path d="M2 2H58C50 6 44 12 42 20C38 14 30 13 24 18C20 24 20 32 26 36C20 36 14 40 12 46C8 40 7 34 10 28C4 30 2 40 2 58Z" fill="url(#gg)" stroke="#6b4713" stroke-width="1"/><path d="M24 8Q34 8 36 16M8 24Q8 34 16 36" fill="none" stroke="#6b4713" stroke-width="1.2"/><circle cx="16" cy="16" r="5.500" fill="#2f63ff" stroke="#f6d887" stroke-width="2"/><circle cx="14.500" cy="14.500" r="1.500" fill="#cfe0ff"/></symbol>
+            <g id="lau" fill="#c9973a" stroke="#6b4713" stroke-width=".6"><path d="M62 158Q36 130 40 78" fill="none" stroke="#c9973a" stroke-width="2"/><ellipse cx="52" cy="146" rx="4" ry="9" transform="rotate(35 52 146)"/><ellipse cx="44" cy="132" rx="4" ry="9" transform="rotate(22 44 132)"/><ellipse cx="39" cy="117" rx="4" ry="9" transform="rotate(10 39 117)"/><ellipse cx="36" cy="101" rx="4" ry="9" transform="rotate(-2 36 101)"/><ellipse cx="36" cy="86" rx="4" ry="9" transform="rotate(-12 36 86)"/><ellipse cx="40" cy="72" rx="4" ry="8" transform="rotate(-25 40 72)"/></g>
+            <symbol id="pc" viewBox="0 0 80 80"><g fill="none" stroke="#b8742a" stroke-width="1.400" stroke-linecap="round"><path d="M3 3H46M3 3V46"/><path d="M9 9H34C27 11 23 17 23 25M9 9V34C11 27 17 23 25 23"/><path d="M46 3C54 3 55 10 50 11C46 12 45 8 48 7M3 46C3 54 10 55 11 50C12 46 8 45 7 48"/><path d="M16 16C22 16 26 20 26 26"/></g><rect x="10.500" y="10.500" width="6.500" height="6.500" transform="rotate(45 13.750 13.750)" fill="#2f63ff" stroke="#d9a441" stroke-width="1.500"/></symbol>
+            <symbol id="wm" viewBox="0 0 200 190"><use href="#lau"/><use href="#lau" transform="translate(200 0) scale(-1 1)"/><path d="M62 62Q100 50 138 62V110Q138 138 100 158Q62 138 62 110Z" fill="none" stroke="#8a5a1e" stroke-width="3"/><path d="M84 48L84 30L92 38L100 22L108 38L116 30L116 48Z" fill="#8a5a1e"/><text x="100" y="122" text-anchor="middle" font-family="'Cinzel',serif" font-weight="800" font-size="56" fill="#8a5a1e">R</text><use href="#spk" x="22" y="62"/><use href="#spk" x="178" y="62"/></symbol>
+            <path id="spk" d="M0 -7L2 -2L7 0L2 2L0 7L-2 2L-7 0L-2 -2Z" fill="#f6d887"/>
+          </defs>
+        </svg>
+
+        <!-- 3D Medieval Tome (Grimoire) -->
+        <div class="edu-stage" id="eduStage">
+          <!-- Front Cover (Original Royal Blue Leather with Gold Embellishments) -->
+          <button class="cover" id="cover" aria-label="Buka buku Riwayat Pendidikan">
+            <i class="spine"></i>
+            <svg class="cn cn-tl b-tl"><use href="#corner"/></svg>
+            <svg class="cn cn-tr b-tr"><use href="#corner"/></svg>
+            <svg class="cn cn-bl b-bl"><use href="#corner"/></svg>
+            <svg class="cn cn-br b-br"><use href="#corner"/></svg>
+            <svg class="emb" viewBox="0 0 200 190" aria-hidden="true">
+              <use href="#lau"/><use href="#lau" transform="translate(200 0) scale(-1 1)"/>
+              <use href="#spk" x="22" y="62"/><use href="#spk" x="178" y="62"/>
+              <use href="#spk" x="56" y="34" transform="translate(0 0) scale(.6)"/>
+              <path d="M62 62Q100 50 138 62V110Q138 138 100 158Q62 138 62 110Z" fill="#0c1a45" stroke="#e8b341" stroke-width="3.500"/>
+              <path d="M68 67Q100 57 132 67V109Q132 133 100 150Q68 133 68 109Z" fill="none" stroke="#c9973a" stroke-width="1"/>
+              <path d="M72 86Q86 80 100 88V124Q86 116 72 122Z" fill="#f1dfb4" stroke="#6b4a1c" stroke-width="1.500"/>
+              <path d="M128 86Q114 80 100 88V124Q114 116 128 122Z" fill="#ead29a" stroke="#6b4a1c" stroke-width="1.500"/>
+              <path d="M77 94Q86 90 95 95M77 101Q86 97 95 102M77 108Q86 104 95 109M105 95Q114 90 123 94M105 102Q114 98 123 101M105 109Q114 105 123 108" fill="none" stroke="#8a6a38" stroke-width="1"/>
+              <path d="M84 48L84 30L92 38L100 22L108 38L116 30L116 48Z" fill="#e8b341" stroke="#6b4713" stroke-width="1.500"/>
+              <rect x="84" y="46" width="32" height="6" fill="#c9973a" stroke="#6b4713"/>
+              <circle cx="100" cy="43" r="2.500" fill="#2f63ff"/>
+            </svg>
+            <h1>RIWAYAT<br>PENDIDIKAN</h1>
+            <i class="dv"></i>
+            <svg width="120" height="22" viewBox="0 0 120 22" style="margin-left:34px" aria-hidden="true">
+              <path d="M60 2L70 11L60 20L50 11Z" fill="#e8b341"/>
+              <path d="M44 11H12M76 11H108" stroke="#c9973a" stroke-width="1.200"/>
+              <circle cx="8" cy="11" r="2.500" fill="#c9973a"/>
+              <circle cx="112" cy="11" r="2.500" fill="#c9973a"/>
+            </svg>
+            <span class="hint">klik untuk membuka</span>
+          </button>
+
+          <!-- Opened Book with Left & Right Parchment Pages -->
+          <div class="book" id="book" aria-label="Buku riwayat pendidikan">
+            <div class="pg l" id="pl">
+              <svg class="wm"><use href="#wm"/></svg>
+              <svg class="pc b-tl"><use href="#pc"/></svg>
+              <svg class="pc b-tr"><use href="#pc"/></svg>
+              <svg class="pc b-bl"><use href="#pc"/></svg>
+              <svg class="pc b-br"><use href="#pc"/></svg>
+              <div class="edu-badge-wrap" id="eduBadgeWrap">
+                <svg viewBox="0 0 200 190"><use href="#wm"/></svg>
               </div>
-              <div class="page right">
-                <svg class="wm"><use href="#wm"/></svg>
-                <svg class="pc b-tl"><use href="#pc"/></svg>
-                <svg class="pc b-tr"><use href="#pc"/></svg>
-                <svg class="pc b-bl"><use href="#pc"/></svg>
-                <svg class="pc b-br"><use href="#pc"/></svg>
-                <i class="book-page-gm t"></i>
-                <i class="book-page-gm b"></i>
-                <div class="sheet" id="sheet"></div>
+              <div class="q" id="quote"></div>
+            </div>
+
+            <div class="pg r" id="pr">
+              <svg class="wm"><use href="#wm"/></svg>
+              <svg class="pc b-tl"><use href="#pc"/></svg>
+              <svg class="pc b-tr"><use href="#pc"/></svg>
+              <svg class="pc b-bl"><use href="#pc"/></svg>
+              <svg class="pc b-br"><use href="#pc"/></svg>
+              <button class="close" id="close" aria-label="Tutup">✕</button>
+              <span class="yr badge" id="yr"></span>
+              <div class="school">
+                <h2 id="nm"></h2>
+                <h3 class="sub" id="lv"></h3>
               </div>
-              <button class="cover" id="cover" aria-label="Buka buku Riwayat Pendidikan">
-                <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-                  <defs>
-                    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6d887"/><stop offset="1" stop-color="#b8862b"/></linearGradient>
-                    <symbol id="corner" viewBox="0 0 80 80"><path d="M2 2H58C50 6 44 12 42 20C38 14 30 13 24 18C20 24 20 32 26 36C20 36 14 40 12 46C8 40 7 34 10 28C4 30 2 40 2 58Z" fill="url(#gg)" stroke="#6b4713" stroke-width="1"/><path d="M24 8Q34 8 36 16M8 24Q8 34 16 36" fill="none" stroke="#6b4713" stroke-width="1.2"/><circle cx="16" cy="16" r="5.500" fill="#2f63ff" stroke="#f6d887" stroke-width="2"/><circle cx="14.500" cy="14.500" r="1.500" fill="#cfe0ff"/></symbol>
-                    <g id="lau" fill="#c9973a" stroke="#6b4713" stroke-width=".6"><path d="M62 158Q36 130 40 78" fill="none" stroke="#c9973a" stroke-width="2"/><ellipse cx="52" cy="146" rx="4" ry="9" transform="rotate(35 52 146)"/><ellipse cx="44" cy="132" rx="4" ry="9" transform="rotate(22 44 132)"/><ellipse cx="39" cy="117" rx="4" ry="9" transform="rotate(10 39 117)"/><ellipse cx="36" cy="101" rx="4" ry="9" transform="rotate(-2 36 101)"/><ellipse cx="36" cy="86" rx="4" ry="9" transform="rotate(-12 36 86)"/><ellipse cx="40" cy="72" rx="4" ry="8" transform="rotate(-25 40 72)"/></g>
-                    <symbol id="pc" viewBox="0 0 80 80"><g fill="none" stroke="#b8742a" stroke-width="1.400" stroke-linecap="round"><path d="M3 3H46M3 3V46"/><path d="M9 9H34C27 11 23 17 23 25M9 9V34C11 27 17 23 25 23"/><path d="M46 3C54 3 55 10 50 11C46 12 45 8 48 7M3 46C3 54 10 55 11 50C12 46 8 45 7 48"/><path d="M16 16C22 16 26 20 26 26"/></g><rect x="10.500" y="10.500" width="6.500" height="6.500" transform="rotate(45 13.750 13.750)" fill="#2f63ff" stroke="#d9a441" stroke-width="1.500"/></symbol>
-                    <symbol id="wm" viewBox="0 0 200 190"><use href="#lau"/><use href="#lau" transform="translate(200 0) scale(-1 1)"/><path d="M62 62Q100 50 138 62V110Q138 138 100 158Q62 138 62 110Z" fill="none" stroke="#8a5a1e" stroke-width="3"/><path d="M84 48L84 30L92 38L100 22L108 38L116 30L116 48Z" fill="#8a5a1e"/><text x="100" y="122" text-anchor="middle" font-family="Cinzel,serif" font-weight="800" font-size="56" fill="#8a5a1e">R</text><use href="#spk" x="22" y="62"/><use href="#spk" x="178" y="62"/></symbol>
-                    <path id="spk" d="M0 -7L2 -2L7 0L2 2L0 7L-2 2L-7 0L-2 -2Z" fill="#f6d887"/>
-                  </defs>
-                </svg>
-                <i class="spine"></i>
-                <svg class="cn b-tl"><use href="#corner"/></svg>
-                <svg class="cn b-tr"><use href="#corner"/></svg>
-                <svg class="cn b-bl"><use href="#corner"/></svg>
-                <svg class="cn b-br"><use href="#corner"/></svg>
-                <svg class="emb" viewBox="0 0 200 190" aria-hidden="true"><use href="#lau"/><use href="#lau" transform="translate(200 0) scale(-1 1)"/><use href="#spk" x="22" y="62"/><use href="#spk" x="178" y="62"/><use href="#spk" x="56" y="34" transform="translate(0 0) scale(.6)"/><path d="M62 62Q100 50 138 62V110Q138 138 100 158Q62 138 62 110Z" fill="#0c1a45" stroke="#e8b341" stroke-width="3.500"/><path d="M68 67Q100 57 132 67V109Q132 133 100 150Q68 133 68 109Z" fill="none" stroke="#c9973a" stroke-width="1"/><path d="M72 86Q86 80 100 88V124Q86 116 72 122Z" fill="#f1dfb4" stroke="#6b4a1c" stroke-width="1.500"/><path d="M128 86Q114 80 100 88V124Q114 116 128 122Z" fill="#ead29a" stroke="#6b4a1c" stroke-width="1.500"/><path d="M77 94Q86 90 95 95M77 101Q86 97 95 102M77 108Q86 104 95 109M105 95Q114 90 123 94M105 102Q114 98 123 101M105 109Q114 105 123 108" fill="none" stroke="#8a6a38" stroke-width="1"/><path d="M84 48L84 30L92 38L100 22L108 38L116 30L116 48Z" fill="#e8b341" stroke="#6b4713" stroke-width="1.500"/><rect x="84" y="46" width="32" height="6" fill="#c9973a" stroke="#6b4713"/><circle cx="100" cy="43" r="2.500" fill="#2f63ff"/></svg>
-                <h1>RIWAYAT<br>PENDIDIKAN</h1><i class="dv"></i><svg width="120" height="22" viewBox="0 0 120 22" style="margin-left:34px" aria-hidden="true"><path d="M60 2L70 11L60 20L50 11Z" fill="#e8b341"/><path d="M44 11H12M76 11H108" stroke="#c9973a" stroke-width="1.200"/><circle cx="8" cy="11" r="2.500" fill="#c9973a"/><circle cx="112" cy="11" r="2.500" fill="#c9973a"/></svg><span class="hint">klik untuk membuka</span>
-              </button>
+              <p class="desc" id="ds"></p>
+              <ul id="ul"></ul>
+              <div class="nav foot">
+                <button id="prev" type="button">◂ Kembali</button>
+                <span class="dots" id="dots"></span>
+                <button id="next" type="button">Next ▸</button>
+              </div>
             </div>
           </div>
+
+          <!-- Back Cover (Original Matching Royal Navy & Gold Style) -->
+          <button class="cover back" id="back" style="display:none" aria-label="Buka kembali buku Riwayat Pendidikan">
+            <i class="spine spine-right"></i>
+            <svg class="cn cn-tl b-tl"><use href="#corner"/></svg>
+            <svg class="cn cn-tr b-tr"><use href="#corner"/></svg>
+            <svg class="cn cn-bl b-bl"><use href="#corner"/></svg>
+            <svg class="cn cn-br b-br"><use href="#corner"/></svg>
+            <svg class="emb" viewBox="0 0 200 190" aria-hidden="true" style="margin-right:34px;margin-left:0">
+              <use href="#lau"/><use href="#lau" transform="translate(200 0) scale(-1 1)"/>
+              <path d="M62 62Q100 50 138 62V110Q138 138 100 158Q62 138 62 110Z" fill="#0c1a45" stroke="#e8b341" stroke-width="3.500"/>
+              <path d="M84 48L84 30L92 38L100 22L108 38L116 30L116 48Z" fill="#e8b341" stroke="#6b4713" stroke-width="1.500"/>
+              <text x="100" y="125" text-anchor="middle" font-family="'MedievalSharp', serif" font-weight="700" font-size="48" fill="#e8b341">R</text>
+            </svg>
+            <h1 style="margin-right:34px;margin-left:0">TAMAT</h1>
+            <i class="dv" style="margin-right:34px;margin-left:0"></i>
+            <small style="font-family:'Cinzel',serif;font-size:14px;color:#f6d887;letter-spacing:1px;margin-right:34px">Terima kasih telah membaca</small>
+            <span class="hint" style="margin-right:34px;margin-left:0;margin-top:6px">klik untuk membaca lagi</span>
+          </button>
         </div>
       </section>
 
-    <!-- PROJECTS SECTION -->
+    <!-- PROJECTS SECTION (RPG Interactive Quest Map) -->
     <section class="section projects-section" id="projects">
       <div class="section-container">
         <div class="section-header">
-          <h2 class="section-title">PROJECT SHOWCASE</h2>
+          <h2 class="section-title">PETA PETUALANGAN PROYEK</h2>
           <div class="section-divider">
             <span class="line"></span>
             <span class="star">✦</span>
             <span class="line"></span>
           </div>
-          <p class="section-subtitle">Kumpulan Proyek &amp; Karya Kreatif Unggulan</p>
+          <p class="section-subtitle">Setiap proyek adalah sebuah lokasi di kerajaanku. Pilih lokasi untuk membuka quest-nya.</p>
         </div>
 
-        <!-- Filter Controls -->
-        <div class="project-filters">
-          <button class="filter-btn active" data-filter="all">All Quests</button>
-          <button class="filter-btn" data-filter="web">Web Dev</button>
-          <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
-        </div>
-
-        <!-- Projects Grid -->
-        <div class="projects-grid">
-          
-          <!-- Project 1 -->
-          <article class="pixel-card project-card" data-category="web">
-            <div class="project-badge">WEB</div>
-            <div class="project-preview">
-              <img src="Assets/Images/project-ecommerce.jpg" alt="Website TK PGRI Harapan Bangsa 1" class="project-img">
-            </div>
-            <div class="project-body">
-              <h3 class="project-title">Website TK PGRI Harapan Bangsa 1</h3>
-              <p class="project-desc">
-                Website sistem informasi sekolah dan PPDB online untuk membantu pengelolaan administrasi, data siswa, dan proses pendaftaran secara digital dan terstruktur.
-              </p>
-              <div class="project-tech">
-                <span>Laravel</span>
-                <span>PHP</span>
-                <span>MySQL</span>
-                <span>Bootstrap</span>
+        <div class="qm">
+          <div class="pc qmap" id="qmap">
+            <div class="qv" id="qv">
+              <div class="qw" id="qw">
+                <canvas id="qc" width="220" height="100" aria-hidden="true"></canvas>
               </div>
-              <div class="project-actions">
-                <a href="https://github.com/refkyaja" target="_blank" rel="noopener noreferrer" class="proj-btn primary">Source Code</a>
-              </div>
+              <button class="qfb" id="qfb" type="button">Layar Penuh</button>
+              <div class="qhint" id="qhint">Pilih lokasi di peta &#9656;</div>
             </div>
-          </article>
-
-          <!-- Project 2 -->
-          <article class="pixel-card project-card" data-category="mobile">
-            <div class="project-badge">MOBILE APP</div>
-            <div class="project-preview">
-              <img src="Assets/Images/project-finance.jpg" alt="Aplikasi Catatan AI Pembelajaran" class="project-img">
-            </div>
-            <div class="project-body">
-              <h3 class="project-title">Aplikasi Catatan AI Pembelajaran</h3>
-              <p class="project-desc">
-                Aplikasi mobile untuk membantu siswa mencatat materi pembelajaran secara otomatis menggunakan teknologi kecerdasan buatan (AI) dan speech-to-text.
-              </p>
-              <div class="project-tech">
-                <span>Flutter</span>
-                <span>Dart</span>
-                <span>Firebase</span>
-                <span>Speech-to-Text</span>
-              </div>
-              <div class="project-actions">
-                <a href="https://github.com/refkyaja" target="_blank" rel="noopener noreferrer" class="proj-btn primary">Source Code</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 3 -->
-          <article class="pixel-card project-card" data-category="web mobile">
-            <div class="project-badge">WEB</div>
-            <div class="project-preview">
-              <img src="Assets/Images/project-landing.jpg" alt="Website Pendataan MBG" class="project-img">
-            </div>
-            <div class="project-body">
-              <h3 class="project-title">Website Pendataan MBG</h3>
-              <p class="project-desc">
-                Aplikasi pendataan ompreng MBG untuk mencatat proses pengambilan dan pengembalian secara digital agar lebih cepat, transparan, dan terorganisir rapi.
-              </p>
-              <div class="project-tech">
-                <span>Flutter</span>
-                <span>Dart</span>
-                <span>Firebase</span>
-              </div>
-              <div class="project-actions">
-                <a href="https://github.com/refkyaja" target="_blank" rel="noopener noreferrer" class="proj-btn primary">Source Code</a>
-              </div>
-            </div>
-          </article>
-
+            <aside class="pc qp" id="qp" style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%); z-index: 10; width: min(320px, 35%); box-shadow: none;" aria-live="polite"></aside>
+          </div>
         </div>
       </div>
     </section>
@@ -757,7 +746,7 @@
       </div>
     </section>
 
-    <!-- GALLERY & MOMENTS SECTION (6 Foto dari Portofolioku) -->
+    <!-- GALLERY & MOMENTS SECTION (Pixel Island Showcase Containerized) -->
     <section class="section gallery-section" id="gallery">
       <div class="section-container">
         <div class="section-header">
@@ -770,66 +759,21 @@
           <p class="section-subtitle">Tangkapan Lensa di Sela Waktu Coding &amp; Eksplorasi</p>
         </div>
 
-        <div class="gallery-grid">
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-1.jpg" alt="Moments & Explore 01" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 01</span>
-              <span class="gallery-badge">📸 01</span>
-            </div>
+        <div class="gst" id="gst">
+          <div class="gbg" id="gbg"></div>
+          <div class="gshade"></div>
+          <div class="gtx" id="gtx">
+            <small id="gsub"></small>
+            <h2 id="gtt"></h2>
+            <p id="gds"></p>
           </div>
-
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-2.jpg" alt="Moments & Explore 02" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 02</span>
-              <span class="gallery-badge">📸 02</span>
-            </div>
+          <div class="gcs" id="gcs"></div>
+          <div class="gn">
+            <button class="gnb" id="gpv" aria-label="Sebelumnya">&#9664;</button>
+            <button class="gnb" id="gnx" aria-label="Berikutnya">&#9654;</button>
+            <span id="gct"></span>
           </div>
-
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-3.jpg" alt="Moments & Explore 03" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 03</span>
-              <span class="gallery-badge">📸 03</span>
-            </div>
-          </div>
-
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-4.jpg" alt="Moments & Explore 04" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 04</span>
-              <span class="gallery-badge">📸 04</span>
-            </div>
-          </div>
-
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-5.jpg" alt="Moments & Explore 05" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 05</span>
-              <span class="gallery-badge">📸 05</span>
-            </div>
-          </div>
-
-          <div class="gallery-card">
-            <div class="gallery-img-wrap">
-              <img src="Assets/Images/gallery-6.jpg" alt="Moments & Explore 06" loading="lazy">
-            </div>
-            <div class="gallery-info">
-              <span class="gallery-title">Moments &amp; Explore 06</span>
-              <span class="gallery-badge">📸 06</span>
-            </div>
-          </div>
+          <div class="gpr"><i id="gpi"></i></div>
         </div>
       </div>
     </section>
@@ -839,7 +783,8 @@
       <div class="section-container">
         
         <!-- Large Wooden Quest Board -->
-        <div class="guild-board-wrapper">
+        <div class="guild-board-scaler" id="guildBoardScaler">
+          <div class="guild-board-wrapper" id="guildBoardWrapper">
           
           <!-- Ornate Carved Wooden Header -->
           <div class="guild-board-roof">
@@ -904,150 +849,18 @@
               </button>
             </div>
 
+            <!-- Guildmaster Admin Status Banner (Only visible when admin is active) -->
+            <div class="guildmaster-banner" id="guildmasterBanner">
+              <span>⚔️ <strong>Mode Guildmaster Aktif:</strong> Tombol [✕ Hapus] aktif di setiap komentar.</span>
+              <button type="button" id="exitGuildmasterBtn" class="guildmaster-exit-btn">✕ Keluar Mode Admin</button>
+            </div>
+
+
           </div>
 
         </div>
+        </div> <!-- End guildBoardScaler -->
 
-      </div>
-
-      <!-- Guild Message Modal Dialog -->
-      <div class="guild-modal-overlay" id="guildModalOverlay" aria-hidden="true">
-        <div class="guild-modal-parchment">
-          <div class="modal-pin-head">📌</div>
-          <button type="button" class="modal-close-btn" id="closeGuildModalBtn" aria-label="Close modal">&times;</button>
-          
-          <div class="modal-header">
-            <h3 class="modal-title">POST A GUILD NOTICE</h3>
-            <p class="modal-subtitle">Tuliskan pesan untuk para petualang di seluruh kerajaan.</p>
-          </div>
-
-          <form id="guildMessageForm" class="guild-message-form">
-            <div class="form-group">
-              <label for="guildMessageInput" class="guild-form-label">YOUR DISPATCH (MESSAGE)</label>
-              <textarea 
-                id="guildMessageInput" 
-                class="guild-form-textarea" 
-                rows="3" 
-                placeholder="Tuliskan pesan petualangan Anda di papan guild..." 
-                required
-              ></textarea>
-            </div>
-
-            <div class="form-group author-group" id="guildAuthorFieldWrap">
-              <div class="author-label-row">
-                <label for="guildAuthorInput" class="guild-form-label">AUTHOR CALLSIGN</label>
-                <label class="guild-anon-toggle-pill" for="guildAnonCheckbox" title="Kirim sebagai Anonymous Guest">
-                  <input type="checkbox" id="guildAnonCheckbox" class="guild-anon-input" />
-                  <span class="anon-pill-btn">
-                    <span class="anon-pill-dot"></span>
-                    <span class="anon-pill-text">Anonymous Guest</span>
-                  </span>
-                </label>
-              </div>
-              <input 
-                type="text" 
-                id="guildAuthorInput" 
-                class="guild-form-input" 
-                placeholder="Nama Pengembara" 
-                maxlength="20"
-              />
-            </div>
-
-            <!-- Agreement Checkbox with Clickable Blue Link -->
-            <div class="guild-agreement-row">
-              <label class="guild-agreement-label" for="guildRulesAgreeCheckbox">
-                <input type="checkbox" id="guildRulesAgreeCheckbox" class="guild-anon-input" required />
-                <span class="guild-checkbox-box"></span>
-                <span class="agreement-text">saya telah membaca dan menyetujui <button type="button" class="rules-blue-link" id="guildRulesTriggerLink">peraturan</button> sebelum berkomentar</span>
-              </label>
-            </div>
-
-            <button type="submit" class="pixel-btn primary-btn guild-pin-submit-btn" id="guildSubmitBtn" disabled>
-              <span>📌 Pin to Notice Board</span>
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Guild Rules Modal Dialog -->
-      <div class="guild-modal-overlay" id="guildRulesModalOverlay" aria-hidden="true">
-        <div class="guild-modal-parchment rules-parchment">
-          <button type="button" class="modal-close-btn" id="closeGuildRulesModalBtn" aria-label="Tutup Peraturan">&times;</button>
-          
-          <div class="modal-header">
-            <h3 class="modal-title">PERATURAN SEBELUM BERKOMENTAR</h3>
-            <p class="modal-subtitle">Sebelum meninggalkan komentar, yuk baca beberapa aturan berikut agar kolom komentar tetap nyaman buat semua orang!</p>
-          </div>
-
-          <div class="guild-rules-body">
-            <div class="guild-rule-item">
-              <span class="rule-badge">01</span>
-              <div class="rule-content">
-                <strong>Gunakan Bahasa yang Sopan</strong>
-                <p>Bebas mau pakai bahasa santai atau formal, yang penting tetap sopan dan menghargai orang lain.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">02</span>
-              <div class="rule-content">
-                <strong>Berikan Komentar yang Positif</strong>
-                <p>Boleh memberikan pujian, saran, atau kritik yang membangun agar bisa jadi bahan evaluasi ke depannya.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">03</span>
-              <div class="rule-content">
-                <strong>Jangan Mengandung SARA atau Ujaran Kebencian</strong>
-                <p>Hindari komentar yang menyinggung suku, agama, ras, golongan, atau menyerang orang lain.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">04</span>
-              <div class="rule-content">
-                <strong>Hargai Pendapat Orang Lain</strong>
-                <p>Setiap orang punya pendapat masing-masing. Sampaikan pendapat dengan baik tanpa merendahkan orang lain.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">05</span>
-              <div class="rule-content">
-                <strong>Hindari Spam dan Promosi</strong>
-                <p>Jangan mengirim komentar berulang kali atau menyisipkan iklan dan promosi yang tidak relevan.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">06</span>
-              <div class="rule-content">
-                <strong>Jaga Privasi</strong>
-                <p>Jangan mencantumkan informasi pribadi seperti nomor telepon, alamat rumah, atau data sensitif lainnya.</p>
-              </div>
-            </div>
-
-            <div class="guild-rule-item">
-              <span class="rule-badge">07</span>
-              <div class="rule-content">
-                <strong>Jadilah Diri Sendiri</strong>
-                <p>Tinggalkan komentar yang jujur dan tulus. Nggak harus panjang, yang penting bermakna!</p>
-              </div>
-            </div>
-
-            <div class="guild-rules-note">
-              <p class="rules-agreement-text">Dengan berkomentar, kamu dianggap telah membaca dan menyetujui peraturan di atas.</p>
-              <p class="rules-thanks-text">Terima kasih sudah mampir dan ikut meramaikan website ini!</p>
-            </div>
-          </div>
-
-          <div class="modal-rules-footer">
-            <button type="button" class="pixel-btn primary-btn guild-rules-ok-btn" id="understandRulesBtn">
-              <span>Saya Mengerti dan Setuju</span>
-            </button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1066,7 +879,8 @@
 
 
         <!-- Medieval Scroll Wrapper (Animasi Buka & Tutup Gulungan Kertas) -->
-        <div class="scroll-wrapper">
+        <div class="dispatch-scroll-scaler" id="dispatchScrollScaler">
+          <div class="scroll-wrapper" id="dispatchScrollWrapper">
           <div class="scroll">
             <!-- Left Roller Spindle -->
             <div class="roller roller-left" title="Klik untuk membuka/menutup gulungan"></div>
@@ -1188,21 +1002,41 @@
             <button id="btn" type="button" class="scroll-toggle-pill-btn">Buka Gulungan</button>
           </div>
         </div>
+        </div> <!-- End dispatchScrollScaler -->
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-star-divider">✦ ✦ ✦</div>
-      <p class="footer-text">
-        &copy; 2026 <strong>Refky Favian Mahardika</strong>. Crafted with Passion &amp; Pixel Magic.
-      </p>
-      <p class="footer-subtext">
-        <span class="blinking-prompt">PRESS START TO CONTINUE</span>
-      </p>
-      <a href="#home" class="back-to-top" title="Kembali ke atas">▲ TOP</a>
+  <!-- Footer (Pixel Island Theme - Matching Reference HTML) -->
+  <footer class="ft2 footer" id="footer" role="contentinfo">
+    <span class="o tl" aria-hidden="true"></span>
+    <span class="o tr" aria-hidden="true"></span>
+    <span class="o bl" aria-hidden="true"></span>
+    <span class="o br" aria-hidden="true"></span>
+    <span class="o ts" aria-hidden="true"></span>
+    <span class="o bs" aria-hidden="true"></span>
+    <span class="o gt" aria-hidden="true"></span>
+    <span class="o gb" aria-hidden="true"></span>
+    <span class="o gl" aria-hidden="true"></span>
+    <span class="o gr" aria-hidden="true"></span>
+
+    <div class="fg">
+      <div>
+        <div class="fbrand">
+          <img src="Assets/Images/footer_star_logo.png" alt="Logo Refky Favian Mahardika">
+          <b>Refky Favian Mahardika</b>
+        </div>
+        <p>Sebuah perjalanan kecil untuk menciptakan sesuatu yang berarti. Terima kasih telah menjadi bagian dari perjalananku.</p>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Copyright, End of Chapter, & Back to Top -->
+    <div class="fb">
+      <span class="fb-copyright">&copy; 2026 <b>Refky Favian Mahardika</b>. Semua hak dilindungi.</span>
+      <div class="ec">
+        <span class="eoc">END OF CHAPTER</span>
+        <button type="button" class="tp" id="tp" aria-label="Kembali ke atas">&#9650; Ke atas</button>
+      </div>
     </div>
   </footer>
 
@@ -1221,6 +1055,159 @@
     </div>
   </div>
 
+  <!-- Project Photo Lightbox Modal (Perlebar Foto Proyek) -->
+  <div class="cert-modal-backdrop" id="projectPhotoModal" aria-hidden="true">
+    <div class="cert-modal-dialog" role="dialog" aria-modal="true">
+      <button class="cert-modal-close" id="projectPhotoModalClose" aria-label="Tutup Pratinjau">&times;</button>
+      <div class="cert-modal-body">
+        <img src="" alt="Foto Proyek" id="modalProjectImg" class="cert-modal-full-img">
+        <button type="button" class="project-modal-nav prev" id="modalProjectPrev" aria-label="Foto Sebelumnya">&#9664;</button>
+        <button type="button" class="project-modal-nav next" id="modalProjectNext" aria-label="Foto Berikutnya">&#9654;</button>
+        <div class="project-modal-badge" id="modalProjectBadge">1 / 1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guild Message Modal Dialog -->
+  <div class="guild-modal-overlay" id="guildModalOverlay" aria-hidden="true">
+    <div class="guild-modal-parchment">
+      <div class="modal-pin-head">📌</div>
+      <button type="button" class="modal-close-btn" id="closeGuildModalBtn" aria-label="Close modal">&times;</button>
+      
+      <div class="modal-header">
+        <h3 class="modal-title">POST A GUILD NOTICE</h3>
+        <p class="modal-subtitle">Tuliskan pesan untuk para petualang di seluruh kerajaan.</p>
+      </div>
+
+      <form id="guildMessageForm" class="guild-message-form">
+        <div class="form-group">
+          <label for="guildMessageInput" class="guild-form-label">YOUR DISPATCH (MESSAGE)</label>
+          <textarea 
+            id="guildMessageInput" 
+            class="guild-form-textarea" 
+            rows="3" 
+            placeholder="Tuliskan pesan petualangan Anda di papan guild..." 
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group author-group" id="guildAuthorFieldWrap">
+          <div class="author-label-row">
+            <label for="guildAuthorInput" class="guild-form-label">AUTHOR CALLSIGN</label>
+            <label class="guild-anon-toggle-pill" for="guildAnonCheckbox" title="Kirim sebagai Anonymous Guest">
+              <input type="checkbox" id="guildAnonCheckbox" class="guild-anon-input" />
+              <span class="anon-pill-btn">
+                <span class="anon-pill-dot"></span>
+                <span class="anon-pill-text">Anonymous Guest</span>
+              </span>
+            </label>
+          </div>
+          <input 
+            type="text" 
+            id="guildAuthorInput" 
+            class="guild-form-input" 
+            placeholder="Nama Pengembara" 
+            maxlength="20"
+          />
+        </div>
+
+        <!-- Agreement Checkbox with Clickable Blue Link -->
+        <div class="guild-agreement-row">
+          <label class="guild-agreement-label" for="guildRulesAgreeCheckbox">
+            <input type="checkbox" id="guildRulesAgreeCheckbox" class="guild-anon-input" required />
+            <span class="guild-checkbox-box"></span>
+            <span class="agreement-text">saya telah membaca dan menyetujui <button type="button" class="rules-blue-link" id="guildRulesTriggerLink">peraturan</button> sebelum berkomentar</span>
+          </label>
+        </div>
+
+        <button type="submit" class="pixel-btn primary-btn guild-pin-submit-btn" id="guildSubmitBtn" disabled>
+          <span>📌 Pin to Notice Board</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Guild Rules Modal Dialog -->
+  <div class="guild-modal-overlay" id="guildRulesModalOverlay" aria-hidden="true">
+    <div class="guild-modal-parchment rules-parchment">
+      <button type="button" class="modal-close-btn" id="closeGuildRulesModalBtn" aria-label="Tutup Peraturan">&times;</button>
+      
+      <div class="modal-header">
+        <h3 class="modal-title">PERATURAN SEBELUM BERKOMENTAR</h3>
+        <p class="modal-subtitle">Sebelum meninggalkan komentar, yuk baca beberapa aturan berikut agar kolom komentar tetap nyaman buat semua orang!</p>
+      </div>
+
+      <div class="guild-rules-body">
+        <div class="guild-rule-item">
+          <span class="rule-badge">01</span>
+          <div class="rule-content">
+            <strong>Gunakan Bahasa yang Sopan</strong>
+            <p>Bebas mau pakai bahasa santai atau formal, yang penting tetap sopan dan menghargai orang lain.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">02</span>
+          <div class="rule-content">
+            <strong>Berikan Komentar yang Positif</strong>
+            <p>Boleh memberikan pujian, saran, atau kritik yang membangun agar bisa jadi bahan evaluasi ke depannya.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">03</span>
+          <div class="rule-content">
+            <strong>Jangan Mengandung SARA atau Ujaran Kebencian</strong>
+            <p>Hindari komentar yang menyinggung suku, agama, ras, golongan, atau menyerang orang lain.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">04</span>
+          <div class="rule-content">
+            <strong>Hargai Pendapat Orang Lain</strong>
+            <p>Setiap orang punya pendapat masing-masing. Sampaikan pendapat dengan baik tanpa merendahkan orang lain.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">05</span>
+          <div class="rule-content">
+            <strong>Hindari Spam dan Promosi</strong>
+            <p>Jangan mengirim komentar berulang kali atau menyisipkan iklan dan promosi yang tidak relevan.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">06</span>
+          <div class="rule-content">
+            <strong>Jaga Privasi</strong>
+            <p>Jangan mencantumkan informasi pribadi seperti nomor telepon, alamat rumah, atau data sensitif lainnya.</p>
+          </div>
+        </div>
+
+        <div class="guild-rule-item">
+          <span class="rule-badge">07</span>
+          <div class="rule-content">
+            <strong>Jadilah Diri Sendiri</strong>
+            <p>Tinggalkan komentar yang jujur dan tulus. Nggak harus panjang, yang penting bermakna!</p>
+          </div>
+        </div>
+
+        <div class="guild-rules-note">
+          <p class="rules-agreement-text">Dengan berkomentar, kamu dianggap telah membaca dan menyetujui peraturan di atas.</p>
+          <p class="rules-thanks-text">Terima kasih sudah mampir dan ikut meramaikan website ini!</p>
+        </div>
+      </div>
+
+      <div class="modal-rules-footer">
+        <button type="button" class="pixel-btn primary-btn guild-rules-ok-btn" id="understandRulesBtn">
+          <span>Saya Mengerti dan Setuju</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Castle Mascot Stage & Guard Characters -->
   <div class="floor" aria-hidden="true"></div>
   <div class="stage" id="stage" aria-hidden="true">
@@ -1228,7 +1215,7 @@
       <div class="bubble">Salam, Tuan!</div>
       <div class="body"><i class="plume"></i><div class="eyes"><i class="eye"></i><i class="eye"></i></div></div>
       <div class="hand">👋</div>
-      <div class="acc">🛡️</div><b class="z">z</b><b class="z">z</b>
+      <div class="acc">🛡️</div><div class="sword"><i></i></div><b class="z">z</b><b class="z">z</b>
       <i class="leg l"></i><i class="leg r"></i>
     </div>
     <div class="char" id="b" style="left:42%">
@@ -1238,6 +1225,62 @@
       <div class="acc">📜</div><b class="z">z</b><b class="z">z</b>
       <i class="leg l"></i><i class="leg r"></i>
     </div>
+  </div>
+
+  <!-- Castle with Glowing Torches Gate -->
+  <div class="castle" id="castle" aria-hidden="true">
+    <svg viewBox='0 -22 120 152' xmlns='http://www.w3.org/2000/svg'>
+      <g fill='#8a7a62' stroke='#2b1a0e' stroke-width='2' stroke-linejoin='round'>
+        <rect x='4' y='40' width='28' height='90'/>
+        <rect x='88' y='40' width='28' height='90'/>
+        <rect x='30' y='60' width='60' height='70'/>
+        <rect x='46' y='22' width='28' height='42'/>
+        <g fill='#7a6b54'>
+          <rect x='4' y='30' width='8' height='10'/>
+          <rect x='14' y='30' width='8' height='10'/>
+          <rect x='24' y='30' width='8' height='10'/>
+          <rect x='88' y='30' width='8' height='10'/>
+          <rect x='98' y='30' width='8' height='10'/>
+          <rect x='108' y='30' width='8' height='10'/>
+          <rect x='30' y='50' width='8' height='10'/>
+          <rect x='43' y='50' width='8' height='10'/>
+          <rect x='69' y='50' width='8' height='10'/>
+          <rect x='82' y='50' width='8' height='10'/>
+          <rect x='46' y='14' width='8' height='8'/>
+          <rect x='56' y='14' width='8' height='8'/>
+          <rect x='66' y='14' width='8' height='8'/>
+        </g>
+      </g>
+      <path d='M60 14 V-18' stroke='#2b1a0e' stroke-width='2'/>
+      <path class='flag' d='M60 -18 L80 -12 L60 -6 Z' fill='#a4161a' stroke='#2b1a0e' stroke-width='1.5' stroke-linejoin='round'/>
+      <g fill='#1a0f08'>
+        <rect x='16' y='62' width='5' height='14' rx='2.5'/>
+        <rect x='100' y='62' width='5' height='14' rx='2.5'/>
+        <path d='M46 130 V100 a14 14 0 0 1 28 0 V130 Z'/>
+      </g>
+      <g fill='#ffd76a'>
+        <rect x='57.5' y='34' width='5' height='13' rx='2.5'/>
+      </g>
+      <path d='M52 130 V100 M60 130 V90 M68 130 V100 M46 108 H74 M46 118 H74' stroke='#5a3b22' stroke-width='1.5'/>
+      <defs>
+        <radialGradient id='torchGlowGradient'>
+          <stop offset='0' stop-color='#ffb44a' stop-opacity='.85'/>
+          <stop offset='1' stop-color='#ffb44a' stop-opacity='0'/>
+        </radialGradient>
+      </defs>
+      <circle class='glow' cx='37' cy='92' r='17' fill='url(#torchGlowGradient)'/>
+      <circle class='glow' style='animation-delay:.45s' cx='83' cy='92' r='17' fill='url(#torchGlowGradient)'/>
+      <rect x='35.5' y='98' width='3' height='12' fill='#5a3b22' stroke='#2b1a0e' stroke-width='1'/>
+      <rect x='81.5' y='98' width='3' height='12' fill='#5a3b22' stroke='#2b1a0e' stroke-width='1'/>
+      <g class='fl'>
+        <path d='M37 98 C32 93 35 90 37 85 C39 90 42 93 37 98 Z' fill='#ff8a1f'/>
+        <path d='M37 97 C35 94 36 92 37 90 C38 92 39 94 37 97 Z' fill='#ffe27a'/>
+      </g>
+      <g class='fl' style='animation-delay:.17s'>
+        <path d='M83 98 C78 93 81 90 83 85 C85 90 88 93 83 98 Z' fill='#ff8a1f'/>
+        <path d='M83 97 C81 94 82 92 83 90 C84 92 85 94 83 97 Z' fill='#ffe27a'/>
+      </g>
+    </svg>
   </div>
 
   <!-- Flying Dragon Cursor -->
@@ -1577,6 +1620,6 @@
   <audio id="previewAudio" preload="none"></audio>
 
   <!-- Main JavaScript -->
-  <script src="script.js?v=43"></script>
+  <script src="script.js?v=61"></script>
 </body>
 </html>

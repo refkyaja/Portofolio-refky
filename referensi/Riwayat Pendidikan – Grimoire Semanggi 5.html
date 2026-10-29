@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Riwayat Pendidikan – Grimoire Semanggi 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#1a1d2e;--bg2:#05060c;--cover:#0d0d12;--gold:#d9b45a;--gold2:#8a6a22;--paper:#d9c699;--paper2:#b49a64;--ink:#2a1d12;--accent:#2b2118;--glow:#7be0a0;--wp:calc((min(96vw,900px) - 24px)/2);--ph:min(76vh,540px);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg1:#1a1d2e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#1a1d2e}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(ellipse at 50% 30%,var(--bg1),var(--bg2));color:var(--ink);font-family:'EB Garamond',Georgia,serif;display:flex;align-items:center;justify-content:center;overflow-x:hidden}
+.stars{position:fixed;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 30%,#fff8,transparent),radial-gradient(1.5px 1.5px at 70% 20%,#fff8,transparent),radial-gradient(1px 1px at 40% 80%,#fff6,transparent),radial-gradient(1.5px 1.5px at 85% 70%,#fff8,transparent),radial-gradient(1px 1px at 10% 75%,#fff6,transparent);pointer-events:none}
+.cover{width:var(--wp);height:var(--ph);background:radial-gradient(ellipse at 30% 18%,#9a7a58aa,transparent 55%),radial-gradient(ellipse at 85% 88%,#1e140ccc,transparent 60%),radial-gradient(circle at 55% 55%,#3a2a1e66,transparent 40%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),#6a5340;border:0;border-radius:4px 10px 10px 4px;box-shadow:inset 0 0 45px #000b,inset 0 0 3px #000,0 20px 60px #000c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer;position:relative;transition:transform .3s}
+.cover:hover{transform:scale(1.02)}
+.cover::before{content:"";position:absolute;left:0;top:0;bottom:0;width:22px;background:linear-gradient(90deg,#0009,#3a2a1e44 60%,#0004);border-right:1px solid #0008;border-radius:4px 0 0 4px}
+.cover::after{content:"";position:absolute;bottom:-16px;right:24px;width:14px;height:38px;background:#111;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+.cover svg{width:34%;filter:drop-shadow(0 1px 0 #ffffff26) drop-shadow(0 -1px 1px #000)}
+.cover h1{font-family:'Cinzel',serif;color:#1a120c;text-shadow:0 1px 0 #ffffff22;font-size:clamp(18px,5vw,26px);letter-spacing:.12em;text-align:center;margin:0;line-height:1.3}
+.cover small{color:#d2bc99;letter-spacing:.2em;font-size:13px}
+.book{display:none;width:min(96vw,900px);background:#0b0b10;border:3px solid var(--gold2);border-radius:10px;padding:12px;box-shadow:0 20px 60px #000c;grid-template-columns:1fr 1fr;gap:0}
+.book.open{display:grid}
+.pg{background:radial-gradient(ellipse at 12% 8%,#8a5a2a66,transparent 45%),radial-gradient(ellipse at 92% 92%,#6b432066,transparent 50%),radial-gradient(circle at 62% 42%,#a8884e44,transparent 30%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .3 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(135deg,var(--paper),var(--paper2));box-shadow:inset 0 0 55px #5a3a1a99;min-height:var(--ph);padding:28px;position:relative}
+.pg.l{border-radius:6px 0 0 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border-right:3px solid #0006}
+.pg.r{border-radius:0 6px 6px 0;display:flex;flex-direction:column}
+.pg.l svg{width:70%;max-width:240px;opacity:.5}
+.q{font-style:italic;text-align:center;font-size:18px;max-width:280px}
+.yr{align-self:flex-start;background:var(--accent);color:var(--gold);font-family:'Cinzel',serif;padding:6px 18px;letter-spacing:.1em;font-size:15px}
+h2{font-family:'Cinzel',serif;color:var(--accent);margin:14px 0 2px;font-size:clamp(20px,4vw,28px)}
+h3{font-weight:400;color:#5a4630;margin:0 0 10px;font-size:20px}
+p{font-size:18px;line-height:1.5;margin:6px 0 10px}
+ul{margin:0;padding-left:20px;font-size:17px;line-height:1.6}
+.nav{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:16px}
+button{font-family:'Cinzel',serif;background:var(--accent);color:var(--gold);border:2px solid var(--gold2);padding:9px 16px;cursor:pointer;font-size:14px;letter-spacing:.08em}
+button:disabled{opacity:.35;cursor:default}
+.dots i{display:inline-block;width:11px;height:11px;border:2px solid var(--accent);transform:rotate(45deg);margin:0 5px}
+.dots i.on{background:var(--accent)}
+.close{position:absolute;right:10px;top:8px;background:none;border:0;color:var(--gold2);font-size:18px;padding:4px}
+.stage{display:grid;place-items:center;position:relative}
+.stage>*{grid-area:1/1}
+.book{z-index:1}.cover{z-index:2}
+.cover.opening{animation:coverOpen .9s ease-in forwards;transform-origin:left center;pointer-events:none}
+.cover.closing{animation:coverClose .9s ease-out;transform-origin:left center}
+.cover.back::before{left:auto;right:0;transform:scaleX(-1);border-radius:4px 0 0 4px}
+.cover.back::after{display:none}
+.cover.back svg{width:22%}
+.cover.back small+small{font-size:11px;opacity:.7;margin-top:10px}
+.cover.back.opening{animation:backOpen .9s ease-in forwards;transform-origin:right center}
+.cover.back.closing{animation:backClose .9s ease-out;transform-origin:right center}
+.book.bookin{animation:bookIn .7s ease-out}
+.book.bookout{animation:bookOut .45s ease-in forwards}
+.book{position:relative;perspective:2400px}
+.leaf{position:absolute;top:12px;bottom:12px;width:calc(50% - 12px);transform-style:preserve-3d;z-index:5;pointer-events:none}
+.leaf.next{left:50%;transform-origin:left center}
+.leaf.prev{left:12px;transform-origin:right center}
+.leaf.next.go{animation:flipN .9s cubic-bezier(.5,.05,.35,1) forwards}
+.leaf.prev.go{animation:flipP .9s cubic-bezier(.5,.05,.35,1) forwards}
+.leaf .face{position:absolute;inset:0;min-height:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.leaf .face.bk{transform:rotateY(180deg)}
+.leaf .face::after{content:"";position:absolute;inset:0;width:auto;height:auto;clip-path:none;background:linear-gradient(90deg,#0000,#000a);opacity:0;pointer-events:none}
+.leaf .face.cover{width:auto;height:auto;aspect-ratio:auto;z-index:auto;cursor:default;transition:none}
+.book{transition:transform .9s cubic-bezier(.5,.05,.35,1),background-color .9s,border-color .9s,box-shadow .9s}
+.book.pre{background-color:transparent;border-color:transparent;box-shadow:none}
+.leaf.prev .face::after{background:linear-gradient(270deg,#0000,#000a)}
+.leaf.go .face::after{animation:shade .9s ease-in-out}
+@keyframes flipN{to{transform:rotateY(-180deg)}}
+@keyframes flipP{to{transform:rotateY(180deg)}}
+@keyframes shade{50%{opacity:.5}}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.fade{animation:fadeSlide .4s ease-out}
+@keyframes coverOpen{0%{transform:perspective(1600px) rotateY(0);opacity:1}60%{opacity:1}100%{transform:perspective(1600px) rotateY(-150deg);opacity:0}}
+@keyframes coverClose{0%{transform:perspective(1600px) rotateY(-150deg);opacity:0}40%{opacity:1}100%{transform:perspective(1600px) rotateY(0);opacity:1}}
+@keyframes backOpen{0%{transform:perspective(1600px) rotateY(0);opacity:1}60%{opacity:1}100%{transform:perspective(1600px) rotateY(150deg);opacity:0}}
+@keyframes backClose{0%{transform:perspective(1600px) rotateY(150deg);opacity:0}40%{opacity:1}100%{transform:perspective(1600px) rotateY(0);opacity:1}}
+@keyframes bookIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes bookOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.7)}}
+@keyframes turn{from{transform:perspective(1600px) rotateY(-80deg);opacity:.2}to{transform:perspective(1600px) rotateY(0);opacity:1}}
+@media(max-width:640px){.cover{width:min(86vw,360px);height:auto;aspect-ratio:3/4}.book{grid-template-columns:1fr}.pg.l{min-height:auto;padding:16px;border-radius:6px 6px 0 0;border-right:0}.pg.l svg{width:90px}.q{font-size:15px}.pg.r{border-radius:0 0 6px 6px;min-height:auto}}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<svg width="0" height="0" style="position:absolute"><defs>
+<g id="clv"><g id="lf"><path d="M0,0 C-16,-12 -26,-34 -12,-46 C-5,-52 0,-45 0,-38 C0,-45 5,-52 12,-46 C26,-34 16,-12 0,0Z"/></g>
+<use href="#lf" transform="rotate(72)"/><use href="#lf" transform="rotate(144)"/><use href="#lf" transform="rotate(216)"/><use href="#lf" transform="rotate(288)"/>
+<path d="M0,0 L6,62" stroke-width="4" fill="none" stroke="currentColor" stroke-linecap="round"/></g>
+</defs></svg>
+
+<div class="stage">
+<div class="cover" id="cover">
+  <svg viewBox="-70 -70 140 140" fill="#251a12" stroke="#120c07" stroke-width="1.5"><use href="#clv"/></svg>
+  <h1>RIWAYAT<br>PENDIDIKAN</h1>
+  <small>klik untuk membuka</small>
+</div>
+
+<div class="book" id="book">
+  <div class="pg l" id="pl">
+    <svg viewBox="-70 -70 140 140" fill="#3b2c1e" stroke="#20160d" stroke-width="1.5" style="color:#3b2c1e"><use href="#clv"/></svg>
+    <div class="q" id="quote"></div>
+  </div>
+  <div class="pg r" id="pr">
+    <button class="close" id="close" aria-label="Tutup">✕</button>
+    <span class="yr" id="yr"></span>
+    <h2 id="nm"></h2><h3 id="lv"></h3>
+    <p id="ds"></p><ul id="ul"></ul>
+    <div class="nav">
+      <button id="prev">◂ Kembali</button>
+      <span class="dots" id="dots"></span>
+      <button id="next">Next ▸</button>
+    </div>
+  </div>
+</div>
+
+<div class="cover back" id="back" style="display:none">
+  <svg viewBox="-70 -70 140 140" fill="#251a12" stroke="#120c07" stroke-width="1.5"><use href="#clv"/></svg>
+  <h1>TAMAT</h1>
+  <small>terima kasih telah membaca</small>
+  <small>klik untuk membaca lagi</small>
+</div>
+</div>
+
+<script>
+// Ubah data di bawah ini sesuai riwayat pendidikanmu
+var DATA=[
+ {y:"2014 – 2020",n:"SDN 161 SUKAPURA",l:"Sekolah Dasar",d:"Menyelesaikan pendidikan dasar dan membangun dasar ilmu pengetahuan serta karakter diri yang kuat.",b:["Belajar membaca, menulis, dan berhitung","Mulai mengenal teman dan lingkungan sekolah","Aktif dalam kegiatan pramuka dan minat belajar"],q:"“Pendidikan adalah pintu menuju masa depan yang lebih baik.”"},
+ {y:"2020 – 2023",n:"NAMA SMP KAMU",l:"Sekolah Menengah Pertama",d:"Mengembangkan minat dan bakat serta memperdalam wawasan di bangku SMP.",b:["Isi pencapaian pertama","Isi pencapaian kedua","Isi kegiatan atau organisasi"],q:"“Aku tidak akan menyerah, itulah jalan ninjaku!”"},
+ {y:"2023 – 2026",n:"NAMA SMA/SMK KAMU",l:"Sekolah Menengah Atas",d:"Mempersiapkan diri menuju jenjang berikutnya dengan tekad yang tak pernah padam.",b:["Isi pencapaian pertama","Isi pencapaian kedua","Isi kegiatan atau organisasi"],q:"“Lampaui batasmu, lagi dan lagi!”"}
+];
+var i=0,$=function(x){return document.getElementById(x)};
+function render(){renderL(i);renderR(i)}
+function renderL(k){$("quote").textContent=DATA[k].q}
+function renderR(k){var p=DATA[k];
+ $("yr").textContent=p.y;$("nm").textContent=p.n;$("lv").textContent=p.l;$("ds").textContent=p.d;
+ $("ul").innerHTML=p.b.map(function(t){return"<li></li>"}).join("");
+ [].forEach.call($("ul").children,function(li,k){li.textContent=p.b[k]});
+ $("dots").innerHTML=DATA.map(function(_,j){return'<i class="'+(j==k?"on":"")+'"></i>'}).join("");
+ $("prev").textContent=k==0?"◂ Sampul":"◂ Kembali";$("next").textContent=k==DATA.length-1?"Tutup ▸":"Next ▸"}
+var busy=0;
+function wide(){return !window.matchMedia("(max-width:640px)").matches}
+function desk(k){
+ busy=1;
+ var bk=$("book"),pl=$("pl"),pr=$("pr"),cv=$("cover"),bc=$("back"),
+ opening=k[0]=="o",front=k[1]=="f",next=opening==front,
+ shift=front?"calc(var(--wp) * -.5)":"calc(var(--wp) * .5)",
+ strip=function(h){return h.replace(/ id="[^"]*"/g,"")},
+ mk=function(c,h){var e=document.createElement("div");e.className=c;e.innerHTML=strip(h);return e},
+ leaf=document.createElement("div"),f,b,hid=front?pl:pr,cov=front?cv:bc;
+ if(opening){i=front?0:DATA.length-1;render()}
+ if(k=="of"){f=mk("face cover",cv.innerHTML);b=mk("face bk pg l",pl.innerHTML)}
+ if(k=="ob"){f=mk("face cover back",bc.innerHTML);b=mk("face bk pg r",pr.innerHTML)}
+ if(k=="cf"){f=mk("face pg l",pl.innerHTML);b=mk("face bk cover",cv.innerHTML)}
+ if(k=="cb"){f=mk("face pg r",pr.innerHTML);b=mk("face bk cover back",bc.innerHTML)}
+ leaf.className="leaf "+(next?"next":"prev");leaf.appendChild(f);leaf.appendChild(b);
+ if(opening){
+  bk.style.transition="none";bk.classList.add("open","pre");bk.style.transform="translateX("+shift+")";
+  hid.style.visibility="hidden";bk.appendChild(leaf);cov.style.display="none";
+  void bk.offsetWidth;bk.style.transition="";
+  leaf.classList.add("go");bk.classList.remove("pre");bk.style.transform="";
+ }else{
+  hid.style.visibility="hidden";bk.appendChild(leaf);void leaf.offsetWidth;
+  leaf.classList.add("go");bk.classList.add("pre");bk.style.transform="translateX("+shift+")";
+ }
+ setTimeout(function(){
+  if(!opening){bk.classList.remove("open","pre");bk.style.transform="";cov.style.display="flex"}
+  pl.style.visibility=pr.style.visibility="";
+  leaf.remove();busy=0},950)}
+function flip(d){
+ if(busy)return;
+ if(window.matchMedia("(max-width:640px)").matches){i+=d;render();["pl","pr"].forEach(function(x){var e=$(x);e.classList.remove("fade");void e.offsetWidth;e.classList.add("fade")});return}
+ busy=1;
+ var bk=$("book"),pl=$("pl"),pr=$("pr"),o=i,n=i+d,
+ strip=function(h){return h.replace(/ id="[^"]*"/g,"")},
+ leaf=document.createElement("div"),f=document.createElement("div"),b=document.createElement("div");
+ leaf.className="leaf "+(d>0?"next":"prev");
+ f.className="face pg "+(d>0?"r":"l");b.className="face bk pg "+(d>0?"l":"r");
+ if(d>0){f.innerHTML=strip(pr.innerHTML);renderL(n);b.innerHTML=strip(pl.innerHTML);renderL(o);renderR(n)}
+ else{f.innerHTML=strip(pl.innerHTML);renderR(n);b.innerHTML=strip(pr.innerHTML);renderR(o);renderL(n)}
+ leaf.appendChild(f);leaf.appendChild(b);bk.appendChild(leaf);
+ void leaf.offsetWidth;leaf.classList.add("go");
+ setTimeout(function(){i=n;render();leaf.remove();busy=0},900)}
+function openFrom(el){if(busy)return;if(wide())return desk(el.id=="back"?"ob":"of");busy=1;el.classList.add("opening");
+ setTimeout(function(){i=el.id=="back"?DATA.length-1:0;$("book").classList.add("open","bookin");render()},450);
+ setTimeout(function(){el.style.display="none";el.classList.remove("opening");$("book").classList.remove("bookin");busy=0},950)}
+function closeTo(el){if(busy)return;if(wide())return desk(el.id=="back"?"cb":"cf");busy=1;var b=$("book");b.classList.add("bookout");
+ setTimeout(function(){b.classList.remove("open","bookout");el.style.display="flex";el.classList.add("closing")},450);
+ setTimeout(function(){el.classList.remove("closing");busy=0},1350)}
+$("cover").onclick=function(){openFrom($("cover"))};
+$("back").onclick=function(){openFrom($("back"))};
+$("close").onclick=function(){closeTo(i<DATA.length/2?$("cover"):$("back"))};
+$("prev").onclick=function(){if(busy)return;if(i>0)flip(-1);else closeTo($("cover"))};
+$("next").onclick=function(){if(busy)return;if(i<DATA.length-1)flip(1);else closeTo($("back"))};
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kastil Maskot</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ead9a8;--bg2:#cfb676;--ink:#2b1a0e;--body:#3b4048;--eye:#ffd76a;--red:#a4161a;--hat:#4b2a6b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1d14;--bg2:#160e08;--ink:#e9d8a6;--body:#8a919c;--eye:#ffcf5a}}
+:root[data-theme="dark"]{--bg:#2a1d14;--bg2:#160e08;--ink:#e9d8a6;--body:#8a919c;--eye:#ffcf5a}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(ellipse at center,var(--bg) 55%,var(--bg2) 100%);color:var(--ink);font-family:Cinzel,Georgia,"Times New Roman",serif;font-weight:800;overflow:hidden;position:relative}
+.wall{position:absolute;top:0;left:0;right:0;height:46px;background:var(--ink);
+  -webkit-mask:linear-gradient(#000 0 0) bottom/100% 26px no-repeat,repeating-linear-gradient(90deg,#000 0 34px,transparent 34px 56px) top/100% 20px no-repeat;
+  mask:linear-gradient(#000 0 0) bottom/100% 26px no-repeat,repeating-linear-gradient(90deg,#000 0 34px,transparent 34px 56px) top/100% 20px no-repeat}
+h1{position:absolute;top:84px;width:100%;text-align:center;font-size:clamp(20px,4.6vw,42px);margin:0;letter-spacing:.04em}
+p{position:absolute;top:calc(84px + clamp(26px,6vw,56px));width:100%;text-align:center;margin:0;font-weight:600;font-size:clamp(13px,2.4vw,18px);opacity:.8}
+.castle{position:fixed;z-index:48;left:6px;bottom:14px;width:150px;pointer-events:none;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.25))}
+.castle svg{display:block;width:100%;height:auto}
+.flag{transform-box:fill-box;transform-origin:0 50%;animation:fw 1s ease-in-out infinite alternate}
+@keyframes fw{from{transform:skewY(-8deg) scaleX(1)}to{transform:skewY(8deg) scaleX(.82)}}
+.floor{position:fixed;z-index:49;left:0;right:0;bottom:0;height:14px;background:repeating-linear-gradient(90deg,var(--ink) 0 38px,#5a3b22 38px 42px);border-top:3px solid var(--ink)}
+.stage{position:fixed;z-index:50;pointer-events:none;left:0;right:0;bottom:14px;height:170px}
+.char{pointer-events:auto;position:absolute;bottom:0;width:76px;height:90px;cursor:pointer;transition:left 1s ease-in-out;transform:scale(.55);transform-origin:50% 100%}
+.body{position:absolute;bottom:10px;left:0;width:76px;height:78px;background:var(--body);border:3px solid var(--ink);box-sizing:border-box;border-radius:30px 30px 12px 12px;box-shadow:inset 5px 0 0 rgba(255,255,255,.18),inset 0 -7px 0 rgba(0,0,0,.25);transition:transform .25s}
+.eyes{position:absolute;top:24px;left:0;right:0;display:flex;justify-content:center;gap:14px;transition:transform .3s}
+.eye{width:10px;height:17px;background:var(--eye);border-radius:6px;box-shadow:0 0 8px var(--eye);transition:transform .12s}
+.blink .eye{transform:scaleY(.08)}
+.sleep .eye{width:15px;height:7px;background:none;box-shadow:none;border-top:3px solid var(--eye);border-radius:15px 15px 0 0;box-sizing:border-box}
+.sleep .body{transform:scaleY(.94) translateY(3px)}
+.look-l .eyes{transform:translateX(-7px)}.look-r .eyes{transform:translateX(7px)}
+.plume{position:absolute;top:-17px;left:50%;width:16px;height:28px;margin-left:-8px;background:var(--red);border-radius:50% 50% 10% 90%;transform:rotate(14deg);border:2px solid var(--ink);box-sizing:border-box}
+.hat{position:absolute;top:-44px;left:50%;margin-left:-32px;border-left:32px solid transparent;border-right:32px solid transparent;border-bottom:50px solid var(--hat);filter:drop-shadow(0 0 0 var(--ink))}
+.hat::after{content:"✦";position:absolute;left:-6px;top:22px;color:#ffd76a;font-size:13px}
+.leg{position:absolute;bottom:0;width:14px;height:12px;background:var(--ink);border-radius:0 0 6px 6px}
+.leg.l{left:18px}.leg.r{right:18px}
+.walk .body{animation:bob .3s infinite}
+.walk .leg.l{animation:step .3s infinite}.walk .leg.r{animation:step .3s infinite reverse}
+@keyframes bob{50%{transform:translateY(-4px) rotate(2deg)}}
+@keyframes step{50%{transform:translateY(-4px)}}
+.jump .body{animation:jump .4s}
+@keyframes jump{40%{transform:translateY(-18px)}}
+.scared .eye{transform:scale(1.3)}
+.scared.walk .body,.scared.walk .leg{animation-duration:.16s}
+.acc{position:absolute;right:-32px;top:30px;font-size:44px;transform:rotate(12deg);filter:drop-shadow(1px 2px 0 rgba(0,0,0,.3))}
+.bubble{position:absolute;bottom:150px;left:50%;transform-origin:50% 100%;transform:translateX(-50%) scale(1);opacity:0;pointer-events:none;background:#f6ecc9;color:#2b1a0e;border:3px solid #2b1a0e;border-radius:14px 14px 14px 4px;padding:8px 18px;white-space:nowrap;transition:.25s}
+.bubble.show{opacity:1;transform:translateX(-50%) scale(1.8)}
+.hand{position:absolute;left:-14px;top:-10px;font-size:42px;opacity:0;transform-origin:70% 80%}
+.hi .hand{opacity:1;animation:wave .5s infinite alternate}
+@keyframes wave{from{transform:rotate(-15deg)}to{transform:rotate(25deg)}}
+.z{position:absolute;right:-6px;top:-10px;opacity:0;font-size:32px}
+.sleep .z{animation:zz 2s infinite}
+.sleep .z:nth-of-type(2){animation-delay:1s}
+@keyframes zz{0%{opacity:0;transform:translate(0,10px)}30%{opacity:1}100%{opacity:0;transform:translate(14px,-26px)}}
+@media (pointer:fine){body,body .char,body .guest{cursor:none}}
+.dragon{position:fixed;left:0;top:0;z-index:99;pointer-events:none;font-size:42px;line-height:1;display:none;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.3))}
+.dragon i{display:block;font-style:normal;transition:transform .15s}
+.fl{transform-box:fill-box;transform-origin:50% 100%;animation:fk .35s ease-in-out infinite alternate}
+@keyframes fk{from{transform:scale(1,1) rotate(-5deg)}to{transform:scale(.82,1.18) rotate(5deg)}}
+.glow{animation:gl 1.1s ease-in-out infinite alternate}
+@keyframes gl{from{opacity:.5}to{opacity:.95}}
+.sword{position:absolute;left:-28px;top:4px;width:10px;height:58px;opacity:0;transform-origin:50% 100%;transform:rotate(-20deg);transition:opacity .2s}
+.sword::before{content:"";position:absolute;top:0;left:0;width:10px;height:42px;box-sizing:border-box;background:linear-gradient(90deg,#f2f4f7,#98a1ab);border:2px solid #2b1a0e;border-radius:5px 5px 0 0}
+.sword::after{content:"";position:absolute;top:40px;left:-5px;width:20px;height:6px;box-sizing:border-box;background:#e8b04a;border:2px solid #2b1a0e;border-radius:2px}
+.sword i{position:absolute;top:45px;left:2px;width:6px;height:13px;box-sizing:border-box;background:#5a3b22;border:2px solid #2b1a0e}
+.fight .sword{opacity:1;animation:slash .4s ease-in-out infinite alternate}
+@keyframes slash{from{transform:rotate(-40deg)}to{transform:rotate(25deg)}}
+.fight .body{transform:scale(1.07)}
+.fight .eye{transform:scaleY(.6)}
+.dragon.recoil svg{animation:rc .3s}
+@keyframes rc{30%{transform:rotate(-14deg) translateY(-6px)}65%{transform:rotate(9deg)}}
+.dragon svg{display:block;width:140px;height:auto;overflow:visible}
+.wing{transform-box:fill-box;transform-origin:0% 100%;animation:flap .45s ease-in-out infinite alternate}
+@keyframes flap{from{transform:rotate(-14deg)}to{transform:rotate(12deg)}}
+.fire{position:fixed;z-index:98;pointer-events:none;font-size:28px;animation:fire .8s forwards}
+@keyframes fire{to{transform:translate(var(--dx),-70px) scale(.3);opacity:0}}
+.guest{position:absolute;right:max(20px,3%);bottom:56px;display:flex;gap:10px;align-items:center;background:#f6ecc9;color:#2b1a0e;border:3px solid #2b1a0e;box-shadow:5px 5px 0 #2b1a0e;border-radius:10px;padding:11px 20px;font:inherit;font-size:16px;cursor:pointer}
+.guest span{background:#2b1a0e;color:#f6ecc9;border-radius:6px;padding:1px 8px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wall"></div>
+<h1>Selamat Datang di Kastil Kami</h1>
+<p>Sapalah para penjaga gerbang… jika mereka tak lari ketakutan</p>
+<button class="guest" type="button">📜 Buku Tamu <span>15</span></button>
+<div class="stage" id="stage">
+  <div class="char" id="a" style="left:12%">
+    <div class="bubble">Salam, Tuan!</div><div class="hand">👋</div>
+    <div class="body"><i class="plume"></i><div class="eyes"><i class="eye"></i><i class="eye"></i></div></div>
+    <div class="acc">🛡️</div><div class="sword"><i></i></div><b class="z">z</b><b class="z">z</b>
+    <i class="leg l"></i><i class="leg r"></i>
+  </div>
+  <div class="char" id="b" style="left:42%">
+    <div class="bubble">Salam, Tuan!</div><div class="hand">👋</div>
+    <div class="body"><i class="hat"></i><div class="eyes"><i class="eye"></i><i class="eye"></i></div></div>
+    <div class="acc">📜</div><b class="z">z</b><b class="z">z</b>
+    <i class="leg l"></i><i class="leg r"></i>
+  </div>
+</div>
+<div class="dragon" id="dragon"><i><svg viewBox='0 0 100 70' xmlns='http://www.w3.org/2000/svg'><g stroke='#3a0508' stroke-width='1.6' stroke-linejoin='round'><path class='wing' d='M52 34 L58 4 L64 18 L72 6 L76 24 L86 14 L70 40 Z' fill='#7d0c12'/><path d='M68 40 C80 40 87 34 91 25 C93 31 91 38 86 44 C80 52 70 52 64 47 Z' fill='#b3121a'/><path d='M90 25 L98 20 L94 31 Z' fill='#5a090d'/><ellipse cx='52' cy='41' rx='20' ry='11' fill='#c4161e'/><path d='M36 38 C27 36 25 29 26 21 L37 24 C39 30 44 32 49 32 Z' fill='#b3121a'/><path d='M44 29 L47 22 L50 30 Z M52 29 L55 22 L58 30 Z M60 31 L63 25 L66 33 Z' fill='#5a090d'/><path d='M44 50 L42 59 L50 59 L51 51 Z M58 50 L58 59 L66 59 L64 50 Z' fill='#a3101a'/><path d='M27 22 C23 15 14 15 7 20 C5 22 7 24 10 24 L8 28 C13 30 21 30 27 27 Z' fill='#d01a22'/><path d='M24 17 L31 6 L29 19 Z' fill='#e8b04a'/></g><path d='M36 46 Q52 55 68 47 Q52 51 36 46 Z' fill='#e9b55a'/><circle cx='18' cy='20.5' r='2.4' fill='#ffd84a'/><circle cx='17.4' cy='20.5' r='1' fill='#1a0000'/><circle cx='10' cy='22' r='.9' fill='#3a0508'/></svg></i></div>
+<div class="castle"><svg viewBox='0 -22 120 152' xmlns='http://www.w3.org/2000/svg'><g fill='#8a7a62' stroke='#2b1a0e' stroke-width='2' stroke-linejoin='round'><rect x='4' y='40' width='28' height='90'/><rect x='88' y='40' width='28' height='90'/><rect x='30' y='60' width='60' height='70'/><rect x='46' y='22' width='28' height='42'/><g fill='#7a6b54'><rect x='4' y='30' width='8' height='10'/><rect x='14' y='30' width='8' height='10'/><rect x='24' y='30' width='8' height='10'/><rect x='88' y='30' width='8' height='10'/><rect x='98' y='30' width='8' height='10'/><rect x='108' y='30' width='8' height='10'/><rect x='30' y='50' width='8' height='10'/><rect x='43' y='50' width='8' height='10'/><rect x='69' y='50' width='8' height='10'/><rect x='82' y='50' width='8' height='10'/><rect x='46' y='14' width='8' height='8'/><rect x='56' y='14' width='8' height='8'/><rect x='66' y='14' width='8' height='8'/></g></g><path d='M60 14 V-18' stroke='#2b1a0e' stroke-width='2'/><path class='flag' d='M60 -18 L80 -12 L60 -6 Z' fill='#a4161a' stroke='#2b1a0e' stroke-width='1.5' stroke-linejoin='round'/><g fill='#1a0f08'><rect x='16' y='62' width='5' height='14' rx='2.5'/><rect x='100' y='62' width='5' height='14' rx='2.5'/><path d='M46 130 V100 a14 14 0 0 1 28 0 V130 Z'/></g><g fill='#ffd76a'><rect x='57.5' y='34' width='5' height='13' rx='2.5'/></g><path d='M52 130 V100 M60 130 V90 M68 130 V100 M46 108 H74 M46 118 H74' stroke='#5a3b22' stroke-width='1.5'/><defs><radialGradient id='tg'><stop offset='0' stop-color='#ffb44a' stop-opacity='.85'/><stop offset='1' stop-color='#ffb44a' stop-opacity='0'/></radialGradient></defs><circle class='glow' cx='37' cy='92' r='17' fill='url(#tg)'/><circle class='glow' style='animation-delay:.45s' cx='83' cy='92' r='17' fill='url(#tg)'/><rect x='35.5' y='98' width='3' height='12' fill='#5a3b22' stroke='#2b1a0e' stroke-width='1'/><rect x='81.5' y='98' width='3' height='12' fill='#5a3b22' stroke='#2b1a0e' stroke-width='1'/><g class='fl'><path d='M37 98 C32 93 35 90 37 85 C39 90 42 93 37 98 Z' fill='#ff8a1f'/><path d='M37 97 C35 94 36 92 37 90 C38 92 39 94 37 97 Z' fill='#ffe27a'/></g><g class='fl' style='animation-delay:.17s'><path d='M83 98 C78 93 81 90 83 85 C85 90 88 93 83 98 Z' fill='#ff8a1f'/><path d='M83 97 C81 94 82 92 83 90 C84 92 85 94 83 97 Z' fill='#ffe27a'/></g></svg></div>
+<div class="floor"></div>
+<script>
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const rand=(a,b)=>a+Math.random()*(b-a);
+class Mascot{
+  constructor(el,hello,brave){this.el=el;this.hello=hello;this.brave=brave;this.bubble=el.querySelector('.bubble');this.sleeping=false;
+    el.addEventListener('click',()=>this.poke());this.loop()}
+  async say(text,ms=2200,wave=true){
+    this.bubble.textContent=text;this.bubble.classList.add('show');
+    if(wave)this.el.classList.add('hi');
+    await wait(ms);this.bubble.classList.remove('show');this.el.classList.remove('hi')}
+  async blink(){this.el.classList.add('blink');await wait(140);this.el.classList.remove('blink')}
+  async look(){const d=Math.random()<.5?'look-l':'look-r';this.el.classList.add(d);await wait(rand(900,1800));this.el.classList.remove(d)}
+  async walk(){
+    const W=this.el.parentElement.clientWidth-90;
+    const from=this.el.offsetLeft,to=rand(10,Math.max(20,W)),dur=Math.max(.6,Math.abs(to-from)/110);
+    this.el.style.transitionDuration=dur+'s';
+    this.el.classList.add(to<from?'look-l':'look-r','walk');
+    this.el.style.left=to+'px';await wait(dur*1000);
+    this.el.classList.remove('walk','look-l','look-r')}
+  async sleep(){this.sleeping=true;await this.blink();this.el.classList.add('sleep');
+    await wait(rand(5000,9000));if(this.sleeping)await this.wake()}
+  async wake(){if(!this.sleeping)return;this.sleeping=false;this.el.classList.remove('sleep');
+    this.el.classList.add('jump');await wait(400);this.el.classList.remove('jump')}
+  async poke(){
+    if(this.sleeping){await this.wake();await this.say('Hah? Hamba tertidur…',1800,false)}
+    else{this.el.classList.add('jump');await this.say(this.hello,1800);this.el.classList.remove('jump')}}
+  async fight(mx){
+    this.fighting=true;this.hits=[];
+    if(this.sleeping){this.sleeping=false;this.el.classList.remove('sleep')}
+    this.el.classList.add('fight',(this.el.offsetLeft+38<mx)?'look-r':'look-l');
+    this.say('Hadapi aku, naga!',1800,false);
+    await wait(3800);
+    this.el.classList.remove('fight','look-l','look-r');
+    this.say('Hmph! Jangan kembali!',1400,false);
+    await wait(500);this.fighting=false}
+  async flee(mx){
+    if(this.fleeing||this.fighting)return;
+    const now=performance.now();
+    this.hits=(this.hits||[]).filter(t=>now-t<5000);this.hits.push(now);
+    if(this.brave&&this.hits.length>=4)return this.fight(mx);
+    this.fleeing=true;
+    if(this.sleeping){this.sleeping=false;this.el.classList.remove('sleep')}
+    const W=this.el.parentElement.clientWidth-90;
+    const from=this.el.offsetLeft,dir=(from+38<mx)?-1:1;
+    let to=from+dir*rand(170,270);
+    if(to<10||to>W)to=dir<0?W-rand(0,40):10+rand(0,40);
+    to=Math.min(W,Math.max(10,to));
+    const dur=Math.max(.35,Math.abs(to-from)/330);
+    this.el.style.transitionDuration=dur+'s';
+    this.el.classList.add('scared','walk',to<from?'look-l':'look-r');
+    if(Math.random()<.5)this.say('Ampun, naga!',900,false);
+    this.el.style.left=to+'px';await wait(dur*1000);
+    this.el.classList.remove('scared','walk','look-l','look-r');
+    await wait(250);this.fleeing=false}
+  async loop(){
+    while(true){
+      await wait(rand(1200,3500));
+      if(this.sleeping||this.fleeing||this.fighting)continue;
+      const r=Math.random();
+      if(r<.45)await this.blink();
+      else if(r<.65)await this.look();
+      else if(r<.88)await this.walk();
+      else await this.sleep();
+    }}
+}
+const a=new Mascot(document.getElementById('a'),'Salam, Tuan!',true);
+const b=new Mascot(document.getElementById('b'),'Salam, Puan!');
+addEventListener('pointermove',e=>{
+  if(e.pointerType!=='mouse')return;
+  for(const m of [a,b]){
+    const r=m.el.getBoundingClientRect();
+    const d=Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2));
+    if(m.fighting){
+      const L=e.clientX<r.left+r.width/2;
+      m.el.classList.toggle('look-l',L);m.el.classList.toggle('look-r',!L);
+      if(d<150)recoil(e.clientX,e.clientY);
+    }else if(d<130)m.flee(e.clientX);
+  }
+});
+// kursor naga (hanya untuk perangkat dengan mouse)
+if(matchMedia('(pointer:fine)').matches){
+  const dr=document.getElementById('dragon'),di=dr.firstChild;
+  let tx=0,ty=0,x=0,y=0,shown=false,face=1;
+  addEventListener('pointermove',e=>{
+    if(e.pointerType!=='mouse')return;
+    if(!shown){shown=true;x=tx=e.clientX;y=ty=e.clientY;dr.style.display='block'}
+    if(Math.abs(e.clientX-tx)>2)face=e.clientX>tx?-1:1;
+    tx=e.clientX;ty=e.clientY;di.style.transform='scaleX('+face+')';
+  });
+  addEventListener('pointerdown',e=>{
+    if(e.pointerType!=='mouse')return;
+    for(let i=0;i<5;i++){
+      const f=document.createElement('span');f.className='fire';f.textContent='🔥';
+      f.style.left=(e.clientX-14+(-face)*(18+i*10))+'px';f.style.top=(e.clientY-14+rand(-10,10))+'px';
+      f.style.setProperty('--dx',(-face*rand(20,70))+'px');f.style.animationDelay=(i*50)+'ms';
+      document.body.appendChild(f);setTimeout(()=>f.remove(),1000+i*50);
+    }
+  });
+  (function tick(){x+=(tx-x)*.25;y+=(ty-y)*.25;
+    dr.style.transform='translate('+(x-(face===1?12:128))+'px,'+(y-24)+'px)';requestAnimationFrame(tick)})();
+}
+let recoilT=0;
+function recoil(x,y){
+  const n=performance.now();if(n-recoilT<500)return;recoilT=n;
+  const dr=document.getElementById('dragon');dr.classList.add('recoil');setTimeout(()=>dr.classList.remove('recoil'),300);
+  const s=document.createElement('span');s.className='fire';s.textContent='✦';
+  s.style.cssText='left:'+(x-14)+'px;top:'+(y-14)+'px;color:#ffd84a;--dx:'+rand(-30,30)+'px';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),900);
+}
+// sapaan pertama saat halaman dibuka
+setTimeout(()=>a.say('Salam, Tuan!',2800),600);
+setTimeout(()=>b.say('Selamat datang!',2200),1800);
+</script>
+</body>
+</html>
