@@ -7806,52 +7806,79 @@ body.relax-mode-active .relax-atmosphere-canvas {
   pointer-events: auto;
 }
 
-/* Confirmation Card (Exact Match to User Reference) */
-.relax-confirm-card {
-  background: radial-gradient(circle at 50% 15%, #08142b 0%, #040916 100%);
-  border: 1.2px solid #c99e52;
-  border-radius: 18px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 24px rgba(201, 158, 82, 0.15);
-  padding: 24px 26px 22px;
-  max-width: 410px;
-  width: 100%;
+/* Confirmation Card (Authentic Royal Pixel Frame) */
+.relax-confirm-card.pc {
+  --k: .32;
+  background: radial-gradient(circle at 50% 25%, #08183a 0%, #020717 100%) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 183, 59, 0.22) !important;
+  padding: calc(64px * var(--k) + 10px) 30px calc(58px * var(--k) + 12px) !important;
+  max-width: 440px;
+  width: calc(100% - 28px);
   text-align: center;
   transform: scale(0.92) translateY(14px);
   transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
   position: relative;
-  overflow: visible;
+  overflow: visible !important;
+  box-sizing: border-box;
 }
 
-.relax-confirm-backdrop.active .relax-confirm-card {
+.relax-confirm-backdrop.active .relax-confirm-card.pc {
   transform: scale(1) translateY(0);
 }
 
-/* Top and Bottom Ornamental Crests */
-.relax-card-crest {
+/* Vertical Gold Accent Borders */
+.relax-confirm-card.pc::before,
+.relax-confirm-card.pc::after {
+  content: "";
+  display: block !important;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  top: calc(64px * var(--k));
+  bottom: calc(58px * var(--k));
+  width: 2px;
+  background: linear-gradient(180deg, #f5b73b 0%, #e5882a 50%, #9e5d16 100%);
+  opacity: 0.65;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
 }
 
-.relax-card-crest.crest-top {
-  top: -12px;
+.relax-confirm-card.pc::before {
+  left: calc(36px * var(--k));
 }
 
-.relax-card-crest.crest-bottom {
-  bottom: -9px;
+.relax-confirm-card.pc::after {
+  right: calc(36px * var(--k));
 }
 
-/* Golden Moon & Star Icon */
+/* Golden Moon / Exit Icon Medallion */
 .relax-confirm-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 4px auto 10px;
+  margin: 0 auto 10px;
+}
+
+.relax-icon-medallion {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #10264e 0%, #061124 85%);
+  border: 2px solid #f5b73b;
+  box-shadow: 0 0 18px rgba(245, 183, 59, 0.35), inset 0 0 12px rgba(245, 183, 59, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.relax-icon-medallion::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 210, 120, 0.45);
+  pointer-events: none;
 }
 
 .relax-moon-svg {
@@ -7860,29 +7887,49 @@ body.relax-mode-active .relax-atmosphere-canvas {
 
 /* Title */
 .relax-confirm-title {
-  font-family: 'MedievalSharp', 'Georgia', 'Times New Roman', serif;
-  font-size: 1.35rem;
+  font-family: var(--font-pixel, 'MedievalSharp', serif);
+  font-size: 1.25rem;
   font-weight: 700;
   color: #ffe6a3;
-  margin: 8px 0 12px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(255, 210, 120, 0.3);
-  letter-spacing: 0.3px;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 14px rgba(255, 210, 120, 0.4);
+  letter-spacing: 0.5px;
   text-transform: none;
-  font-variant: normal;
+}
+
+/* Divider with Star Gem */
+.relax-confirm-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 12px;
+  width: 180px;
+}
+
+.relax-confirm-divider .rc-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c99e52, transparent);
+}
+
+.relax-confirm-divider .rc-gem {
+  color: #ffd278;
+  font-size: 10px;
+  text-shadow: 0 0 6px #f5b73b;
+  line-height: 1;
 }
 
 /* Description */
 .relax-confirm-desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: 0.84rem;
-  color: #9cb3d3;
-  line-height: 1.58;
-  margin: 0 auto 24px;
-  max-width: 350px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.85rem;
+  color: #b2c8e6;
+  line-height: 1.6;
+  margin: 0 auto 20px;
+  max-width: 360px;
   font-weight: 400;
   letter-spacing: 0.2px;
-  text-transform: none;
-  font-variant: normal;
 }
 
 /* Actions Row */
@@ -7891,44 +7938,52 @@ body.relax-mode-active .relax-atmosphere-canvas {
   gap: 14px;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 /* Button Base */
 .relax-confirm-btn {
   flex: 1;
-  max-width: 155px;
+  min-width: 125px;
+  max-width: 175px;
   height: 42px;
-  border-radius: 10px;
-  font-family: 'MedievalSharp', 'Georgia', 'Times New Roman', serif;
-  font-size: 0.88rem;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-family: var(--font-pixel, 'MedievalSharp', serif);
+  font-size: 0.68rem;
   font-weight: 700;
+  letter-spacing: 0.4px;
+  white-space: nowrap !important;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.3px;
   outline: none;
   position: relative;
-  text-transform: none;
-  font-variant: normal;
-  /* Fantasy corner notches */
-  clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0% calc(100% - 6px), 0% 6px);
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.relax-confirm-btn span {
+  white-space: nowrap !important;
+  display: inline-block;
+  line-height: 1;
 }
 
 /* Button 'Batal' (Dark navy with subtle border) */
 .relax-confirm-btn-no {
-  background: linear-gradient(180deg, #0d1b32 0%, #071020 100%);
-  color: #9cb3d3;
-  border: 1.2px solid #283d63;
-  box-shadow: inset 0 0 0 1px rgba(40, 61, 99, 0.4);
+  background: linear-gradient(180deg, #132442 0%, #0a1324 100%);
+  color: #b0c6e5;
+  border: 1.5px solid #324c75;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .relax-confirm-btn-no:hover {
-  background: linear-gradient(180deg, #142848 0%, #0b182f 100%);
+  background: linear-gradient(180deg, #1b335c 0%, #0e1d38 100%);
   color: #ffffff;
-  border-color: #4b6a9c;
-  box-shadow: 0 0 14px rgba(75, 106, 156, 0.35);
+  border-color: #557ebc;
+  box-shadow: 0 0 14px rgba(85, 126, 188, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
 
@@ -7938,22 +7993,44 @@ body.relax-mode-active .relax-atmosphere-canvas {
 
 /* Button 'Ya, Aktifkan' (Solid glowing golden amber) */
 .relax-confirm-btn-yes {
-  background: linear-gradient(180deg, #f5b73b 0%, #d89620 100%);
-  color: #0f1828;
-  border: 1.2px solid #ffe18c;
-  box-shadow: 0 4px 14px rgba(216, 150, 32, 0.45);
+  background: linear-gradient(180deg, #ffd366 0%, #d89620 50%, #b87510 100%);
+  color: #1a0e03;
+  border: 1.5px solid #ffe89c;
+  box-shadow: 0 4px 16px rgba(216, 150, 32, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .relax-confirm-btn-yes:hover {
-  background: linear-gradient(180deg, #ffd366 0%, #e5a42b 100%);
-  color: #080e18;
+  background: linear-gradient(180deg, #ffe085 0%, #e8a630 50%, #c98218 100%);
+  color: #0d0701;
   border-color: #ffffff;
-  box-shadow: 0 6px 20px rgba(245, 183, 59, 0.65);
+  box-shadow: 0 6px 22px rgba(245, 183, 59, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transform: translateY(-2px);
 }
 
 .relax-confirm-btn-yes:active {
   transform: translateY(1px);
+}
+
+@media (max-width: 480px) {
+  .relax-confirm-card.pc {
+    --k: .27;
+    padding: calc(64px * var(--k) + 8px) 16px calc(58px * var(--k) + 10px) !important;
+  }
+  .relax-confirm-title {
+    font-size: 1.12rem;
+  }
+  .relax-confirm-actions {
+    gap: 8px;
+  }
+  .relax-confirm-btn {
+    min-width: 110px;
+    max-width: 155px;
+    height: 38px;
+    padding: 0 10px;
+    font-size: 0.60rem;
+    white-space: nowrap !important;
+  }
 }
 
 /* Floating Bottom Dock (Screenshot: Medieval RPG Fantasy HUD Music Bar) */
