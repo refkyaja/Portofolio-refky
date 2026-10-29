@@ -938,6 +938,12 @@ body.theme-day .theme-toggle .moon-icon {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 16px 120px;
+  }
+}
+
 .section-container {
   width: 100%;
 }
@@ -1453,61 +1459,79 @@ body.theme-day .theme-toggle .moon-icon {
 @media (max-width: 680px) {
   .vnv {
     aspect-ratio: auto;
-    padding-top: 34.1%;
+    padding-top: 36%;
   }
   .bgl {
     inset: 0 0 auto 0;
-    aspect-ratio: 1671 / 570;
+    aspect-ratio: 1671 / 600;
     height: auto;
     background-size: 100% auto;
-    background-position: top;
+    background-position: top center;
+  }
+  .vnb {
+    left: 8px;
+    top: 8px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 85%;
+  }
+  .vnb i {
+    font-size: 11px;
+    padding: 2px 7px;
+    line-height: 1.2;
+    border-width: 1.5px;
   }
   .vnd {
     position: relative;
     inset: auto;
-    margin: 0 10px 12px;
-    padding: 34px 16px 12px;
+    margin: 6px 10px 14px;
+    padding: 26px 14px 28px;
     background: #e6d3a3;
-    border: 4px solid #14264f;
+    border: 3px solid #14264f;
     box-shadow: 0 0 0 2px #c98a22, inset 0 0 0 2px #c98a22;
     color: #2a1a0a;
+    border-radius: 4px;
   }
   .vnd .vnn {
-    left: -6px;
-    top: -24px;
+    left: -4px;
+    top: -20px;
     width: auto;
     height: auto;
     justify-content: flex-start;
   }
   .vnd .shd {
     display: block;
-    width: 36px;
-    height: 44px;
+    width: 32px;
+    height: 38px;
   }
   .vnd .vnn span {
     display: block;
-    margin-left: -8px;
+    margin-left: -6px;
     background: #14264f;
-    padding: 5px 28px 5px 18px;
+    padding: 4px 20px 4px 12px;
     border-bottom: 2px solid #c98a22;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
-    font-size: 13px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+    font-size: 11.5px;
+    letter-spacing: .05em;
   }
   .vnd .vnt {
     position: relative;
     left: auto;
     right: auto;
     top: auto;
-    font-size: 15px;
-    min-height: 6em;
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 5.5em;
+    word-break: break-word;
   }
   .vnd .vnm {
     position: absolute;
     left: auto;
-    right: 14px;
+    right: 12px;
     top: auto;
-    bottom: 12px;
-    font-size: 16px;
+    bottom: 8px;
+    font-size: 14px;
   }
 }
 
