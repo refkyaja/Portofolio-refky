@@ -16,6 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let guildRulesAgreeCheckbox = null;
   let guildSubmitBtn = null;
+
+  let scrollLockCount = 0;
+  function lockBodyScroll() {
+    scrollLockCount++;
+    if (scrollLockCount === 1) {
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function unlockBodyScroll() {
+    scrollLockCount = Math.max(0, scrollLockCount - 1);
+    if (scrollLockCount === 0) {
+      document.body.style.overflow = '';
+    }
+  }
 const themeToggle = document.getElementById('themeToggle');
 
   const bgNight = document.getElementById('bgNight');
@@ -2098,6 +2113,22 @@ const themeToggle = document.getElementById('themeToggle');
 
   const guildRulesBtn = document.getElementById('guildRulesBtn');
 
+  guildRulesAgreeCheckbox = document.getElementById('guildRulesAgreeCheckbox');
+  guildSubmitBtn = document.getElementById('guildSubmitBtn') || document.querySelector('.guild-pin-submit-btn');
+
+  function updateGuildSubmitButtonState() {
+    if (!guildSubmitBtn) return;
+    const isChecked = Boolean(guildRulesAgreeCheckbox && guildRulesAgreeCheckbox.checked);
+    guildSubmitBtn.disabled = !isChecked;
+  }
+
+  if (guildRulesAgreeCheckbox) {
+    guildRulesAgreeCheckbox.addEventListener('change', () => {
+      updateGuildSubmitButtonState();
+      playSound('click');
+    });
+  }
+
   const closeGuildRulesModalBtn = document.getElementById('closeGuildRulesModalBtn');
 
   const guildRulesModalOverlay = document.getElementById('guildRulesModalOverlay');
@@ -3209,11 +3240,9 @@ const themeToggle = document.getElementById('themeToggle');
         }));
 
         // Merge with existing local comments without duplicates
-
         const cloudIds = new Set(cloudQuests.map(c => String(c.id)));
-
-        const uniqueLocal = userQuests.filter(l => !cloudIds.has(String(l.id)));
-
+        const cloudTextKeys = new Set(cloudQuests.map(c => `${c.author.trim()}:::${c.text.trim()}`));
+        const uniqueLocal = userQuests.filter(l => !cloudIds.has(String(l.id)) && !cloudTextKeys.has(`${(l.author || '').trim()}:::${(l.text || '').trim()}`));
         userQuests = [...cloudQuests, ...uniqueLocal];
 
         try {
@@ -3237,51 +3266,46 @@ const themeToggle = document.getElementById('themeToggle');
   }
 
   async function postCloudComment(newQuest) {
-
     if (!GUILD_CLOUD_CONFIG.supabaseUrl || !GUILD_CLOUD_CONFIG.supabaseAnonKey) return;
-
     try {
-
       const cleanUrl = GUILD_CLOUD_CONFIG.supabaseUrl.replace(/\/+$/, '');
-
-      await fetch(`${cleanUrl}/rest/v1/${GUILD_CLOUD_CONFIG.tableName}`, {
-
+      const res = await fetch(`${cleanUrl}/rest/v1/${GUILD_CLOUD_CONFIG.tableName}`, {
         method: 'POST',
-
         headers: {
-
           'Content-Type': 'application/json',
-
           'apikey': GUILD_CLOUD_CONFIG.supabaseAnonKey,
-
           'Authorization': `Bearer ${GUILD_CLOUD_CONFIG.supabaseAnonKey}`,
-
-          'Prefer': 'return=minimal'
-
+          'Prefer': 'return=representation'
         },
-
         body: JSON.stringify({
-
           author: newQuest.author,
-
           text: newQuest.text,
-
           avatar_type: newQuest.avatarType,
-
           likes: newQuest.baseLikes || 0,
-
           tilt: newQuest.tilt
-
         })
-
       });
-
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data[0] && data[0].id) {
+          const cloudId = data[0].id;
+          const oldId = newQuest.id;
+          newQuest.id = cloudId;
+          const delBtn = document.querySelector(`.quest-delete-btn[data-id="${oldId}"]`);
+          if (delBtn) delBtn.setAttribute('data-id', cloudId);
+          try {
+            const stored = JSON.parse(localStorage.getItem('rfm_user_guild_comments') || '[]');
+            const idx = stored.findIndex(q => String(q.id) === String(oldId) || (q.author === newQuest.author && q.text === newQuest.text));
+            if (idx !== -1) {
+              stored[idx].id = cloudId;
+              localStorage.setItem('rfm_user_guild_comments', JSON.stringify(stored));
+            }
+          } catch(e) {}
+        }
+      }
     } catch (err) {
-
       console.warn('Failed to post comment to cloud, saved locally:', err);
-
     }
-
   }
 
   // Handle Form Submission (Pin New Quest Notice - Persistent Storage)
@@ -3644,154 +3668,7 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
-  // Rules Agreement Checkbox & Submit Button State Controller
-
-  guildRulesAgreeCheckbox = document.getElementById('guildRulesAgreeCheckbox');
-
-  guildSubmitBtn = document.getElementById('guildSubmitBtn') || document.querySelector('.guild-pin-submit-btn');
-
-  function updateGuildSubmitButtonState() {
-
-    if (!guildSubmitBtn) return;
-
-    const isChecked = Boolean(guildRulesAgreeCheckbox && guildRulesAgreeCheckbox.checked);
-
-    guildSubmitBtn.disabled = !isChecked;
-
-  }
-
-  if (guildRulesAgreeCheckbox) {
-
-    guildRulesAgreeCheckbox.addEventListener('change', () => {
-
-      updateGuildSubmitButtonState();
-
-      playSound('click');
-
-    });
-
-  }
-
-  // Handle Form Submission (Pin New Quest Notice - Persistent Storage)
-
-  if (guildMessageForm) {
-
-    guildMessageForm.addEventListener('submit', (e) => {
-
-      e.preventDefault();
-
-      if (guildRulesAgreeCheckbox && !guildRulesAgreeCheckbox.checked) {
-
-        playSound('toggle');
-
-        showToast('Harap centang persetujuan peraturan sebelum berkomentar!');
-
-        return;
-
-      }
-
-      const text = guildMessageInput.value.trim();
-
-      if (!text) return;
-
-      const isAnon = guildAnonCheckbox ? guildAnonCheckbox.checked : false;
-
-      let author = 'Guest';
-
-      if (!isAnon && guildAuthorInput && guildAuthorInput.value.trim()) {
-
-        author = guildAuthorInput.value.trim();
-
-      }
-
-      const avatarPool = ['rafzz', 'jmnz', 'guest', 'rafzz2', 'l1mx'];
-
-      const randomAvatar = isAnon ? 'guest' : avatarPool[Math.floor(Math.random() * avatarPool.length)];
-
-      const tilts = ['-0.8deg', '0.6deg', '-0.5deg', '0.8deg', '-0.7deg', '0.5deg'];
-
-      const randomTilt = tilts[Math.floor(Math.random() * tilts.length)];
-
-      const newQuest = {
-
-        id: Date.now(),
-
-        author: author,
-
-        time: 'Baru saja',
-
-        text: text,
-
-        baseLikes: 0,
-
-        likes: 0,
-
-        isLiked: false,
-
-        avatarType: randomAvatar,
-
-        hasRibbon: true,
-
-        sealType: 'wax',
-
-        tilt: randomTilt
-
-      };
-
-      // Prepend to persistent user quests (Never gets lost/deleted)
-
-      userQuests.unshift(newQuest);
-
-      try {
-
-        localStorage.setItem('rfm_user_guild_comments', JSON.stringify(userQuests));
-
-      } catch (err) {}
-
-      // Refresh combined list
-
-      questsList = getCompleteQuestsList();
-
-      // Reset to Page 1 so author immediately views their pinned notice
-
-      currentPage = 0;
-
-      renderQuestPages();
-
-      // Reset form & close modal
-
-      guildMessageForm.reset();
-
-      updateGuildSubmitButtonState();
-
-      if (guildAuthorInput) {
-
-        guildAuthorInput.disabled = false;
-
-        guildAuthorInput.placeholder = 'Nama Pengembara';
-
-        guildAuthorInput.style.opacity = '1';
-
-        guildAuthorInput.style.backgroundColor = '';
-
-      }
-
-      closeGuildModal();
-
-      // Victory sound and medieval toast
-
-      playSound('victory');
-
-      showToast(`📌 Pesan petualangmu berhasil tertancap di Papan Guild! ⚔️`);
-
-    });
-
-  }
-
-  // Initial render of Adventurer's Guild Quest Board & submit button state
-
   renderQuestPages();
-
   updateGuildSubmitButtonState();
 
   // -------------------------------------------------------------------------
