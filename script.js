@@ -1,4 +1,4 @@
-/**
+﻿/**
 
  * Refky Favian Mahardika - Portfolio Interactive Script
 
@@ -966,10 +966,31 @@ const themeToggle = document.getElementById('themeToggle');
     });
 
     if (npj) {
-      npj.onclick = () => {
-        const p = $('projects');
+      npj.onclick = async (e) => {
         if (typeof playSound === 'function') playSound('click');
-        if (p) p.scrollIntoView({ behavior: 'smooth' });
+        try {
+          e.preventDefault();
+          const href = npj.getAttribute('href');
+          const res = await fetch(href);
+          if (!res.ok) throw new Error('Fetch failed');
+          const blob = await res.blob();
+          const blobUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = 'CV Refky Favian Mahardika.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => window.URL.revokeObjectURL(blobUrl), 2000);
+        } catch (err) {
+          // Fallback direct download if fetch is blocked
+          const a = document.createElement('a');
+          a.href = npj.getAttribute('href');
+          a.download = 'CV Refky Favian Mahardika.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
       };
     }
 
@@ -1042,11 +1063,11 @@ const themeToggle = document.getElementById('themeToggle');
         return c;
       }
 
-      function cover(g, img) {
+      function cover(g, img, offsetY = 0) {
         const s = Math.max(S / img.naturalWidth, S / img.naturalHeight);
         const cw = img.naturalWidth * s;
         const ch = img.naturalHeight * s;
-        g.drawImage(img, (S - cw) / 2, (S - ch) / 2, cw, ch);
+        g.drawImage(img, (S - cw) / 2, (S - ch) / 2 + offsetY, cw, ch);
       }
 
       function mkPlace() {
@@ -1099,7 +1120,7 @@ const themeToggle = document.getElementById('themeToggle');
         const P = new Image();
         P.onload = function() {
           srcP = cv();
-          cover(srcP.getContext('2d'), P);
+          cover(srcP.getContext('2d'), P, 48);
           render();
         };
         P.onerror = function() {
@@ -4899,11 +4920,11 @@ const themeToggle = document.getElementById('themeToggle');
 
       {
 
-        t: 'Workspace & Coding',
+        t: 'Wisata Alam',
 
         s: 'Momen 04',
 
-        d: 'Fokus di depan layar, merangkai baris kode dan mengasah keterampilan programming.',
+        d: 'Menikmati kesegaran dan gemuruh air terjun alami yang mengalir di sela-sela tebing bebatuan yang asri.',
 
         bg: sc('#0b2d3f', '#58b6c9', 'rgb(6,24,36)', 'rgb(12,52,70)', 'rgba(220,250,255,.85)'),
 
@@ -4927,11 +4948,11 @@ const themeToggle = document.getElementById('themeToggle');
 
       {
 
-        t: 'Night Owl Coding',
+        t: 'Harmoni Musik Angklung',
 
         s: 'Momen 06',
 
-        d: 'Suasana tenang saat larut malam, ditemani laptop untuk eksplorasi dan riset ide digital baru.',
+        d: 'Menikmati kebersamaan dan alunan merdu musik tradisional angklung yang dimainkan secara kompak dan harmonis.',
 
         bg: sc('#0c183a', '#d97724', 'rgb(10,18,44)', 'rgb(24,36,78)', 'rgba(255,210,140,.9)'),
 

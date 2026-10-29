@@ -1402,7 +1402,8 @@ body.theme-day .theme-toggle .moon-icon {
   gap: 12px;
 }
 
-.ncd .nbt button {
+.ncd .nbt button,
+.ncd .nbt a {
   font-family: 'IM Fell English', Georgia, serif;
   font-weight: 700;
   font-size: 15px;
@@ -1412,15 +1413,23 @@ body.theme-day .theme-toggle .moon-icon {
   padding: 9px 18px;
   cursor: pointer;
   transition: all .2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
 }
 
-.ncd .nbt button:first-child {
+.ncd .nbt button:first-child,
+.ncd .nbt a:first-child {
   background: #14264f;
   color: #f5b73b;
   border-color: #c98a22;
 }
 
-.ncd .nbt button:hover, .ncd .nbt button:focus-visible {
+.ncd .nbt button:hover, .ncd .nbt button:focus-visible,
+.ncd .nbt a:hover, .ncd .nbt a:focus-visible {
   filter: brightness(1.2);
   outline: none;
 }
