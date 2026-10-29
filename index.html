@@ -442,7 +442,7 @@
       </a>
     </section>
 
-    <!-- ABOUT SECTION -->
+    <!-- ABOUT SECTION (Visual Novel & Character Profile) -->
     <section class="section about-section" id="about">
       <div class="section-container">
         <div class="section-header">
@@ -452,109 +452,97 @@
             <span class="star">✦</span>
             <span class="line"></span>
           </div>
-          <p class="section-subtitle">Character Profile &amp; Technical Attributes</p>
+          <p class="section-subtitle">Duduk sebentar di istana kerajaan, dan dengarkan kisah petualanganku. Klik kotak dialog untuk melanjutkan.</p>
         </div>
 
-        <div class="about-grid">
-          <!-- Character Card -->
-          <div class="pixel-card character-card">
-            <div class="card-header">
-              <div class="card-badge">
-                <span>CLASS: SOFTWARE</span>
-                <span>ARTISAN</span>
-              </div>
-              <div class="card-hp">
-                <span>EXP 24+</span>
-                <span>PROJECTS</span>
-              </div>
-            </div>
+        <div class="pc vnf" id="vnf">
+          <div class="vnw" id="vnw" data-m="story">
             
-            <div class="avatar-frame">
-              <div class="pixel-avatar-art">
-                <img src="Assets/Images/foto-about-me.jpg" alt="Refky Favian Mahardika" class="avatar-real-photo">
+            <!-- Story Mode: Visual Novel -->
+            <div class="vnv" id="vnv">
+              <div class="bgl b1" id="b1"></div>
+              <div class="bgl b2" id="b2"></div>
+              <div class="vnb" id="vnb"></div>
+              <div class="swc">
+                <canvas class="swd" id="swd" width="16" height="64" aria-hidden="true"></canvas>
               </div>
-              <div class="avatar-title">
-                <h3>Refky Favian Mahardika</h3>
-                <span class="avatar-class">Web &amp; Mobile Developer</span>
-              </div>
-            </div>
-
-            <!-- RPG Stats Bars -->
-            <div class="character-stats">
-              <div class="stat-row">
-                <span class="stat-name">WEB DEV</span>
-                <div class="stat-bar"><div class="stat-fill fill-int" style="width: 92%;"></div></div>
-                <span class="stat-val">92%</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-name">MOBILE DEV</span>
-                <div class="stat-bar"><div class="stat-fill fill-dex" style="width: 88%;"></div></div>
-                <span class="stat-val">88%</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-name">BACKEND &amp; DATABASE</span>
-                <div class="stat-bar"><div class="stat-fill fill-wis" style="width: 85%;"></div></div>
-                <span class="stat-val">85%</span>
-              </div>
-              <div class="stat-row">
-                <span class="stat-name">UI/UX &amp; CREATIVITY</span>
-                <div class="stat-bar"><div class="stat-fill fill-sta" style="width: 94%;"></div></div>
-                <span class="stat-val">94%</span>
+              
+              <div class="vnd" id="vnd">
+                <div class="vnn">
+                  <b class="shd"></b>
+                  <span>REFKY FAVIAN MAHARDIKA</span>
+                </div>
+                <div class="vnt"><p id="vtx"></p></div>
+                <span class="vnm" id="vnm">&#9660;</span>
+                <div class="vnc">
+                  <button id="vpv" type="button">&#9664;</button>
+                  <span id="vpg"></span>
+                  <button id="vnx" type="button">Lanjut &#9654;</button>
+                </div>
               </div>
             </div>
 
-            <div class="character-footer">
-              <span class="equipped-item">Equipped: 💻 SMKN 13 RPL + VS Code</span>
+            <!-- Normal Mode: Character Profile Card & Portrait -->
+            <div class="nrm" id="nrm">
+              <div class="nin">
+                
+                <div class="nfm">
+                  <div class="nfr" id="nfr">
+                    <canvas class="pmain" id="pmain" width="360" height="360" role="img" aria-label="Potret"></canvas>
+                    <button class="pmed" id="pmed" type="button" aria-label="Tukar foto antara avatar dan foto asli">
+                      <canvas id="pmc" width="120" height="120"></canvas>
+                      <i>&#8644;</i>
+                    </button>
+                    <i class="cn a"></i>
+                    <i class="cn b"></i>
+                    <i class="cn c"></i>
+                    <i class="cn d"></i>
+                  </div>
+                  <div class="nnm">
+                    <img src="Assets/Images/nameplate_banner.png" alt="Nameplate Banner">
+                    <span>Refky Favian Mahardika</span>
+                  </div>
+                </div>
+
+                <div class="ncd" id="ncd">
+                  <i class="cn a"></i>
+                  <i class="cn b"></i>
+                  <i class="cn c"></i>
+                  <i class="cn d"></i>
+                  <small>PETUALANG KODE</small>
+                  <h3>Tentang Aku</h3>
+                  <div class="dvd"></div>
+                  <p>
+                    Halo! Saya seorang siswa SMK jurusan <strong>Rekayasa Perangkat Lunak</strong> di <strong>SMKN 13 Bandung</strong> yang memiliki ketertarikan besar di dunia pengembangan web dan mobile application. Saya senang membangun aplikasi yang fungsional, tangguh, dan nyaman digunakan.
+                  </p>
+                  <p>
+                    Fokus saya saat ini adalah mempelajari dan mengembangkan proyek menggunakan <strong>Laravel</strong>, <strong>Flutter</strong>, dan teknologi modern lainnya. Bagi saya, coding bukan cuma sekadar baris kode, tapi tentang bagaimana ide bisa diwujudkan menjadi sesuatu yang nyata dan berguna.
+                  </p>
+                  <div class="chp">
+                    <i>Laravel</i>
+                    <i>Flutter &amp; Dart</i>
+                    <i>PHP</i>
+                    <i>JavaScript</i>
+                    <i>MySQL</i>
+                    <i>React</i>
+                    <i>Python</i>
+                    <i>HTML5 &amp; CSS3</i>
+                    <i>Firebase</i>
+                    <i>Bootstrap</i>
+                    <i>UI/UX Design</i>
+                    <i>Git &amp; GitHub</i>
+                  </div>
+                  <div class="nbt">
+                    <button id="npj" type="button">Lihat Proyek &#9654;</button>
+                    <button id="nrp" type="button">&#8634; Putar Ulang Cerita</button>
+                  </div>
+                </div>
+
+              </div>
             </div>
+
           </div>
-
-          <!-- Bio and Skills Column -->
-          <div class="bio-column">
-            <!-- Story Card -->
-            <div class="pixel-card bio-card">
-              <h3 class="card-heading">THE QUEST LOG</h3>
-              <p class="bio-paragraph">
-                Halo! Saya seorang siswa SMK jurusan <strong>Rekayasa Perangkat Lunak</strong> di <strong>SMKN 13 Bandung</strong> yang memiliki ketertarikan besar di dunia pengembangan web dan mobile application. Saya senang membangun aplikasi yang fungsional, tangguh, dan nyaman digunakan.
-              </p>
-              <p class="bio-paragraph">
-                Fokus saya saat ini adalah mempelajari dan mengembangkan proyek menggunakan <strong>Laravel</strong>, <strong>Flutter</strong>, dan teknologi modern lainnya. Bagi saya, coding bukan cuma sekadar baris kode, tapi tentang bagaimana ide bisa diwujudkan menjadi sesuatu yang nyata dan berguna.
-              </p>
-              <div class="bio-highlights">
-                <div class="highlight-box">
-                  <span class="highlight-number">24+</span>
-                  <span class="highlight-desc">Personal Projects</span>
-                </div>
-                <div class="highlight-box">
-                  <span class="highlight-number">RPL</span>
-                  <span class="highlight-desc">SMKN 13 Bandung</span>
-                </div>
-                <div class="highlight-box">
-                  <span class="highlight-number">Full</span>
-                  <span class="highlight-desc">Frontend &amp; Backend</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Skill Tree Card -->
-            <div class="pixel-card skills-card">
-              <h3 class="card-heading">TECH STACK &amp; INVENTORY</h3>
-              <div class="skills-tags">
-                <span class="skill-tag">Laravel</span>
-                <span class="skill-tag">Flutter &amp; Dart</span>
-                <span class="skill-tag">PHP</span>
-                <span class="skill-tag">JavaScript</span>
-                <span class="skill-tag">MySQL</span>
-                <span class="skill-tag">React</span>
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">HTML5 &amp; CSS3</span>
-                <span class="skill-tag">Firebase</span>
-                <span class="skill-tag">Bootstrap</span>
-                <span class="skill-tag">UI/UX Design</span>
-                <span class="skill-tag">Git &amp; GitHub</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- /.about-grid -->
+        </div>
       </div>
     </section>
 

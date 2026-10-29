@@ -789,7 +789,405 @@ const themeToggle = document.getElementById('themeToggle');
 
     // -------------------------------------------------------------------------
 
-  // 7. RPG Interactive Quest Map (Pixel Island Adventure)
+    // -------------------------------------------------------------------------
+  // 6.5. Visual Novel & Knight Character Profile Controller (About Me)
+  // -------------------------------------------------------------------------
+  (function initAboutVisualNovel() {
+    const $ = function(i) { return document.getElementById(i); };
+    const w = $('vnw');
+    const v = $('vnv');
+    const vnf = $('vnf');
+    const tx = $('vtx');
+    const mk = $('vnm');
+    const pg = $('vpg');
+    const pv = $('vpv');
+    const nx = $('vnx');
+    const vb = $('vnb');
+    const vnd = $('vnd');
+    const npj = $('npj');
+    const nrp = $('nrp');
+
+    if (!w || !v || !tx) return;
+
+    // Golden decorative frame
+    const FR = '<span class="o tl"></span><span class="o tr"></span><span class="o bl"></span><span class="o br"></span><span class="o ts"></span><span class="o bs"></span><span class="o gt"></span><span class="o gb"></span><span class="o gl"></span><span class="o gr"></span>';
+    if (vnf) vnf.insertAdjacentHTML('afterbegin', FR);
+
+    // Pixel sword sprite in .swc canvas
+    const swd = $('swd');
+    if (swd) {
+      const g = swd.getContext('2d');
+      function rc(x, y, sw, sh, c) { g.fillStyle = c; g.fillRect(x, y, sw, sh); }
+      rc(7, 0, 2, 1, '#ffffff');
+      rc(7, 1, 2, 2, '#e8edf7');
+      rc(6, 3, 4, 41, '#c0262d');
+      rc(6, 3, 1, 41, '#e8edf7');
+      rc(9, 3, 1, 41, '#8f9ab5');
+      rc(1, 44, 14, 3, '#f5b73b');
+      rc(1, 44, 2, 3, '#c98a22');
+      rc(13, 44, 2, 3, '#c98a22');
+      rc(6, 47, 4, 9, '#7d1a20');
+      rc(6, 50, 4, 1, '#3a0f12');
+      rc(6, 53, 4, 1, '#3a0f12');
+      rc(5, 56, 6, 4, '#f5b73b');
+      rc(5, 59, 6, 1, '#c98a22');
+    }
+
+    // Sparkles & Castle ambient dust
+    for (let k = 0; k < 18; k++) {
+      const s = document.createElement('i');
+      s.className = 'tw';
+      s.style.left = (Math.random() * 98) + '%';
+      s.style.top = (Math.random() * 46) + '%';
+      s.style.animationDelay = (Math.random() * 2.4) + 's';
+      v.appendChild(s);
+    }
+    for (let k = 0; k < 12; k++) {
+      const f = document.createElement('i');
+      f.className = 'fl';
+      f.style.left = (5 + Math.random() * 90) + '%';
+      f.style.top = (52 + Math.random() * 38) + '%';
+      f.style.animationDelay = (Math.random() * 6) + 's';
+      v.appendChild(f);
+    }
+
+    // Story Dialogues
+    const L = [
+      {
+        t: 'Halo! Saya seorang siswa SMK jurusan Rekayasa Perangkat Lunak di SMKN 13 Bandung yang memiliki ketertarikan besar di dunia pengembangan web dan mobile application.',
+        g: ['RPL', 'SMKN 13 Bandung']
+      },
+      {
+        t: 'Saya senang membangun aplikasi yang fungsional, tangguh, dan nyaman digunakan.',
+        g: ['Fungsional', 'Tangguh', 'Nyaman digunakan']
+      },
+      {
+        t: 'Fokus saya saat ini adalah mempelajari dan mengembangkan proyek menggunakan Laravel, Flutter, dan teknologi modern lainnya.',
+        g: ['Laravel', 'Flutter', 'Web', 'Mobile']
+      },
+      {
+        t: 'Bagi saya, coding bukan cuma sekadar baris kode, tapi tentang bagaimana ide bisa diwujudkan menjadi sesuatu yang nyata dan berguna.',
+        g: ['Ide ▸ Nyata']
+      }
+    ];
+
+    let i = 0;
+    let typing = false;
+    let timer = null;
+    let pose = 'idle';
+
+    function tags(g) {
+      if (!vb) return;
+      vb.innerHTML = (g || []).map((t, n) => '<i style="animation-delay:' + (n * 0.12) + 's">' + t + '</i>').join('');
+    }
+
+    function fin() {
+      clearInterval(timer);
+      tx.textContent = L[i].t;
+      typing = false;
+      if (mk) mk.classList.add('on');
+    }
+
+    function setPose(p) {
+      if (p === pose) return;
+      pose = p;
+      v.classList.toggle('up', p === 'up');
+      if (p === 'up') {
+        v.classList.remove('fx');
+        void v.offsetWidth;
+        v.classList.add('fx');
+        if (typeof playSound === 'function') playSound('victory');
+      }
+    }
+
+    function show(n) {
+      i = n;
+      clearInterval(timer);
+      const s = L[n].t;
+      let c = 0;
+      tx.textContent = '';
+      typing = true;
+      if (mk) mk.classList.remove('on');
+      if (pg) pg.textContent = (n + 1) + ' / ' + L.length;
+      if (pv) pv.disabled = (n === 0);
+      if (nx) nx.textContent = (n === L.length - 1) ? 'Selesai ▶' : 'Lanjut ▶';
+      tags(L[n].g);
+      setPose(n === L.length - 1 ? 'up' : 'idle');
+
+      timer = setInterval(() => {
+        c++;
+        tx.textContent = s.slice(0, c);
+        if (c % 3 === 0 && typeof playSound === 'function') {
+          playSound('blip');
+        }
+        if (c >= s.length) {
+          fin();
+        }
+      }, 22);
+    }
+
+    function nxt() {
+      if (typing) {
+        fin();
+        return;
+      }
+      if (i < L.length - 1) {
+        if (typeof playSound === 'function') playSound('click');
+        show(i + 1);
+      } else {
+        if (typeof playSound === 'function') playSound('unroll');
+        setMode('norm');
+      }
+    }
+
+    function setMode(m) {
+      const n = $('nrm');
+      if (!w || !n || !v) return;
+      const from = w.offsetHeight;
+      w.dataset.m = m;
+      const to = (m === 'norm') ? n.offsetHeight : v.offsetHeight;
+      w.style.height = from + 'px';
+      w.offsetHeight; // force reflow
+      w.style.height = to + 'px';
+
+      if (m === 'story') {
+        clearInterval(timer);
+        tx.textContent = '';
+        tags([]);
+        setTimeout(() => {
+          w.style.height = '';
+          show(0);
+        }, 650);
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      const n = $('nrm');
+      if (w && w.dataset.m === 'norm' && n) {
+        w.style.height = n.offsetHeight + 'px';
+      }
+    });
+
+    if (npj) {
+      npj.onclick = () => {
+        const p = $('projects');
+        if (typeof playSound === 'function') playSound('click');
+        if (p) p.scrollIntoView({ behavior: 'smooth' });
+      };
+    }
+
+    if (nrp) {
+      nrp.onclick = () => {
+        if (typeof playSound === 'function') playSound('unroll');
+        setMode('story');
+      };
+    }
+
+    if (nx) {
+      nx.onclick = (e) => {
+        e.stopPropagation();
+        nxt();
+      };
+    }
+
+    if (pv) {
+      pv.onclick = (e) => {
+        e.stopPropagation();
+        if (i > 0) {
+          if (typeof playSound === 'function') playSound('click');
+          show(i - 1);
+        }
+      };
+    }
+
+    if (vnd) {
+      vnd.addEventListener('click', nxt);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!w || w.dataset.m !== 'story') return;
+      const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (['input', 'textarea'].includes(tag) || (document.activeElement && document.activeElement.isContentEditable)) return;
+      const r = v.getBoundingClientRect();
+      if (r.bottom < 80 || r.top > window.innerHeight - 80) return;
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        nxt();
+      } else if (e.key === 'ArrowLeft' && i > 0 && !typing) {
+        if (typeof playSound === 'function') playSound('click');
+        show(i - 1);
+      }
+    });
+
+    // -------------------------------------------------------------
+    // Portrait Pixelation Engine & Photo Swapping
+    // -------------------------------------------------------------
+    function initPortrait() {
+      const PHOTO = 'Assets/Images/foto-about-me.jpg';
+      const S = 360, M = 120;
+      const main = $('pmain');
+      const med = $('pmc');
+      const pmed = $('pmed');
+      if (!main || !med) return;
+
+      const mc = main.getContext('2d');
+      const dc = med.getContext('2d');
+      let face = 'k';
+      let busy = false;
+      let srcK = null;
+      let srcP = null;
+      const KI = new Image();
+      const tmp = document.createElement('canvas');
+      const tc = tmp.getContext('2d');
+
+      function cv() {
+        const c = document.createElement('canvas');
+        c.width = c.height = S;
+        return c;
+      }
+
+      function cover(g, img) {
+        const s = Math.max(S / img.naturalWidth, S / img.naturalHeight);
+        const cw = img.naturalWidth * s;
+        const ch = img.naturalHeight * s;
+        g.drawImage(img, (S - cw) / 2, (S - ch) / 2, cw, ch);
+      }
+
+      function mkPlace() {
+        const c = cv();
+        const g = c.getContext('2d');
+        g.fillStyle = '#0b1a3d';
+        g.fillRect(0, 0, S, S);
+        g.strokeStyle = 'rgba(245,183,59,.12)';
+        for (let x = 0; x < S; x += 24) {
+          g.beginPath(); g.moveTo(x, 0); g.lineTo(x, S); g.stroke();
+          g.beginPath(); g.moveTo(0, x); g.lineTo(S, x); g.stroke();
+        }
+        g.fillStyle = '#1d3f80';
+        for (let y = 70; y < 200; y += 12) {
+          for (let x = 100; x < 260; x += 12) {
+            let dx = (x + 6 - 180) / 78, dy = (y + 6 - 135) / 68;
+            if (dx * dx + dy * dy <= 1) g.fillRect(x, y, 11, 11);
+          }
+        }
+        for (let y = 214; y < S; y += 12) {
+          for (let x = 30; x < 330; x += 12) {
+            let ex = (x + 6 - 180) / 160, ey = (y + 6 - 330) / 118;
+            if (ex * ex + ey * ey <= 1) g.fillRect(x, y, 11, 11);
+          }
+        }
+        g.fillStyle = '#f5b73b';
+        g.font = 'bold 22px "Courier Prime", monospace';
+        g.textAlign = 'center';
+        g.fillText('REFKY FAVIAN', 180, 50);
+        return c;
+      }
+
+      function render() {
+        mc.imageSmoothingEnabled = true;
+        dc.imageSmoothingEnabled = true;
+        mc.clearRect(0, 0, S, S);
+        dc.clearRect(0, 0, M, M);
+        if (srcK && srcP) {
+          mc.drawImage(face === 'k' ? srcK : srcP, 0, 0);
+          dc.drawImage(face === 'k' ? srcP : srcK, 0, 0, S, S, 0, 0, M, M);
+        }
+      }
+
+      function build() {
+        srcK = cv();
+        const g = srcK.getContext('2d');
+        const sc = KI.naturalWidth / 1671;
+        g.drawImage(KI, 470 * sc, 40 * sc, 580 * sc, 560 * sc, 0, 0, S, S);
+
+        const P = new Image();
+        P.onload = function() {
+          srcP = cv();
+          cover(srcP.getContext('2d'), P);
+          render();
+        };
+        P.onerror = function() {
+          srcP = mkPlace();
+          render();
+        };
+        P.src = PHOTO;
+        srcP = mkPlace();
+        render();
+      }
+
+      function pix(ctx, src, width, pxVal) {
+        const n = Math.max(4, Math.round(width / pxVal));
+        tmp.width = tmp.height = n;
+        tc.imageSmoothingEnabled = true;
+        tc.drawImage(src, 0, 0, n, n);
+        ctx.imageSmoothingEnabled = false;
+        ctx.clearRect(0, 0, width, width);
+        ctx.drawImage(tmp, 0, 0, n, n, 0, 0, width, width);
+      }
+
+      function swap() {
+        if (busy || !srcK || !srcP) return;
+        busy = true;
+        if (pmed) pmed.classList.remove('hint');
+        if (typeof playSound === 'function') playSound('victory');
+        const t0 = performance.now();
+        const D = 750;
+        let sw = false;
+
+        function step(now) {
+          const t = Math.min(1, (now - t0) / D);
+          const p = 1 - Math.abs(2 * t - 1);
+          const pxVal = 1 + p * p * 44;
+          if (t >= 0.5 && !sw) {
+            sw = true;
+            face = face === 'k' ? 'p' : 'k';
+          }
+          pix(mc, face === 'k' ? srcK : srcP, S, pxVal);
+          pix(dc, face === 'k' ? srcP : srcK, M, pxVal * 0.34 + 1);
+          if (t < 1) {
+            requestAnimationFrame(step);
+          } else {
+            render();
+            busy = false;
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      if (pmed) pmed.onclick = swap;
+      KI.onload = build;
+      KI.src = 'Assets/Images/ksatria.png';
+    }
+
+    initPortrait();
+
+    let hasStarted = false;
+    function startStoryOnce() {
+      if (!hasStarted) {
+        hasStarted = true;
+        show(0);
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          startStoryOnce();
+          io.disconnect();
+        }
+      }, { threshold: 0.1 });
+      io.observe(v);
+    } else {
+      startStoryOnce();
+    }
+
+    document.querySelectorAll('a[href="#about"]').forEach(a => {
+      a.addEventListener('click', () => {
+        setTimeout(startStoryOnce, 250);
+      });
+    });
+  })();
+
+// 7. RPG Interactive Quest Map (Pixel Island Adventure)
 
   // -------------------------------------------------------------------------
 
