@@ -1,4 +1,4 @@
-﻿/**
+/**
 
  * Refky Favian Mahardika - Portfolio Interactive Script
 
@@ -5772,8 +5772,6 @@ const themeToggle = document.getElementById('themeToggle');
 
   let isMascotsEnabled = localStorage.getItem('portfolio_mascots_active') !== 'false';
 
-  let isParticlesEnabled = localStorage.getItem('rfm_particles_active') !== 'false';
-
   let isToastAudioEnabled = localStorage.getItem('rfm_toast_sound') !== 'false';
 
   // Modal Open & Close Handlers
@@ -6188,58 +6186,6 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
-  // Star Particles Switch (Appearance Tab)
-
-  const btnToggleParticles = document.getElementById('btnToggleParticles');
-
-  const rowToggleParticles = document.getElementById('rowToggleParticles');
-
-  function toggleParticlesAction() {
-
-    playSound('toggle');
-
-    isParticlesEnabled = !isParticlesEnabled;
-
-    localStorage.setItem('rfm_particles_active', isParticlesEnabled);
-
-    setSwitchUI(btnToggleParticles, isParticlesEnabled);
-
-    const starsLayer = document.querySelector('.stars-layer, .sky-stars, #stars');
-
-    if (starsLayer) {
-
-      starsLayer.style.display = isParticlesEnabled ? '' : 'none';
-
-    }
-
-  }
-
-  if (btnToggleParticles) {
-
-    btnToggleParticles.addEventListener('click', (e) => {
-
-      e.stopPropagation();
-
-      toggleParticlesAction();
-
-    });
-
-  }
-
-  if (rowToggleParticles) {
-
-    rowToggleParticles.addEventListener('click', (e) => {
-
-      if (e.target !== btnToggleParticles && !btnToggleParticles.contains(e.target)) {
-
-        toggleParticlesAction();
-
-      }
-
-    });
-
-  }
-
   // Settings Modal Opacity Slider (Appearance Tab)
 
   const settingModalOpacity = document.getElementById('settingModalOpacity');
@@ -6254,7 +6200,15 @@ const themeToggle = document.getElementById('themeToggle');
 
     if (modalDialog) {
 
-      modalDialog.style.opacity = (val / 100);
+      modalDialog.style.opacity = '1';
+
+    }
+
+    const paperBg = document.getElementById('parchmentPaperBg');
+
+    if (paperBg) {
+
+      paperBg.style.opacity = (val / 100);
 
     }
 
@@ -6416,61 +6370,57 @@ const themeToggle = document.getElementById('themeToggle');
 
       labelLanguage: 'Bahasa',
 
-      labelDarkMode: '🌙 Mode Gelap (Dark Mode)',
+      labelDarkMode: 'Mode Gelap (Dark Mode)',
 
       subDarkMode: 'Beralih antara malam kastil berbintang dan siang hari.',
 
-      labelDragon: '🐉 Kursor Naga (Dragon Cursor)',
+      labelDragon: 'Kursor Naga (Dragon Cursor)',
 
       subDragon: 'Efek naga terbang & semburan api pada kursor mouse.',
 
-      labelMascots: '🛡️ Penjaga Kastil (Castle Mascots)',
+      labelMascots: 'Penjaga Kastil (Castle Mascots)',
 
       subMascots: 'Karakter pixel prajurit & penyihir di pojok layar.',
 
-      labelParticles: '✨ Bintang Kelap-Kelip',
-
-      subParticles: 'Efek partikel kelap-kelip di langit malam.',
-
-      labelOpacity: '📜 Transparansi Kertas Pengaturan',
+      labelOpacity: 'Transparansi Kertas Pengaturan',
 
       subOpacity: 'Turunkan transparansi agar kamu bisa melihat kastil di balik gulungan pengaturan.',
 
-      labelBgm: '🎵 Musik Latar Kerajaan (BGM)',
+      labelBgm: 'Musik Latar Kerajaan (BGM)',
 
       subBgm: 'Putar alunan instrumen musik saat menjelajahi portofolio.',
 
       labelTrack: 'Pilihan Lagu / Musik',
 
-      labelShuffle: '🔀 Acak Lagu (Shuffle Mode)',
+      labelShuffle: 'Acak Lagu (Shuffle Mode)',
 
       subShuffle: 'Putar lagu berikutnya secara acak otomatis dari daftar lagu.',
 
-      btnShuffleNow: '🎲 Acak Lagu Sekarang',
+      btnShuffleNow: 'Acak Lagu Sekarang',
 
-      previewTitle: '🎧 Pratinjau Lagu',
+      previewTitle: 'Pratinjau Lagu',
 
       btnPreviewPlay: 'Play Preview',
 
-      labelVolume: '🔊 Volume Musik:',
+      labelVolume: 'Volume Musik:',
 
-      labelSfx: '🔊 Efek Suara (SFX)',
+      labelSfx: 'Efek Suara (SFX)',
 
       subSfx: 'Efek suara tombol, gulungan, dan interaksi 8-bit.',
 
-      btnTestSfx: '🔔 Uji Efek Suara (SFX)',
+      btnTestSfx: 'Uji Efek Suara (SFX)',
 
-      labelToast: '💬 Notifikasi Banner (Toast Popup)',
+      labelToast: 'Notifikasi Banner (Toast Popup)',
 
       subToast: 'Tampilkan pesan pop-up informasi di bagian atas layar.',
 
-      labelToastAudio: '🔔 Lonceng Notifikasi',
+      labelToastAudio: 'Lonceng Notifikasi',
 
       subToastAudio: 'Bunyikan lonceng setiap kali notifikasi toast muncul.',
 
       saveChanges: 'Simpan Perubahan',
 
-      savedToast: '💾 Pengaturan berhasil disimpan!'
+      savedToast: 'Pengaturan berhasil disimpan!'
 
     },
 
@@ -6506,61 +6456,57 @@ const themeToggle = document.getElementById('themeToggle');
 
       labelLanguage: 'Language',
 
-      labelDarkMode: '🌙 Dark Mode',
+      labelDarkMode: 'Dark Mode',
 
       subDarkMode: 'Switch between starry castle night and daylight mode.',
 
-      labelDragon: '🐉 Dragon Cursor',
+      labelDragon: 'Dragon Cursor',
 
       subDragon: 'Flying dragon & flame burst effects on your mouse cursor.',
 
-      labelMascots: '🛡️ Castle Mascots',
+      labelMascots: 'Castle Mascots',
 
       subMascots: 'Pixel knights & wizards guarding screen corners.',
 
-      labelParticles: '✨ Twinkling Stars',
-
-      subParticles: 'Twinkling star particle effects in the night sky.',
-
-      labelOpacity: '📜 Settings Scroll Transparency',
+      labelOpacity: 'Settings Scroll Transparency',
 
       subOpacity: 'Lower opacity to see the castle background behind the settings scroll.',
 
-      labelBgm: '🎵 Background Music (BGM)',
+      labelBgm: 'Background Music (BGM)',
 
       subBgm: 'Play instrumental melodies while exploring the portfolio.',
 
       labelTrack: 'Select Track / Music',
 
-      labelShuffle: '🔀 Shuffle Mode',
+      labelShuffle: 'Shuffle Mode',
 
       subShuffle: 'Automatically play next track randomly from the playlist.',
 
-      btnShuffleNow: '🎲 Shuffle Track Now',
+      btnShuffleNow: 'Shuffle Track Now',
 
-      previewTitle: '🎧 Track Preview',
+      previewTitle: 'Track Preview',
 
       btnPreviewPlay: 'Play Preview',
 
-      labelVolume: '🔊 Music Volume:',
+      labelVolume: 'Music Volume:',
 
-      labelSfx: '🔊 Sound Effects (SFX)',
+      labelSfx: 'Sound Effects (SFX)',
 
       subSfx: 'Button clicks, parchment rolls, and 8-bit interaction sounds.',
 
-      btnTestSfx: '🔔 Test Sound Effects (SFX)',
+      btnTestSfx: 'Test Sound Effects (SFX)',
 
-      labelToast: '💬 Banner Notifications (Toast Popup)',
+      labelToast: 'Banner Notifications (Toast Popup)',
 
       subToast: 'Display informational pop-up banners at top of screen.',
 
-      labelToastAudio: '🔔 Notification Chime',
+      labelToastAudio: 'Notification Chime',
 
       subToastAudio: 'Play chime sound whenever a toast notification appears.',
 
       saveChanges: 'Save Changes',
 
-      savedToast: '💾 Settings saved successfully!'
+      savedToast: 'Settings saved successfully!'
 
     }
 
@@ -7592,7 +7538,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       const currentLang = localStorage.getItem('rfm_language') || 'id';
 
-      showToast(i18n[currentLang] ? i18n[currentLang].savedToast : '💾 Pengaturan berhasil disimpan!');
+      showToast(i18n[currentLang] ? i18n[currentLang].savedToast : 'Pengaturan berhasil disimpan!');
 
       setTimeout(() => {
 
@@ -7615,8 +7561,6 @@ const themeToggle = document.getElementById('themeToggle');
     updateSoundSwitchUI();
 
     updateThemeSwitchUI();
-
-    setSwitchUI(btnToggleParticles, isParticlesEnabled);
 
     setSwitchUI(btnToggleToast, isToastEnabled);
 

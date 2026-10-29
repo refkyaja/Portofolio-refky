@@ -6715,6 +6715,20 @@ body.settings-open .dock {
 /* Parchment Main Sheet */
 .scroll-parchment-sheet {
   flex: 1;
+  background: transparent;
+  padding: 24px 38px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+/* Dedicated Parchment Paper Background that can fade independently */
+.parchment-paper-bg {
+  position: absolute;
+  inset: 0;
   background-color: #f7e7c4;
   background-image: 
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .28 0 0 0 0 .1 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
@@ -6725,17 +6739,14 @@ body.settings-open .dock {
   box-shadow: 
     inset 0 0 55px rgba(125, 75, 20, 0.32), 
     inset 0 3px 8px rgba(0, 0, 0, 0.3);
-  padding: 24px 38px 20px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 3;
-  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.15s ease;
 }
 
 /* Torn / Deckled Edge Accents on Top & Bottom */
-.scroll-parchment-sheet::before,
-.scroll-parchment-sheet::after {
+.parchment-paper-bg::before,
+.parchment-paper-bg::after {
   content: '';
   position: absolute;
   left: 0;
@@ -6750,14 +6761,15 @@ body.settings-open .dock {
   opacity: 0.7;
   pointer-events: none;
 }
-.scroll-parchment-sheet::before { top: 0; }
-.scroll-parchment-sheet::after { bottom: 0; }
+.parchment-paper-bg::before { top: 0; }
+.parchment-paper-bg::after { bottom: 0; }
 
 /* Header Banner */
 .settings-scroll-header {
   text-align: center;
   margin-bottom: 14px;
   position: relative;
+  z-index: 2;
 }
 
 .settings-winged-crest {
@@ -6791,6 +6803,8 @@ body.settings-open .dock {
   flex: 1;
   min-height: 0;
   margin-top: 6px;
+  position: relative;
+  z-index: 2;
 }
 
 /* Left Sidebar */

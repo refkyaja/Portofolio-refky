@@ -91,6 +91,8 @@
 
       <!-- Main Parchment Body -->
       <div class="scroll-parchment-sheet">
+        <!-- Dedicated Parchment Paper Background that can fade independently -->
+        <div class="parchment-paper-bg" id="parchmentPaperBg"></div>
         
         <!-- Header Banner with Winged Crest -->
         <div class="settings-scroll-header">
@@ -113,22 +115,18 @@
           <!-- Left Sidebar Tabs -->
           <nav class="settings-sidebar" aria-label="Settings Categories">
             <button type="button" class="settings-tab-btn active" data-tab="general" id="tabBtnGeneral">
-              <span class="tab-icon">⚙️</span>
               <span class="tab-label" data-i18n="tabGeneral">General</span>
               <span class="tab-arrow">▸</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="appearance" id="tabBtnAppearance">
-              <span class="tab-icon">🎨</span>
               <span class="tab-label" data-i18n="tabAppearance">Appearance</span>
               <span class="tab-arrow">▸</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="audio" id="tabBtnAudio">
-              <span class="tab-icon">🎵</span>
               <span class="tab-label" data-i18n="tabAudio">Music &amp; Audio</span>
               <span class="tab-arrow">▸</span>
             </button>
             <button type="button" class="settings-tab-btn" data-tab="notifications" id="tabBtnNotifications">
-              <span class="tab-icon">🔔</span>
               <span class="tab-label" data-i18n="tabNotifications">Notifications</span>
               <span class="tab-arrow">▸</span>
             </button>
@@ -140,14 +138,13 @@
             <!-- Tab Panel 1: General -->
             <div class="settings-tab-panel active" id="tabPanelGeneral" role="tabpanel">
               <div class="panel-heading-row">
-                <span class="panel-title-icon">⚙️</span>
                 <h3 class="panel-title" data-i18n="tabGeneral">General</h3>
               </div>
 
               <!-- Sound Effects Switch -->
               <div class="settings-switch-row" id="rowToggleSound">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelSfx">🔊 Sound Effects</span>
+                  <span class="switch-row-label" data-i18n="labelSfx">Sound Effects</span>
                   <span class="switch-row-sub" data-i18n="subSfx">Enable or disable interactive sound effects.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleSound" role="switch" aria-checked="true" aria-label="Toggle Sound Effects">
@@ -159,14 +156,13 @@
             <!-- Tab Panel 2: Appearance -->
             <div class="settings-tab-panel" id="tabPanelAppearance" role="tabpanel">
               <div class="panel-heading-row">
-                <span class="panel-title-icon">🎨</span>
                 <h3 class="panel-title" data-i18n="tabAppearance">Appearance</h3>
               </div>
 
               <!-- Dark / Night Mode -->
               <div class="settings-switch-row" id="rowToggleTheme">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelDarkMode">🌙 Dark Mode</span>
+                  <span class="switch-row-label" data-i18n="labelDarkMode">Dark Mode</span>
                   <span class="switch-row-sub" data-i18n="subDarkMode">Switch between castle night and daylight mode.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleTheme" role="switch" aria-checked="true" aria-label="Toggle Dark Mode">
@@ -177,7 +173,7 @@
               <!-- Kursor Naga -->
               <div class="settings-switch-row" id="rowToggleDragon">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelDragon">🐉 Kursor Naga (Dragon Cursor)</span>
+                  <span class="switch-row-label" data-i18n="labelDragon">Kursor Naga (Dragon Cursor)</span>
                   <span class="switch-row-sub" data-i18n="subDragon">Efek naga terbang &amp; semburan api pada kursor mouse.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleDragon" role="switch" aria-checked="true" aria-label="Toggle Kursor Naga">
@@ -188,21 +184,10 @@
               <!-- Penjaga Kastil -->
               <div class="settings-switch-row" id="rowToggleMascots">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelMascots">🛡️ Penjaga Kastil (Castle Mascots)</span>
+                  <span class="switch-row-label" data-i18n="labelMascots">Penjaga Kastil (Castle Mascots)</span>
                   <span class="switch-row-sub" data-i18n="subMascots">Karakter pixel prajurit &amp; penyihir di pojok layar.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleMascots" role="switch" aria-checked="true" aria-label="Toggle Penjaga Kastil">
-                  <span class="switch-track"><span class="switch-knob"></span></span>
-                </button>
-              </div>
-
-              <!-- Star Particles -->
-              <div class="settings-switch-row" id="rowToggleParticles">
-                <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelParticles">✨ Bintang Kelap-Kelip</span>
-                  <span class="switch-row-sub" data-i18n="subParticles">Efek partikel kelap-kelip di langit malam.</span>
-                </div>
-                <button type="button" class="parchment-switch active" id="btnToggleParticles" role="switch" aria-checked="true" aria-label="Toggle Bintang Kelap-Kelip">
                   <span class="switch-track"><span class="switch-knob"></span></span>
                 </button>
               </div>
@@ -211,7 +196,7 @@
               <div class="settings-field-group" style="margin-top: 15px;">
                 <div class="field-label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="settings-field-label" for="settingModalOpacity" style="margin-bottom: 0;">
-                    <span class="field-icon">📜</span> <span data-i18n="labelOpacity">Transparansi Kertas Pengaturan</span>
+                    <span data-i18n="labelOpacity">Transparansi Kertas Pengaturan</span>
                   </label>
                   <span class="slider-val-badge" id="modalOpacityVal" style="font-weight: 700; color: #723b12; font-family: monospace; font-size: 0.95em;">100%</span>
                 </div>
@@ -225,14 +210,13 @@
             <!-- Tab Panel: Music & Audio -->
             <div class="settings-tab-panel" id="tabPanelAudio" role="tabpanel">
               <div class="panel-heading-row">
-                <span class="panel-title-icon">🎵</span>
                 <h3 class="panel-title" data-i18n="tabAudio">Music &amp; Audio</h3>
               </div>
 
               <!-- Background Music (BGM) Toggle -->
               <div class="settings-switch-row" id="rowToggleBgm">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelBgm">🎵 Musik Latar Kerajaan (BGM)</span>
+                  <span class="switch-row-label" data-i18n="labelBgm">Musik Latar Kerajaan (BGM)</span>
                   <span class="switch-row-sub" data-i18n="subBgm">Putar alunan instrumen musik saat menjelajahi portofolio.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleBgm" role="switch" aria-checked="true" aria-label="Toggle Background Music">
@@ -243,7 +227,7 @@
               <!-- Shuffle Mode Switch (Acak Lagu di atas) -->
               <div class="settings-switch-row" id="rowToggleShuffle">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelShuffle">🔀 Acak Lagu (Shuffle Mode)</span>
+                  <span class="switch-row-label" data-i18n="labelShuffle">Acak Lagu (Shuffle Mode)</span>
                   <span class="switch-row-sub" data-i18n="subShuffle">Putar lagu berikutnya secara acak otomatis dari daftar lagu.</span>
                 </div>
                 <button type="button" class="parchment-switch" id="btnToggleShuffle" role="switch" aria-checked="false" aria-label="Toggle Acak Lagu">
@@ -254,22 +238,22 @@
               <!-- Quick Shuffle Button -->
               <div class="settings-sfx-test-row" style="margin-top: 4px; margin-bottom: 12px;">
                 <button type="button" class="medieval-test-btn" id="btnShuffleNow" style="background: rgba(114, 59, 18, 0.15);">
-                  <span data-i18n="btnShuffleNow">🎲 Acak Lagu Sekarang</span>
+                  <span data-i18n="btnShuffleNow">Acak Lagu Sekarang</span>
                 </button>
               </div>
 
               <!-- Track Selection Dropdown (Pilihan Lagu di bawah Acak Lagu) -->
               <div class="settings-field-group" id="groupTrackSelect">
                 <label class="settings-field-label" for="settingBgmTrack">
-                  <span class="field-icon">🎼</span> <span data-i18n="labelTrack">Pilihan Lagu / Musik</span>
+                  <span data-i18n="labelTrack">Pilihan Lagu / Musik</span>
                 </label>
                 <div class="medieval-select-wrap">
                   <select id="settingBgmTrack" class="medieval-select">
-                    <option value="Assets/music/music 1.mp3">🎵 Music 1</option>
-                    <option value="Assets/music/music 2.mp3">🎵 Music 2</option>
-                    <option value="Assets/music/music 3.mp3">🎵 Music 3</option>
-                    <option value="Assets/music/music 4.mp4">🎵 Music 4</option>
-                    <option value="Assets/music/music 5.mp3" selected>🎵 Music 5</option>
+                    <option value="Assets/music/music 1.mp3">Music 1</option>
+                    <option value="Assets/music/music 2.mp3">Music 2</option>
+                    <option value="Assets/music/music 3.mp3">Music 3</option>
+                    <option value="Assets/music/music 4.mp4">Music 4</option>
+                    <option value="Assets/music/music 5.mp3" selected>Music 5</option>
                   </select>
                 </div>
               </div>
@@ -277,11 +261,10 @@
               <!-- Audio Preview Player Box -->
               <div class="audio-preview-card" id="audioPreviewCard">
                 <div class="preview-card-header">
-                  <span class="preview-badge" data-i18n="previewTitle">🎧 Pratinjau Lagu</span>
+                  <span class="preview-badge" data-i18n="previewTitle">Pratinjau Lagu</span>
                   <span class="preview-status" id="previewStatusText">Siap diputar</span>
                 </div>
                 <div class="preview-track-info">
-                  <span class="preview-track-icon">🎶</span>
                   <span class="preview-track-title" id="previewTrackTitle">Music 5</span>
                 </div>
                 
@@ -301,7 +284,7 @@
 
               <!-- Volume Slider -->
               <div class="preview-volume-row" id="groupBgmVolume" style="margin-top: 8px; margin-bottom: 8px;">
-                <span class="vol-label" data-i18n="labelVolume">🔊 Volume Musik:</span>
+                <span class="vol-label" data-i18n="labelVolume">Volume Musik:</span>
                 <input type="range" class="medieval-slider" id="settingBgmVolume" min="0" max="100" value="70" aria-label="Volume Musik">
                 <span class="vol-value" id="bgmVolumeVal">70%</span>
               </div>
@@ -309,7 +292,7 @@
               <!-- Sound Effects (SFX) Toggle -->
               <div class="settings-switch-row" id="rowToggleSfx">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelSfx">🔊 Sound Effects (SFX)</span>
+                  <span class="switch-row-label" data-i18n="labelSfx">Sound Effects (SFX)</span>
                   <span class="switch-row-sub" data-i18n="subSfx">Efek suara tombol, gulungan, dan interaksi 8-bit.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleSfx" role="switch" aria-checked="true" aria-label="Toggle Sound Effects">
@@ -320,7 +303,7 @@
               <!-- SFX Test Button -->
               <div class="settings-sfx-test-row">
                 <button type="button" class="medieval-test-btn" id="btnTestSfx">
-                  <span data-i18n="btnTestSfx">🔔 Uji Efek Suara (SFX)</span>
+                  <span data-i18n="btnTestSfx">Uji Efek Suara (SFX)</span>
                 </button>
               </div>
             </div>
@@ -328,14 +311,13 @@
             <!-- Tab Panel 3: Notifications -->
             <div class="settings-tab-panel" id="tabPanelNotifications" role="tabpanel">
               <div class="panel-heading-row">
-                <span class="panel-title-icon">🔔</span>
                 <h3 class="panel-title" data-i18n="tabNotifications">Notifications</h3>
               </div>
 
               <!-- Banner / Toast Notification Toggle -->
               <div class="settings-switch-row" id="rowToggleToast">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelToast">💬 Notifikasi Banner (Toast Popup)</span>
+                  <span class="switch-row-label" data-i18n="labelToast">Notifikasi Banner (Toast Popup)</span>
                   <span class="switch-row-sub" data-i18n="subToast">Tampilkan pesan pop-up informasi di bagian atas layar.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleToast" role="switch" aria-checked="true" aria-label="Toggle Notifikasi Banner">
@@ -346,7 +328,7 @@
               <!-- Toast Alert Sounds -->
               <div class="settings-switch-row" id="rowToggleToastAudio">
                 <div class="switch-row-info">
-                  <span class="switch-row-label" data-i18n="labelToastAudio">🔔 Lonceng Notifikasi</span>
+                  <span class="switch-row-label" data-i18n="labelToastAudio">Lonceng Notifikasi</span>
                   <span class="switch-row-sub" data-i18n="subToastAudio">Bunyikan lonceng setiap kali notifikasi toast muncul.</span>
                 </div>
                 <button type="button" class="parchment-switch active" id="btnToggleToastAudio" role="switch" aria-checked="true" aria-label="Toggle Lonceng Notifikasi">
@@ -358,7 +340,7 @@
             <!-- Bottom Save Changes Button -->
             <div class="settings-content-footer">
               <button type="button" class="settings-save-btn" id="btnSaveSettings">
-                <span class="btn-save-icon">💾</span> <span data-i18n="saveChanges">Save Changes</span>
+                <span data-i18n="saveChanges">Save Changes</span>
               </button>
             </div>
 
@@ -523,9 +505,12 @@
                     <i>Flutter &amp; Dart</i>
                     <i>PHP</i>
                     <i>JavaScript</i>
+                    <i>TypeScript</i>
+                    <i>Python</i>
+                    <i>C++</i>
+                    <i>C#</i>
                     <i>MySQL</i>
                     <i>React</i>
-                    <i>Python</i>
                     <i>HTML5 &amp; CSS3</i>
                     <i>Firebase</i>
                     <i>Bootstrap</i>
