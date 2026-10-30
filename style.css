@@ -1080,6 +1080,7 @@ body.theme-day .theme-toggle .moon-icon {
   opacity: 1;
 }
 
+.vnw[data-m="story"] .b1,
 .vnw[data-m="vn"] .b1 {
   background-image: url("Assets/Images/ksatria.webp");
 }
@@ -1230,6 +1231,7 @@ body.theme-day .theme-toggle .moon-icon {
   box-sizing: border-box;
 }
 
+.vnw[data-m="story"] .vnv,
 .vnw[data-m="vn"] .vnv {
   opacity: 1;
   visibility: visible;
