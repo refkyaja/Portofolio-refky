@@ -1040,7 +1040,7 @@ const themeToggle = document.getElementById('themeToggle');
     // Portrait Pixelation Engine & Photo Swapping
     // -------------------------------------------------------------
     function initPortrait() {
-      const PHOTO = 'Assets/Images/foto-about-me.jpg';
+      const PHOTO = 'Assets/Images/foto-about-me.webp';
       const S = 360, M = 120;
       const main = $('pmain');
       const med = $('pmc');
@@ -1173,7 +1173,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       if (pmed) pmed.onclick = swap;
       KI.onload = build;
-      KI.src = 'Assets/Images/ksatria.png';
+      KI.src = 'Assets/Images/ksatria.webp';
     }
 
     initPortrait();
@@ -1341,21 +1341,21 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Platform Learning Management System (LMS) interaktif untuk guru dan siswa. Menyediakan ruang kelas digital, distribusi materi pelajaran, kuis interaktif, serta kolaborasi pembelajaran dalam satu ruang digital terpadu.',
 
-        img: 'Assets/images-project/eduverse1.png',
+        img: 'Assets/images-project/eduverse1.webp',
 
         imgs: [
 
-          'Assets/images-project/eduverse1.png',
+          'Assets/images-project/eduverse1.webp',
 
-          'Assets/images-project/eduverse2.png',
+          'Assets/images-project/eduverse2.webp',
 
-          'Assets/images-project/eduverse3.png',
+          'Assets/images-project/eduverse3.webp',
 
-          'Assets/images-project/eduverse4.png',
+          'Assets/images-project/eduverse4.webp',
 
-          'Assets/images-project/eduverse5.png',
+          'Assets/images-project/eduverse5.webp',
 
-          'Assets/images-project/eduverse6.png'
+          'Assets/images-project/eduverse6.webp'
 
         ],
 
@@ -1379,21 +1379,21 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Aplikasi mobile smart study companion berbasis AI. Memiliki fitur dictation & transkripsi suara materi perkuliahan, pembuatan kuis adaptif instan dari catatan, OCR scan buku teks, serta integrasi Firebase real-time.',
 
-        img: 'Assets/images-project/lectureai1.png',
+        img: 'Assets/images-project/lectureai1.webp',
 
         imgs: [
 
-          'Assets/images-project/lectureai1.png',
+          'Assets/images-project/lectureai1.webp',
 
-          'Assets/images-project/lectureai2.png',
+          'Assets/images-project/lectureai2.webp',
 
-          'Assets/images-project/lectureai3.png',
+          'Assets/images-project/lectureai3.webp',
 
-          'Assets/images-project/lectureai4.png',
+          'Assets/images-project/lectureai4.webp',
 
-          'Assets/images-project/lectureai5.png',
+          'Assets/images-project/lectureai5.webp',
 
-          'Assets/images-project/lectureai6.png'
+          'Assets/images-project/lectureai6.webp'
 
         ],
 
@@ -1417,17 +1417,17 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Aplikasi desktop terpadu administrasi rukun tetangga & rukun warga (RT/RW). Dilengkapi dashboard monitoring data kependudukan warga, rekap iuran bulanan kas, penerbitan surat pengantar, dan galeri dokumentasi kegiatan lingkungan.',
 
-        img: 'Assets/images-project/rtrwmultimedia3.png',
+        img: 'Assets/images-project/rtrwmultimedia3.webp',
 
         imgs: [
 
-          'Assets/images-project/rtrwmultimedia3.png',
+          'Assets/images-project/rtrwmultimedia3.webp',
 
-          'Assets/images-project/rtrwmultimedia1.png',
+          'Assets/images-project/rtrwmultimedia1.webp',
 
-          'Assets/images-project/rtrwmultimedia2.png',
+          'Assets/images-project/rtrwmultimedia2.webp',
 
-          'Assets/images-project/rtrwmultimedia4.png'
+          'Assets/images-project/rtrwmultimedia4.webp'
 
         ],
 
@@ -1451,17 +1451,17 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Aplikasi desktop manajemen distribusi program Makan Bergizi Gratis (MBG). Menyediakan kalkulasi nutrisi harian (kalori, protein nabati/hewani, karbohidrat, lemak), pencatatan alokasi menu bergizi, serta sinkronisasi data cloud Supabase.',
 
-        img: 'Assets/images-project/mymbg3.png',
+        img: 'Assets/images-project/mymbg3.webp',
 
         imgs: [
 
-          'Assets/images-project/mymbg3.png',
+          'Assets/images-project/mymbg3.webp',
 
-          'Assets/images-project/mymbg1.png',
+          'Assets/images-project/mymbg1.webp',
 
-          'Assets/images-project/mymbg2.png',
+          'Assets/images-project/mymbg2.webp',
 
-          'Assets/images-project/mymbg4.png'
+          'Assets/images-project/mymbg4.webp'
 
         ],
 
@@ -1485,15 +1485,15 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Sistem informasi desktop manajemen operasional dan keuangan masjid. Memfasilitasi pembukuan kas masuk & kas keluar, pengelolaan data donatur & jamaah, penjadwalan kegiatan ibadah, serta pelaporan kas yang transparan.',
 
-        img: 'Assets/images-project/pengelolaanmasjid2.png',
+        img: 'Assets/images-project/pengelolaanmasjid2.webp',
 
         imgs: [
 
-          'Assets/images-project/pengelolaanmasjid2.png',
+          'Assets/images-project/pengelolaanmasjid2.webp',
 
-          'Assets/images-project/pengelolaanmasjid1.png',
+          'Assets/images-project/pengelolaanmasjid1.webp',
 
-          'Assets/images-project/pengelolaanmasjid3.png'
+          'Assets/images-project/pengelolaanmasjid3.webp'
 
         ],
 
@@ -1517,17 +1517,17 @@ const themeToggle = document.getElementById('themeToggle');
 
         d: 'Platform e-commerce dan aplikasi kasir Point of Sale (POS) terintegrasi untuk unit usaha sekolah. Memudahkan katalogisasi peralatan belajar, keranjang transaksi kasir instan, cetak struk belanja, dan integrasi fitur AI.',
 
-        img: 'Assets/images-project/bisnis-center1.png',
+        img: 'Assets/images-project/bisnis-center1.webp',
 
         imgs: [
 
-          'Assets/images-project/bisnis-center1.png',
+          'Assets/images-project/bisnis-center1.webp',
 
-          'Assets/images-project/bisnis-center4.png',
+          'Assets/images-project/bisnis-center4.webp',
 
-          'Assets/images-project/bisnis-center2.png',
+          'Assets/images-project/bisnis-center2.webp',
 
-          'Assets/images-project/bisnis-center3.png'
+          'Assets/images-project/bisnis-center3.webp'
 
         ],
 
@@ -1877,7 +1877,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       const ph = curImg 
 
-        ? '<img id="qphImg" src="' + curImg + '" alt="' + q.n + '">' 
+        ? '<img id="qphImg" src="' + curImg + '" alt="' + q.n + '" loading="lazy" decoding="async">' 
 
         : '<span>' + mo + '</span><em>FOTO PROYEK</em>';
 
@@ -4338,15 +4338,15 @@ const themeToggle = document.getElementById('themeToggle');
 
       url: "innoventure.id/awards/web-development-juara-3",
 
-      img: "Assets/Certificates/sert-web-juara-3.jpg",
+      img: "Assets/Certificates/sert-web-juara-3.webp",
 
       desc: "Sertifikat penghargaan atas prestasi meraih Juara Ketiga (3rd Place) dalam kompetisi Web Development yang diselenggarakan oleh INNOVENTURE Chapter II Bandung.",
 
       tech: ["Web Development", "Competition", "UI/UX", "Fullstack", "Juara 3"],
 
-      link: "Assets/Certificates/sert-web-juara-3.jpg",
+      link: "Assets/Certificates/sert-web-juara-3.webp",
 
-      verifyUrl: "Assets/Certificates/sert-web-juara-3.jpg"
+      verifyUrl: "Assets/Certificates/sert-web-juara-3.webp"
 
     },
 
@@ -4358,13 +4358,13 @@ const themeToggle = document.getElementById('themeToggle');
 
       url: "dicoding.com/certificates/07Z64YQR2PQR",
 
-      img: "Assets/Certificates/sert-dicoding-aws.jpg",
+      img: "Assets/Certificates/sert-dicoding-aws.webp",
 
       desc: "Sertifikasi kelulusan resmi dari Dicoding Indonesia tentang pemahaman dasar Cloud Computing, konsep arsitektur AWS, tata kelola keamanan cloud, serta implementasi layanan AWS.",
 
       tech: ["AWS Cloud", "Cloud Computing", "Infrastructure", "Security"],
 
-      link: "Assets/Certificates/sert-dicoding-aws.jpg",
+      link: "Assets/Certificates/sert-dicoding-aws.webp",
 
       verifyUrl: "https://www.dicoding.com/certificates/07Z64YQR2PQR"
 
@@ -4378,13 +4378,13 @@ const themeToggle = document.getElementById('themeToggle');
 
       url: "dicoding.com/certificates/2VX3493DNZYQ",
 
-      img: "Assets/Certificates/sert-dicoding-js.jpg",
+      img: "Assets/Certificates/sert-dicoding-js.webp",
 
       desc: "Sertifikasi kompetensi fundamental bahasa pemrograman JavaScript, struktur data, fungsi, pemrograman berorientasi objek (OOP), hingga penanganan proses asynchronous.",
 
       tech: ["JavaScript", "ES6+", "OOP", "Async/Await", "Logic"],
 
-      link: "Assets/Certificates/sert-dicoding-js.jpg",
+      link: "Assets/Certificates/sert-dicoding-js.webp",
 
       verifyUrl: "https://www.dicoding.com/certificates/2VX3493DNZYQ"
 
@@ -4398,13 +4398,13 @@ const themeToggle = document.getElementById('themeToggle');
 
       url: "aws.training/certificates/cloud-practitioner-essentials",
 
-      img: "Assets/Certificates/sert-aws-cloud.jpg",
+      img: "Assets/Certificates/sert-aws-cloud.webp",
 
       desc: "Sertifikasi kelulusan resmi dari AWS Training & Certification yang memvalidasi keahlian komprehensif dalam arsitektur cloud global, layanan komputasi, storage, dan jaringan AWS.",
 
       tech: ["AWS Training", "Cloud Architecture", "DevOps", "Infrastructure"],
 
-      link: "Assets/Certificates/sert-aws-cloud.jpg",
+      link: "Assets/Certificates/sert-aws-cloud.webp",
 
       verifyUrl: "https://aws.amazon.com/training/"
 
@@ -4470,7 +4470,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         <div class="cert-screen">
 
-          <img src="${c.img}" alt="${c.title}" loading="lazy">
+          <img src="${c.img}" alt="${c.title}" loading="lazy" decoding="async" width="400" height="280">
 
           <div class="cert-screen-overlay"></div>
 
@@ -4948,7 +4948,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         bg: sc('#0b2d3f', '#58b6c9', 'rgb(6,24,36)', 'rgb(12,52,70)', 'rgba(220,250,255,.85)'),
 
-        img: 'Assets/Images/gallery-4.jpg'
+        img: 'Assets/Images/gallery-4.webp'
 
       },
 
@@ -4976,7 +4976,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         bg: sc('#0c183a', '#d97724', 'rgb(10,18,44)', 'rgb(24,36,78)', 'rgba(255,210,140,.9)'),
 
-        img: 'Assets/Images/gallery-6.jpg'
+        img: 'Assets/Images/gallery-6.webp'
 
       }
 
@@ -7396,7 +7396,7 @@ const themeToggle = document.getElementById('themeToggle');
 
   // Apply Background Music on Page
 
-  function applyBgmState(forceRestart = false) {
+  function applyBgmState(forceRestart = false, isInitial = false) {
 
     if (!bgmAudio) return;
 
@@ -7408,21 +7408,26 @@ const themeToggle = document.getElementById('themeToggle');
 
         bgmAudio.loop = !isShuffleEnabled;
 
-        const currentSrc = bgmAudio.src ? decodeURIComponent(bgmAudio.src).replace(/\\/g, '/') : '';
+        // Pada load awal halaman, tunda load audio sampai interaksi pertama user agar LCP cepat dan payload awal 0 MB
+        if (!isInitial) {
 
-        const isSameTrack = currentSrc.endsWith(savedBgmTrack);
+          const currentSrc = bgmAudio.src ? decodeURIComponent(bgmAudio.src).replace(/\\/g, '/') : '';
 
-        // Hanya muat ulang src dan restart jika lagu diubah atau belum ada src
+          const isSameTrack = currentSrc.endsWith(savedBgmTrack);
 
-        if (forceRestart || !isSameTrack || !bgmAudio.src) {
+          // Hanya muat ulang src dan restart jika lagu diubah atau belum ada src
 
-          bgmAudio.src = savedBgmTrack;
+          if (forceRestart || !isSameTrack || !bgmAudio.src) {
+
+            bgmAudio.src = savedBgmTrack;
+
+          }
+
+          // Coba putar langsung
+
+          startBgmPlayback();
 
         }
-
-        // Coba putar langsung
-
-        startBgmPlayback();
 
       }
 
@@ -7612,7 +7617,7 @@ const themeToggle = document.getElementById('themeToggle');
 
   applyMascotsState();
 
-  applyBgmState();
+  applyBgmState(false, true);
 
   applyModalOpacity(savedModalOpacity);
 
@@ -7998,7 +8003,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         q: "“Pendidikan adalah pintu menuju masa depan yang lebih baik.”",
 
-        img: "Assets/Images/SDN-161-sukapura.png"
+        img: "Assets/Images/SDN-161-sukapura.webp"
 
       },
 
@@ -8024,7 +8029,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         q: "“Aku tidak akan menyerah, itulah jalan ninjaku!”",
 
-        img: "Assets/Images/mtsn-2-bandung.png"
+        img: "Assets/Images/mtsn-2-bandung.webp"
 
       },
 
@@ -8050,7 +8055,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         q: "“Lampaui batasmu, lagi dan lagi!”",
 
-        img: "Assets/Images/smkn-13-bandung.png"
+        img: "Assets/Images/smkn-13-bandung.webp"
 
       }
 
@@ -8074,7 +8079,7 @@ const themeToggle = document.getElementById('themeToggle');
 
         if (p.img) {
 
-          badgeWrap.innerHTML = `<img src="${p.img}" alt="Logo ${p.n}" class="edu-school-badge">`;
+          badgeWrap.innerHTML = `<img src="${p.img}" alt="Logo ${p.n}" class="edu-school-badge" loading="lazy" decoding="async" width="80" height="80">`;
 
         } else {
 
@@ -10259,11 +10264,11 @@ const themeToggle = document.getElementById('themeToggle');
 
   /* PLAYLIST: 5 Lagu Kerajaan dari Assets/music, default ke Music 5 */
   const TRACKS = [
-    { t: 'Music 1', a: 'Balada Kastil \u00b7 Petualangan', src: 'Assets/music/music 1.mp3' },
-    { t: 'Music 2', a: 'Kingdom Quest \u00b7 Semangat Ksatria', src: 'Assets/music/music 2.mp3' },
-    { t: 'Music 3', a: 'Forest Breeze \u00b7 Hutan Menenangkan', src: 'Assets/music/music 3.mp3' },
-    { t: 'Music 4', a: 'Castle Courtyard \u00b7 Suasana Istana', src: 'Assets/music/music 4.mp4' },
-    { t: 'Music 5', a: 'Village Festivity \u00b7 Pesta Rakyat', src: 'Assets/music/music 5.mp3' }
+    { t: 'Music 1', a: 'Balada Kastil \u00b7 Petualangan', src: 'Assets/music/music 1.mp3', d: 215 },
+    { t: 'Music 2', a: 'Kingdom Quest \u00b7 Semangat Ksatria', src: 'Assets/music/music 2.mp3', d: 228 },
+    { t: 'Music 3', a: 'Forest Breeze \u00b7 Hutan Menenangkan', src: 'Assets/music/music 3.mp3', d: 204 },
+    { t: 'Music 4', a: 'Castle Courtyard \u00b7 Suasana Istana', src: 'Assets/music/music 4.mp4', d: 276 },
+    { t: 'Music 5', a: 'Village Festivity \u00b7 Pesta Rakyat', src: 'Assets/music/music 5.mp3', d: 1013 }
   ];
 
   const RN = ['I', 'II', 'III', 'IV', 'V'];
@@ -10271,9 +10276,9 @@ const themeToggle = document.getElementById('themeToggle');
   let drag = false;
   let lastNonZeroVol = 0.7;
 
-  // Background preload metadata untuk mendeteksi durasi semua lagu dari Assets/music
+  // Background preload metadata hanya jika durasi belum terdefinisi
   TRACKS.forEach(t => {
-    if (t.src) {
+    if (!t.d && t.src) {
       const tempAudio = new Audio();
       tempAudio.preload = 'metadata';
       tempAudio.src = t.src;

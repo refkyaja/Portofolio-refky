@@ -11,8 +11,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   
+  <!-- Preload Critical LCP Hero Background Image -->
+  <link rel="preload" as="image" href="Assets/Images/background-malam.webp" fetchpriority="high">
+
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=62">
+  <link rel="stylesheet" href="style.css?v=63">
   <style>
     .isl.open .tl,
     .isl .tl .in {
@@ -470,7 +473,7 @@
                     <i class="cn d"></i>
                   </div>
                   <div class="nnm">
-                    <img src="Assets/Images/nameplate_banner.png" alt="Nameplate Banner">
+                    <img src="Assets/Images/nameplate_banner.webp" alt="Nameplate Banner" width="720" height="126" fetchpriority="high">
                     <span>Refky Favian Mahardika</span>
                   </div>
                 </div>
@@ -993,7 +996,7 @@
     <div class="fg">
       <div>
         <div class="fbrand">
-          <img src="Assets/Images/footer_star_logo.png" alt="Logo Refky Favian Mahardika">
+          <img src="Assets/Images/footer_star_logo.webp" alt="Logo Refky Favian Mahardika" width="80" height="74" loading="lazy" decoding="async">
           <b>Refky Favian Mahardika</b>
         </div>
         <p>Sebuah perjalanan kecil untuk menciptakan sesuatu yang berarti. Terima kasih telah menjadi bagian dari perjalananku.</p>
@@ -1020,7 +1023,7 @@
     <div class="cert-modal-dialog" role="dialog" aria-modal="true">
       <button class="cert-modal-close" id="certModalClose" aria-label="Tutup Pratinjau">&times;</button>
       <div class="cert-modal-body">
-        <img src="" alt="Foto Sertifikat" id="modalCertImg" class="cert-modal-full-img">
+        <img src="" alt="Foto Sertifikat" id="modalCertImg" class="cert-modal-full-img" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -1030,7 +1033,7 @@
     <div class="cert-modal-dialog" role="dialog" aria-modal="true">
       <button class="cert-modal-close" id="projectPhotoModalClose" aria-label="Tutup Pratinjau">&times;</button>
       <div class="cert-modal-body">
-        <img src="" alt="Foto Proyek" id="modalProjectImg" class="cert-modal-full-img">
+        <img src="" alt="Foto Proyek" id="modalProjectImg" class="cert-modal-full-img" loading="lazy" decoding="async">
         <button type="button" class="project-modal-nav prev" id="modalProjectPrev" aria-label="Foto Sebelumnya">&#9664;</button>
         <button type="button" class="project-modal-nav next" id="modalProjectNext" aria-label="Foto Berikutnya">&#9654;</button>
         <div class="project-modal-badge" id="modalProjectBadge">1 / 1</div>
@@ -1582,7 +1585,7 @@
   </button>
 
   <!-- Background Music Audio & Preview Audio Elements -->
-  <audio id="bgmAudio" loop preload="auto" autoplay src="Assets/music/music 5.mp3"></audio>
+  <audio id="bgmAudio" loop preload="none"></audio>
   <audio id="previewAudio" preload="none"></audio>
 
   <!-- Medieval Music Player ("Pujangga Istana") Floating Seal & Scroll Popup -->

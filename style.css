@@ -105,11 +105,11 @@ body {
 }
 
 .bg-night {
-  background-image: url('Assets/Images/background-malam.png');
+  background-image: url('Assets/Images/background-malam.webp');
 }
 
 .bg-day {
-  background-image: url('Assets/Images/background-siang.png');
+  background-image: url('Assets/Images/background-siang.webp');
 }
 
 .bg-image.active {
@@ -1067,7 +1067,7 @@ body.theme-day .theme-toggle .moon-icon {
 }
 
 .b2 {
-  background-image: url("Assets/Images/ksatria-angkatpedang.jpg");
+  background-image: url("Assets/Images/ksatria-angkatpedang.webp");
   opacity: 0;
 }
 
@@ -1209,7 +1209,7 @@ body.theme-day .theme-toggle .moon-icon {
   visibility: hidden;
   pointer-events: none;
   transition: opacity .5s, visibility 0s .5s;
-  background: linear-gradient(rgba(12, 6, 14, .45), rgba(12, 6, 14, .45)), url("Assets/Images/latarbelakang-ksatria.png") center/cover no-repeat;
+  background: linear-gradient(rgba(12, 6, 14, .45), rgba(12, 6, 14, .45)), url("Assets/Images/latarbelakang-ksatria.webp") center/cover no-repeat;
   box-sizing: border-box;
 }
 
