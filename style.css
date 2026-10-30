@@ -4166,6 +4166,7 @@ body:has(.relax-confirm-backdrop.active) .dock {
 /* Hide Castle Mascots, Dragon, Floor, and Relax Controls when any Modal is Active */
 body.modal-scroll-locked .stage,
 body.modal-scroll-locked #stage,
+body.modal-scroll-locked .magic-circle,
 body.modal-scroll-locked .floor,
 body.modal-scroll-locked .floor-wood,
 body.modal-scroll-locked .dragon,
@@ -4176,6 +4177,7 @@ body.modal-scroll-locked .relax-dock,
 body.modal-scroll-locked .relax-unhide-btn,
 body.settings-open .stage,
 body.settings-open #stage,
+body.settings-open .magic-circle,
 body.settings-open .floor,
 body.settings-open .floor-wood,
 body.settings-open .dragon,
@@ -4183,6 +4185,7 @@ body.settings-open .castle,
 body.settings-open #castle,
 body:has(.guild-modal-overlay.open) .stage,
 body:has(.guild-modal-overlay.open) #stage,
+body:has(.guild-modal-overlay.open) .magic-circle,
 body:has(.guild-modal-overlay.open) .floor,
 body:has(.guild-modal-overlay.open) .floor-wood,
 body:has(.guild-modal-overlay.open) .dragon,
@@ -4193,6 +4196,7 @@ body:has(.guild-modal-overlay.open) .relax-dock,
 body:has(.guild-modal-overlay.open) .relax-unhide-btn,
 body:has(.cert-modal-backdrop.active) .stage,
 body:has(.cert-modal-backdrop.active) #stage,
+body:has(.cert-modal-backdrop.active) .magic-circle,
 body:has(.cert-modal-backdrop.active) .floor,
 body:has(.cert-modal-backdrop.active) .floor-wood,
 body:has(.cert-modal-backdrop.active) .dragon,
@@ -5205,6 +5209,212 @@ body:has(.cert-modal-backdrop.active) .relax-unhide-btn {
 }
 
 /* --------------------------------------------------------------------------
+   Wizard Mascot Staff, Cast Mode & Sacred Geometry Magic Circle
+   -------------------------------------------------------------------------- */
+.stage .char .staff,
+.staff {
+  position: absolute;
+  left: -26px;
+  top: -14px;
+  width: 8px;
+  height: 96px;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: rotate(-12deg);
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.stage .char .staff::before,
+.staff::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 10px;
+  width: 6px;
+  height: 86px;
+  background: linear-gradient(90deg, #8a5a2b, #4a2c14);
+  border: 2px solid #2b1a0e;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.stage .char .staff i,
+.staff i {
+  position: absolute;
+  left: -6px;
+  top: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #2b1a0e;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 35% 35%, #fff, var(--sc, #7fe3ff) 50%, #2a7cff);
+  box-shadow: 0 0 12px var(--sc, #5cc8ff), 0 0 26px var(--sc, #2a7cff);
+}
+
+.stage .char.cast .staff,
+.cast .staff {
+  opacity: 1;
+  animation: staffThrust 0.45s ease-in-out infinite alternate;
+}
+
+.stage .char.cast.look-r .staff,
+.cast.look-r .staff {
+  left: auto;
+  right: -26px;
+  animation-name: staffThrustR;
+}
+
+@keyframes staffThrust {
+  from { transform: rotate(-14deg); }
+  to { transform: rotate(10deg) translateY(-4px); }
+}
+
+@keyframes staffThrustR {
+  from { transform: rotate(14deg); }
+  to { transform: rotate(-10deg) translateY(-4px); }
+}
+
+.stage .char.cast .acc,
+.cast .acc {
+  opacity: 0;
+}
+
+.stage .char.cast .body,
+.cast .body {
+  transform: scale(1.07);
+}
+
+.stage .char.cast .eye,
+.cast .eye {
+  background: #aef0ff;
+  box-shadow: 0 0 10px #4ac8ff;
+  transform: scaleY(0.7);
+}
+
+/* Magic Circle Container */
+.magic-circle {
+  position: fixed;
+  z-index: 996;
+  width: 150px !important;
+  height: 150px !important;
+  pointer-events: none !important;
+  color: #4fc3ff;
+  transition: left 0.35s, top 0.35s, color 0.25s;
+  animation: mcIn 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.magic-circle.out {
+  animation: mcOut 0.35s forwards;
+}
+
+.magic-circle svg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+  fill: none;
+  stroke: currentColor;
+  stroke: color-mix(in srgb, currentColor 45%, #fff);
+  filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 8px currentColor) drop-shadow(0 0 20px currentColor);
+}
+
+.magic-circle svg g {
+  transform-origin: 100px 100px;
+}
+
+.magic-circle .rA { animation: spinCircle 14s linear infinite; }
+.magic-circle .rB { animation: spinCircle 9s linear infinite reverse; }
+.magic-circle .rC { animation: spinCircle 5s linear infinite; }
+
+@keyframes spinCircle {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mcIn {
+  from { transform: scale(0) rotate(-120deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes mcOut {
+  to { transform: scale(0.2) rotate(120deg); opacity: 0; }
+}
+
+/* Elemental Spells, Orbs, Sparks & Lightning */
+.spell-orb {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9998;
+  pointer-events: none !important;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--c);
+  text-shadow: 0 0 10px var(--c), 0 0 22px var(--c);
+}
+
+.spell-spark,
+.spell-pt {
+  position: fixed;
+  z-index: 9997;
+  pointer-events: none !important;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 8px var(--c);
+}
+
+.spell-spark {
+  animation: sparkFade 0.45s forwards;
+}
+
+@keyframes sparkFade {
+  to { transform: scale(0.1); opacity: 0; }
+}
+
+.spell-ring {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: none !important;
+  border: 3px solid var(--c);
+  border-radius: 50%;
+  box-shadow: 0 0 14px var(--c), inset 0 0 10px var(--c);
+  animation: ringExpand 0.45s forwards;
+}
+
+@keyframes ringExpand {
+  from { transform: scale(0.2); opacity: 1; }
+  to { transform: scale(1.3); opacity: 0; }
+}
+
+.spell-bolt {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9998;
+  pointer-events: none !important;
+  overflow: visible;
+  animation: boltFade 0.32s forwards;
+}
+
+@keyframes boltFade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.dragon.dragon-hit i,
+.dragon.hit i {
+  filter: brightness(2.4) contrast(1.1) drop-shadow(0 0 14px rgba(255, 235, 140, 0.9));
+  transition: filter 0.06s ease;
+}
+
+/* --------------------------------------------------------------------------
    Flying Dragon Cursor Companion & Fire Breath
    -------------------------------------------------------------------------- */
 .dragon {
@@ -5229,6 +5439,8 @@ body:has(.cert-modal-backdrop.active) .relax-unhide-btn {
   width: 165px;
   height: auto;
   overflow: visible;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
 }
 
 @media (max-width: 768px) {
@@ -5256,14 +5468,18 @@ body:has(.cert-modal-backdrop.active) .relax-unhide-btn {
   animation: dragonFire 0.8s forwards;
 }
 
-/* Dragon Recoil when Struck by Knight's Sword */
+/* Dragon Recoil / Flinch when Struck by Sword or Magic Spells */
+.dragon.dragon-recoil svg,
 .dragon.recoil svg {
-  animation: dragonRecoil 0.3s;
+  animation: dragonDamageFlinch 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@keyframes dragonRecoil {
-  30% { transform: rotate(-14deg) translateY(-6px); }
-  65% { transform: rotate(9deg); }
+@keyframes dragonDamageFlinch {
+  0% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-5px, -6px) rotate(-5deg) scale(0.96); }
+  45% { transform: translate(4px, 3px) rotate(4deg) scale(1.02); }
+  70% { transform: translate(-2px, -1px) rotate(-1.5deg) scale(0.99); }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); }
 }
 
 /* --------------------------------------------------------------------------
@@ -7776,6 +7992,7 @@ body.relax-mode-active .guild-banner.banner-right {
 /* Floating mascots, dragons, quick navigation fade out */
 body.relax-mode-active .floor,
 body.relax-mode-active .stage,
+body.relax-mode-active .magic-circle,
 body.relax-mode-active .dragon,
 body.relax-mode-active .castle,
 body.relax-mode-active .quick-nav,

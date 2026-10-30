@@ -5522,6 +5522,8 @@ const themeToggle = document.getElementById('themeToggle');
 
       this.brave = brave;
 
+      this.mage = false;
+
       this.bubble = el ? el.querySelector('.bubble') : null;
 
       this.sleeping = false;
@@ -5700,6 +5702,116 @@ const themeToggle = document.getElementById('themeToggle');
 
     }
 
+    async cast(mx) {
+
+      if (!this.el) return;
+
+      this.fighting = true;
+
+      this.hits = [];
+
+      if (this.sleeping) {
+
+        this.sleeping = false;
+
+        this.el.classList.remove('sleep');
+
+      }
+
+      const wx = () => {
+
+        const r = this.el.getBoundingClientRect();
+
+        return r.left + r.width / 2;
+
+      };
+
+      const dir = () => (getDragonCenterPos()[0] >= wx() ? 1 : -1);
+
+      this.el.classList.remove('look-l', 'look-r');
+
+      this.el.classList.add('cast', dir() > 0 ? 'look-r' : 'look-l');
+
+      this.say('Rasakan sihirku, naga!', 1700, false);
+
+      const mc = document.createElement('div');
+
+      mc.className = 'magic-circle';
+
+      mc.innerHTML = circleHTML();
+
+      const place = () => {
+
+        const cx = Math.min(window.innerWidth - 85, Math.max(85, wx() + dir() * 100));
+
+        const cy = window.innerHeight - 14 - 95;
+
+        mc.style.left = (cx - 75) + 'px';
+
+        mc.style.top = (cy - 75) + 'px';
+
+        return [cx, cy];
+
+      };
+
+      let [cx, cy] = place();
+
+      document.body.appendChild(mc);
+
+      await waitMs(650);
+
+      const spellsList = ['fire', 'ice', 'bolt', 'arcane', 'fire', 'bolt'];
+
+      for (const t of spellsList) {
+
+        if (!this.fighting) break;
+
+        [cx, cy] = place();
+
+        const S = SPELLS[t];
+
+        if (S) {
+
+          mc.style.color = S.c;
+
+          this.el.style.setProperty('--sc', S.c);
+
+        }
+
+        await waitMs(180);
+
+        if (mc.firstChild && mc.firstChild.animate) {
+
+          mc.firstChild.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 280 });
+
+        }
+
+        shootSpell(t, cx, cy);
+
+        await waitMs(520);
+
+      }
+
+      mc.style.color = '#4fc3ff';
+
+      mc.classList.add('out');
+
+      this.el.style.removeProperty('--sc');
+
+      await waitMs(350);
+
+      mc.remove();
+
+      this.el.classList.remove('cast', 'look-l', 'look-r');
+
+      this.say('Pergilah, makhluk bersisik!', 1600, false);
+
+      await waitMs(500);
+
+      this.fighting = false;
+
+    }
+
     async flee(mx) {
 
       if (!this.el || !this.el.parentElement || this.fleeing || this.fighting) return;
@@ -5713,6 +5825,12 @@ const themeToggle = document.getElementById('themeToggle');
       if (this.brave && this.hits.length >= 4) {
 
         return this.fight(mx);
+
+      }
+
+      if (this.mage && this.hits.length >= 3) {
+
+        return this.cast(mx);
 
       }
 
@@ -7657,9 +7775,13 @@ const themeToggle = document.getElementById('themeToggle');
 
     if (dr) {
 
-      dr.classList.add('recoil');
+      dr.classList.remove('dragon-recoil');
 
-      setTimeout(() => dr.classList.remove('recoil'), 300);
+      void dr.offsetWidth;
+
+      dr.classList.add('dragon-recoil');
+
+      setTimeout(() => dr.classList.remove('dragon-recoil'), 300);
 
     }
 
@@ -7677,15 +7799,279 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
+  const SPELLS = {
+
+    fire: { c: '#ff7a1a', g: '🔥' },
+
+    ice: { c: '#7fe3ff', g: '❄️' },
+
+    bolt: { c: '#ffe45a' },
+
+    arcane: { c: '#c58bff', g: '✦' }
+
+  };
+
+  function getDragonCenterPos() {
+
+    const drEl = document.getElementById('dragon');
+
+    if (!drEl) return [window.innerWidth / 2, 100];
+
+    const r = drEl.getBoundingClientRect();
+
+    return [r.left + r.width / 2, r.top + r.height / 2];
+
+  }
+
+  function createDot(cls, x, y, c, s) {
+
+    const e = document.createElement('i');
+
+    e.className = cls;
+
+    e.style.cssText = `--c:${c};left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;`;
+
+    document.body.appendChild(e);
+
+    return e;
+
+  }
+
+  function createBurst(x, y, c) {
+
+    const r = document.createElement('div');
+
+    r.className = 'spell-ring';
+
+    r.style.cssText = `--c:${c};left:${x - 35}px;top:${y - 35}px;width:70px;height:70px;`;
+
+    document.body.appendChild(r);
+
+    setTimeout(() => r.remove(), 500);
+
+    for (let i = 0; i < 10; i++) {
+
+      const p = createDot('spell-pt', x, y, c, randNum(5, 10));
+
+      const an = randNum(0, 6.28);
+
+      const d = randNum(30, 75);
+
+      if (p.animate) {
+
+        p.animate([
+
+          { transform: 'translate(0,0)', opacity: 1 },
+
+          { transform: `translate(${Math.cos(an) * d}px,${Math.sin(an) * d}px) scale(0.2)`, opacity: 0 }
+
+        ], { duration: randNum(350, 550), easing: 'ease-out' });
+
+      }
+
+      setTimeout(() => p.remove(), 600);
+
+    }
+
+  }
+
+  function spellImpact(x, y, c) {
+
+    createBurst(x, y, c);
+
+    recoil(x, y);
+
+    const dr = document.getElementById('dragon');
+
+    if (dr) {
+
+      dr.classList.remove('dragon-hit');
+
+      void dr.offsetWidth;
+
+      dr.classList.add('dragon-hit');
+
+      setTimeout(() => dr.classList.remove('dragon-hit'), 180);
+
+    }
+
+  }
+
+  function shootLightning(sx, sy, tx, ty) {
+
+    const NS = 'http://www.w3.org/2000/svg';
+
+    const s = document.createElementNS(NS, 'svg');
+
+    s.setAttribute('class', 'spell-bolt');
+
+    s.setAttribute('width', window.innerWidth);
+
+    s.setAttribute('height', window.innerHeight);
+
+    const dx = tx - sx, dy = ty - sy, L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L, pts = [];
+
+    for (let i = 0; i <= 9; i++) {
+
+      const t = i / 9, j = (i === 0 || i === 9) ? 0 : randNum(-18, 18);
+
+      pts.push((sx + dx * t + nx * j).toFixed(1) + ',' + (sy + dy * t + ny * j).toFixed(1));
+
+    }
+
+    s.innerHTML = `<polyline points="${pts.join(' ')}" fill="none" stroke="#ffd000" stroke-opacity=".6" stroke-width="9" stroke-linejoin="round" style="filter:blur(3px)"/><polyline points="${pts.join(' ')}" fill="none" stroke="#fffbe0" stroke-width="3" stroke-linejoin="round" style="filter:drop-shadow(0 0 5px #ffe45a)"/>`;
+
+    document.body.appendChild(s);
+
+    setTimeout(() => s.remove(), 340);
+
+    setTimeout(() => spellImpact(tx, ty, SPELLS.bolt.c), 50);
+
+  }
+
+  function shootSpell(type, sx, sy) {
+
+    const S = SPELLS[type];
+
+    if (!S) return;
+
+    if (type === 'bolt') {
+
+      const [tx, ty] = getDragonCenterPos();
+
+      return shootLightning(sx, sy, tx, ty);
+
+    }
+
+    const o = document.createElement('div');
+
+    o.className = 'spell-orb';
+
+    o.style.setProperty('--c', S.c);
+
+    o.textContent = S.g;
+
+    document.body.appendChild(o);
+
+    let px = sx, py = sy, v = 0, last = performance.now(), n = 0;
+
+    const t0 = last;
+
+    (function step(now) {
+
+      const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
+
+      last = now;
+
+      const [tx, ty] = getDragonCenterPos();
+
+      const dx = tx - px, dy = ty - py, d = Math.hypot(dx, dy);
+
+      v = Math.min(1100, v + 3200 * dt);
+
+      const m = v * dt;
+
+      if (d <= m + 30 || now - t0 > 2000) {
+
+        o.remove();
+
+        return spellImpact(tx, ty, S.c);
+
+      }
+
+      px += dx / d * m;
+
+      py += dy / d * m;
+
+      o.style.transform = `translate(${px - 17}px,${py - 17}px) rotate(${now / 3}deg)`;
+
+      if (n++ % 2 === 0) {
+
+        const sp = createDot('spell-spark', px, py, S.c, randNum(6, 12));
+
+        setTimeout(() => sp.remove(), 460);
+
+      }
+
+      requestAnimationFrame(step);
+
+    })(last);
+
+  }
+
+  function circleHTML() {
+
+    let seed = 7;
+
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+    const P = (r, a) => [100 + r * Math.sin(a), 100 - r * Math.cos(a)];
+
+    const poly = (n, k, r) => Array.from({ length: n }, (_, i) => P(r, i * k * 2 * Math.PI / n).map(v => v.toFixed(1)).join(',')).join(' ');
+
+    const glyph = (r, a, h, w) => {
+
+      const n = 3 + Math.floor(rnd() * 3);
+
+      let d = '';
+
+      for (let i = 0; i < n; i++) {
+
+        d += (i ? 'L' : 'M') + ((rnd() - 0.5) * h * 0.7).toFixed(1) + ' ' + ((i / (n - 1) - 0.5) * h + (rnd() - 0.5) * h * 0.25).toFixed(1);
+
+      }
+
+      const [x, y] = P(r, a);
+
+      return `<path d="${d}" stroke-width="${w}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a * 180 / Math.PI).toFixed(1)})"/>`;
+
+    };
+
+    let A = '<circle cx="100" cy="100" r="96" stroke-width="2.6"/><circle cx="100" cy="100" r="90" stroke-width="1"/><circle cx="100" cy="100" r="66" stroke-width="1"/><circle cx="100" cy="100" r="62" stroke-width="1.8"/>';
+
+    for (let i = 0; i < 36; i++) {
+
+      const a = i * Math.PI / 18;
+
+      if (i % 6 === 0) {
+
+        const [x, y] = P(78, a);
+
+        A += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="6.5" stroke-width="1.4"/><path fill="currentColor" stroke-width=".6" d="M0-5L1.3-1.3 5 0 1.3 1.3 0 5-1.3 1.3-5 0-1.3-1.3Z"/></g>`;
+
+      } else {
+
+        A += glyph(78, a, 11, 1.3);
+
+      }
+
+    }
+
+    let B = `<polygon points="${poly(7, 2, 69)}" stroke-width="2.2"/><circle cx="100" cy="100" r="50" stroke-width="1"/>`;
+
+    for (let i = 0; i < 7; i++) {
+
+      B += glyph(56, (i + 0.5) * 2 * Math.PI / 7, 8, 1);
+
+    }
+
+    const C = `<polygon points="${poly(5, 2, 34)}" stroke-width="2.4"/><circle cx="100" cy="100" r="22" stroke-width="1"/><circle cx="100" cy="100" r="17" stroke-width="1"/><path stroke-width="1.2" d="M100 88V112M88 100H112M91.5 91.5L108.5 108.5M108.5 91.5L91.5 108.5"/>`;
+
+    return `<svg viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="100" cy="100" r="96" fill="#050d2e" fill-opacity=".78" stroke="none"/><circle cx="100" cy="100" r="96" fill="currentColor" fill-opacity=".16" stroke="none"/><g class="rA">${A}</g><g class="rB">${B}</g><g class="rC">${C}</g></svg>`;
+
+  }
+
   if (charA && charB) {
 
     // Mascot A adalah ksatria gagah pemberani (brave = true) yang siap menghunus pedang jika didekati naga terus menerus
 
     mascotA = new Mascot(charA, 'Salam, Tuan!', true);
 
-    // Mascot B adalah penyihir ramah (brave = false)
+    // Mascot B adalah penyihir ramah (brave = false, mage = true)
 
     mascotB = new Mascot(charB, 'Salam, Puan!', false);
+
+    mascotB.mage = true;
 
     window.addEventListener('pointermove', e => {
 
@@ -7709,7 +8095,7 @@ const themeToggle = document.getElementById('themeToggle');
 
           m.el.classList.toggle('look-r', !L);
 
-          if (d < 160) recoil(e.clientX, e.clientY);
+          if (d < 160 && !m.mage) recoil(e.clientX, e.clientY);
 
         } else if (d < 160) {
 
