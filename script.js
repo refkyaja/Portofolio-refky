@@ -4332,21 +4332,41 @@ const themeToggle = document.getElementById('themeToggle');
 
     {
 
+      tag: "INNOVENTURE • WEB DEVELOPMENT",
+
+      title: "Juara 3: Lomba Web Development INNOVENTURE",
+
+      url: "innoventure.id/awards/web-development-juara-3",
+
+      img: "Assets/Certificates/sert-web-juara-3.jpg",
+
+      desc: "Sertifikat penghargaan atas prestasi meraih Juara Ketiga (3rd Place) dalam kompetisi Web Development yang diselenggarakan oleh INNOVENTURE Chapter II Bandung.",
+
+      tech: ["Web Development", "Competition", "UI/UX", "Fullstack", "Juara 3"],
+
+      link: "Assets/Certificates/sert-web-juara-3.jpg",
+
+      verifyUrl: "Assets/Certificates/sert-web-juara-3.jpg"
+
+    },
+
+    {
+
       tag: "DICODING ACADEMY • CLOUD COMPUTING",
 
       title: "Dicoding: Belajar Dasar AWS Cloud",
 
-      url: "dicoding.com/certificates/belajar-dasar-aws-cloud",
+      url: "dicoding.com/certificates/07Z64YQR2PQR",
 
-      img: "Assets/Images/cert-google.jpg",
+      img: "Assets/Certificates/sert-dicoding-aws.jpg",
 
       desc: "Sertifikasi kelulusan resmi dari Dicoding Indonesia tentang pemahaman dasar Cloud Computing, konsep arsitektur AWS, tata kelola keamanan cloud, serta implementasi layanan AWS.",
 
       tech: ["AWS Cloud", "Cloud Computing", "Infrastructure", "Security"],
 
-      link: "Assets/Images/cert-google.jpg",
+      link: "Assets/Certificates/sert-dicoding-aws.jpg",
 
-      verifyUrl: "https://www.dicoding.com"
+      verifyUrl: "https://www.dicoding.com/certificates/07Z64YQR2PQR"
 
     },
 
@@ -4356,17 +4376,17 @@ const themeToggle = document.getElementById('themeToggle');
 
       title: "Dicoding: Pemrograman JavaScript (Dasar)",
 
-      url: "dicoding.com/certificates/pemrograman-javascript-dasar",
+      url: "dicoding.com/certificates/2VX3493DNZYQ",
 
-      img: "Assets/Images/cert-laravel.jpg",
+      img: "Assets/Certificates/sert-dicoding-js.jpg",
 
       desc: "Sertifikasi kompetensi fundamental bahasa pemrograman JavaScript, struktur data, fungsi, pemrograman berorientasi objek (OOP), hingga penanganan proses asynchronous.",
 
       tech: ["JavaScript", "ES6+", "OOP", "Async/Await", "Logic"],
 
-      link: "Assets/Images/cert-laravel.jpg",
+      link: "Assets/Certificates/sert-dicoding-js.jpg",
 
-      verifyUrl: "https://www.dicoding.com"
+      verifyUrl: "https://www.dicoding.com/certificates/2VX3493DNZYQ"
 
     },
 
@@ -4374,19 +4394,19 @@ const themeToggle = document.getElementById('themeToggle');
 
       tag: "AMAZON WEB SERVICES • CLOUD INFRASTRUCTURE",
 
-      title: "AWS Academy Cloud Foundations",
+      title: "AWS Cloud Practitioner Essentials",
 
-      url: "awsacademy.com/certificates/cloud-foundations",
+      url: "aws.training/certificates/cloud-practitioner-essentials",
 
-      img: "Assets/Images/cert-frontend.jpg",
+      img: "Assets/Certificates/sert-aws-cloud.jpg",
 
-      desc: "Sertifikasi akreditasi resmi AWS Academy Cloud Foundations yang memvalidasi keahlian komprehensif dalam arsitektur cloud global, layanan komputasi, storage, dan jaringan AWS.",
+      desc: "Sertifikasi kelulusan resmi dari AWS Training & Certification yang memvalidasi keahlian komprehensif dalam arsitektur cloud global, layanan komputasi, storage, dan jaringan AWS.",
 
-      tech: ["AWS Academy", "Cloud Architecture", "DevOps", "Networking"],
+      tech: ["AWS Training", "Cloud Architecture", "DevOps", "Infrastructure"],
 
-      link: "Assets/Images/cert-frontend.jpg",
+      link: "Assets/Certificates/sert-aws-cloud.jpg",
 
-      verifyUrl: "https://aws.amazon.com/training/awsacademy/"
+      verifyUrl: "https://aws.amazon.com/training/"
 
     }
 
