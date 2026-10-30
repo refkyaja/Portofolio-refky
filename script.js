@@ -1811,7 +1811,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       b.setAttribute('aria-label', q.n);
 
-      b.innerHTML = '<img alt="" src="' + G + '"><span>' + q.s + '</span>';
+      b.innerHTML = '<img alt="" src="' + G + '" width="13" height="13"><span>' + q.s + '</span>';
 
       b.onclick = function(e) {
 
@@ -1877,7 +1877,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       const ph = curImg 
 
-        ? '<img id="qphImg" src="' + curImg + '" alt="' + q.n + '" loading="lazy" decoding="async">' 
+        ? '<img id="qphImg" src="' + curImg + '" alt="' + q.n + '" width="600" height="400" loading="lazy" decoding="async">' 
 
         : '<span>' + mo + '</span><em>FOTO PROYEK</em>';
 
@@ -4310,13 +4310,17 @@ const themeToggle = document.getElementById('themeToggle');
 
     }
 
-    updateAllScalers();
-
-    setTimeout(updateAllScalers, 150);
-
-    setTimeout(updateAllScalers, 600);
-
-    setTimeout(updateAllScalers, 1200);
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => {
+        updateAllScalers();
+        setTimeout(updateAllScalers, 500);
+      });
+    } else {
+      setTimeout(() => {
+        updateAllScalers();
+        setTimeout(updateAllScalers, 500);
+      }, 200);
+    }
 
   }
 

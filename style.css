@@ -108,8 +108,23 @@ body {
   background-image: url('Assets/Images/background-malam.webp');
 }
 
-.bg-day {
+@media (max-width: 768px) {
+  .bg-night {
+    background-image: url('Assets/Images/background-malam-mobile.webp');
+  }
+}
+
+/* Day background only loads when day theme or active state is triggered */
+body.theme-day .bg-day,
+.bg-day.active {
   background-image: url('Assets/Images/background-siang.webp');
+}
+
+@media (max-width: 768px) {
+  body.theme-day .bg-day,
+  .bg-day.active {
+    background-image: url('Assets/Images/background-siang-mobile.webp');
+  }
 }
 
 .bg-image.active {
@@ -1062,17 +1077,20 @@ body.theme-day .theme-toggle .moon-icon {
 }
 
 .b1 {
-  background-image: url("Assets/Images/ksatria.png");
   opacity: 1;
 }
 
+.vnw[data-m="vn"] .b1 {
+  background-image: url("Assets/Images/ksatria.webp");
+}
+
 .b2 {
-  background-image: url("Assets/Images/ksatria-angkatpedang.webp");
   opacity: 0;
 }
 
 .vnv.up .b2 {
   opacity: 1;
+  background-image: url("Assets/Images/ksatria-angkatpedang.webp");
 }
 
 .vnb {
@@ -1209,8 +1227,14 @@ body.theme-day .theme-toggle .moon-icon {
   visibility: hidden;
   pointer-events: none;
   transition: opacity .5s, visibility 0s .5s;
-  background: linear-gradient(rgba(12, 6, 14, .45), rgba(12, 6, 14, .45)), url("Assets/Images/latarbelakang-ksatria.webp") center/cover no-repeat;
   box-sizing: border-box;
+}
+
+.vnw[data-m="vn"] .vnv {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  background: linear-gradient(rgba(12, 6, 14, .45), rgba(12, 6, 14, .45)), url("Assets/Images/latarbelakang-ksatria.webp") center/cover no-repeat;
 }
 
 .vnw[data-m="norm"] .vnv {
