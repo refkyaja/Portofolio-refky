@@ -321,7 +321,7 @@ const themeToggle = document.getElementById('themeToggle');
 
       document.documentElement.dataset.theme = 'light';
 
-      if (bgNight) bgNight.classList.remove('active');
+      if (bgNight) bgNight.classList.add('active');
 
       if (bgDay) bgDay.classList.add('active');
 
