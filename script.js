@@ -725,9 +725,9 @@ const themeToggle = document.getElementById('themeToggle');
 
   let phraseIndex = 0;
 
-  let charIndex = 0;
+  let charIndex = rolePhrases[0].length;
 
-  let isDeleting = false;
+  let isDeleting = true;
 
   const typeSpeed = 70;
 
@@ -785,7 +785,7 @@ const themeToggle = document.getElementById('themeToggle');
 
   // Start typing after initial load entrance animation
 
-  setTimeout(typeEffect, 1050);
+  setTimeout(typeEffect, 4000);
 
     // -------------------------------------------------------------------------
 
