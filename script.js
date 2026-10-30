@@ -7272,44 +7272,6 @@ const themeToggle = document.getElementById('themeToggle');
 
   }
 
-  // Toggle BGM Action
-
-  function toggleBgmAction() {
-
-    playSound('toggle');
-
-    isBgmActive = !isBgmActive;
-
-    setSwitchUI(btnToggleBgm, isBgmActive);
-
-  }
-
-  if (btnToggleBgm) {
-
-    btnToggleBgm.addEventListener('click', (e) => {
-
-      e.stopPropagation();
-
-      toggleBgmAction();
-
-    });
-
-  }
-
-  if (rowToggleBgm) {
-
-    rowToggleBgm.addEventListener('click', (e) => {
-
-      if (e.target !== btnToggleBgm && !btnToggleBgm.contains(e.target)) {
-
-        toggleBgmAction();
-
-      }
-
-    });
-
-  }
-
   // SFX Toggle Action
 
   function toggleSfxAction() {
@@ -7609,8 +7571,6 @@ const themeToggle = document.getElementById('themeToggle');
     setSwitchUI(btnToggleToast, isToastEnabled);
 
     setSwitchUI(btnToggleToastAudio, isToastAudioEnabled);
-
-    setSwitchUI(btnToggleBgm, isBgmActive);
 
     setSwitchUI(btnToggleShuffle, isShuffleEnabled);
 
