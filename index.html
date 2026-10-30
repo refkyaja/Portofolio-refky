@@ -6,10 +6,10 @@
   <title>Refky Favian Mahardika | Portfolio</title>
   <meta name="description" content="Portfolio Website Refky Favian Mahardika - Web Developer & Pixel Art Enthusiast">
   
-  <!-- Google Fonts: Cinzel, Courier Prime, Press Start 2P & VT323 -->
+  <!-- Google Fonts: Cinzel, Courier Prime, Press Start 2P, VT323, MedievalSharp, IM Fell English, UnifrakturCook -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Press+Start+2P&family=VT323&family=MedievalSharp&family=IM+Fell+English:ital@0;1&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css?v=62">
@@ -1595,6 +1595,61 @@
   <!-- Background Music Audio & Preview Audio Elements -->
   <audio id="bgmAudio" loop preload="auto" autoplay src="Assets/music/music 5.mp3"></audio>
   <audio id="previewAudio" preload="none"></audio>
+
+  <!-- Medieval Music Player ("Pujangga Istana") Floating Seal & Scroll Popup -->
+  <div class="mp" id="mp">
+    <section class="sc" id="sc" aria-label="Pemutar musik Pujangga Istana">
+      <div class="rod"></div>
+      <div class="sp">
+        <div class="sp-top">
+          <button class="scx" id="scx" type="button" aria-label="Tutup pemutar">&#10005;</button>
+          <small>PUJANGGA ISTANA</small>
+          <h4 id="mt"></h4>
+          <em id="ma"></em>
+          <div class="mr">
+            <span id="mcur">0:00</span>
+            <input class="rg" type="range" id="mseek" min="0" max="1000" value="0" aria-label="Posisi lagu">
+            <span id="mdur">0:00</span>
+          </div>
+          <div class="mc">
+            <button id="mpv" type="button" aria-label="Lagu sebelumnya">
+              <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+            </button>
+            <button class="big" id="mpl" type="button" aria-label="Putar"></button>
+            <button id="mnx" type="button" aria-label="Lagu berikutnya">
+              <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="mv">
+            <button type="button" id="mvolBtn" class="mvol-btn" aria-label="Bisukan / bunyikan">
+              <svg id="mvolIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9zM15 8.5a5 5 0 010 7M17.5 6a8.5 8.5 0 010 12" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <input class="rg" type="range" id="mvol" min="0" max="100" value="70" aria-label="Volume">
+            <span id="mvp">70</span>
+          </div>
+        </div>
+        <div class="ml-head">
+          <b>DAFTAR LAGU</b>
+        </div>
+        <div class="ml">
+          <ol id="mlist"></ol>
+        </div>
+      </div>
+      <div class="rod"></div>
+    </section>
+    <button class="sl hint" id="sl" type="button" aria-label="Buka pemutar musik" aria-expanded="false" title="Pujangga Istana (Pemutar Musik)">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <g stroke="#4a0b11" stroke-width="2" stroke-linecap="round">
+          <ellipse cx="12" cy="21" rx="7.5" ry="7" fill="#8a1a22"/>
+          <path d="M17.5 15.5L27 6" fill="none"/>
+          <path d="M25 4l4 4" stroke-width="3" fill="none"/>
+        </g>
+        <circle cx="12" cy="21" r="2.2" fill="#3d0a0e"/>
+        <path d="M8.5 24.5l7-7" stroke="#3d0a0e" stroke-width="1" fill="none"/>
+      </svg>
+      <i>&#9834;</i><i>&#9835;</i>
+    </button>
+  </div>
 
   <!-- Main JavaScript -->
   <script src="script.js?v=62"></script>

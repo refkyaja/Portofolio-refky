@@ -10276,3 +10276,318 @@ const themeToggle = document.getElementById('themeToggle');
 
 });
 
+
+
+/* ==========================================================================
+   MEDIEVAL MUSIC PLAYER ("PUJANGGA ISTANA") ENGINE
+   Fully synchronized with portfolio background music (bgmAudio)
+   ========================================================================== */
+(function initPujanggaIstanaPlayer() {
+  const $ = function(id) { return document.getElementById(id); };
+  const sl = $('sl');
+  const sc = $('sc');
+  const scx = $('scx');
+  const mseek = $('mseek');
+  const mvol = $('mvol');
+  const mpl = $('mpl');
+  const mpv = $('mpv');
+  const mnx = $('mnx');
+  const mlist = $('mlist');
+  const bgmAudio = $('bgmAudio');
+
+  if (!sl || !sc || !mpl || !mseek || !mvol || !mlist || !bgmAudio) return;
+
+  /* PLAYLIST: 5 Lagu Kerajaan dari Assets/music, default ke Music 5 */
+  const TRACKS = [
+    { t: 'Music 1', a: 'Balada Kastil \u00b7 Petualangan', src: 'Assets/music/music 1.mp3' },
+    { t: 'Music 2', a: 'Kingdom Quest \u00b7 Semangat Ksatria', src: 'Assets/music/music 2.mp3' },
+    { t: 'Music 3', a: 'Forest Breeze \u00b7 Hutan Menenangkan', src: 'Assets/music/music 3.mp3' },
+    { t: 'Music 4', a: 'Castle Courtyard \u00b7 Suasana Istana', src: 'Assets/music/music 4.mp4' },
+    { t: 'Music 5', a: 'Village Festivity \u00b7 Pesta Rakyat', src: 'Assets/music/music 5.mp3' }
+  ];
+
+  const RN = ['I', 'II', 'III', 'IV', 'V'];
+  let cur = 4; // Default ke Music 5 (index 4)
+  let drag = false;
+  let lastNonZeroVol = 0.7;
+
+  // Background preload metadata untuk mendeteksi durasi semua lagu dari Assets/music
+  TRACKS.forEach(t => {
+    if (t.src) {
+      const tempAudio = new Audio();
+      tempAudio.preload = 'metadata';
+      tempAudio.src = t.src;
+      tempAudio.addEventListener('loadedmetadata', () => {
+        t.d = tempAudio.duration;
+        renderList();
+        syncProgress();
+      });
+    }
+  });
+
+  function fmt(s) {
+    s = Math.max(0, Math.round(s));
+    return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
+  }
+
+  function getCurTrackIndex() {
+    const activeSrc = (bgmAudio && bgmAudio.src) ? decodeURIComponent(bgmAudio.src).replace(/\\/g, '/') : '';
+    const saved = localStorage.getItem('rfm_bgm_track') || 'Assets/music/music 5.mp3';
+    const foundIdx = TRACKS.findIndex(t => activeSrc.endsWith(t.src) || saved.endsWith(t.src));
+    return foundIdx >= 0 ? foundIdx : 4; // Default index 4 = Music 5
+  }
+
+  function renderList() {
+    cur = getCurTrackIndex();
+    mlist.innerHTML = TRACKS.map((t, i) => {
+      const du = t.d ? fmt(t.d) : '';
+      const numLabel = RN[i] || (i + 1);
+      return `<li${i === cur ? ' class="on"' : ''}>` +
+             `<button type="button" data-i="${i}" aria-label="Pilih lagu ${t.t}">` +
+             `<span class="rn">${numLabel}</span>` +
+             `<span>${t.t}<small>${t.a}</small></span>` +
+             `<span>${du}</span>` +
+             `</button></li>`;
+    }).join('');
+  }
+
+  function syncUI() {
+    cur = getCurTrackIndex();
+    const t = TRACKS[cur];
+    const isPlaying = bgmAudio && !bgmAudio.paused;
+
+    // Judul & deskripsi lagu
+    const mtEl = $('mt');
+    const maEl = $('ma');
+    if (mtEl) mtEl.textContent = t.t;
+    if (maEl) maEl.textContent = t.a;
+
+    // Tombol play/pause di dalam perkamen
+    mpl.innerHTML = isPlaying
+      ? '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>'
+      : '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
+    mpl.setAttribute('aria-label', isPlaying ? 'Jeda' : 'Putar');
+
+    // Status wax seal button di pojok kanan bawah (animasi goyang & partikel not nada keluar)
+    sl.classList.toggle('playing', isPlaying);
+
+    // Update active highlight di daftar lagu
+    const allItems = mlist.querySelectorAll('li');
+    allItems.forEach((li, idx) => {
+      li.classList.toggle('on', idx === cur);
+    });
+
+    syncProgress();
+    syncVolUI();
+  }
+
+  function syncProgress() {
+    if (drag || !bgmAudio) return;
+    const dur = bgmAudio.duration || TRACKS[cur].d || 0;
+    const pos = bgmAudio.currentTime || 0;
+    const val = dur > 0 ? Math.round((pos / dur) * 1000) : 0;
+    mseek.value = val;
+    mseek.style.setProperty('--p', (val / 10) + '%');
+
+    const mcurEl = $('mcur');
+    const mdurEl = $('mdur');
+    if (mcurEl) mcurEl.textContent = fmt(pos);
+    if (mdurEl) mdurEl.textContent = dur ? fmt(dur) : '0:00';
+  }
+
+  // Icon Volume (Speaker normal vs Mute)
+  const svgVolHigh = '<path d="M3 9v6h4l5 4V5L7 9zM15 8.5a5 5 0 010 7M17.5 6a8.5 8.5 0 010 12" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/>';
+  const svgVolMute = '<path d="M3 9v6h4l5 4V5L7 9z" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="9" x2="22" y2="15" stroke="#a3202a" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="9" x2="16" y2="15" stroke="#a3202a" stroke-width="2" stroke-linecap="round"/>';
+
+  function updateVolIcon(val) {
+    const iconEl = $('mvolIcon');
+    if (!iconEl) return;
+    iconEl.innerHTML = (val <= 0) ? svgVolMute : svgVolHigh;
+  }
+
+  function syncVolUI() {
+    if (!bgmAudio) return;
+    const curVol = bgmAudio.volume !== undefined ? bgmAudio.volume : 0.7;
+    const percent = Math.round(curVol * 100);
+    mvol.value = percent;
+    mvol.style.setProperty('--p', percent + '%');
+    const mvpEl = $('mvp');
+    if (mvpEl) mvpEl.textContent = percent;
+    updateVolIcon(curVol);
+  }
+
+  function setVol(val) {
+    val = Math.max(0, Math.min(1, val));
+    if (val > 0) lastNonZeroVol = val;
+    if (bgmAudio) bgmAudio.volume = val;
+    try {
+      localStorage.setItem('rfm_bgm_volume', Math.round(val * 100));
+    } catch (e) {}
+
+    const settingBgmVolume = $('settingBgmVolume');
+    const bgmVolumeVal = $('bgmVolumeVal');
+    if (settingBgmVolume) settingBgmVolume.value = Math.round(val * 100);
+    if (bgmVolumeVal) bgmVolumeVal.textContent = Math.round(val * 100) + '%';
+    syncVolUI();
+  }
+
+  function toggle() {
+    sl.classList.remove('hint');
+    if (typeof playSound === 'function') playSound('click');
+    if (!bgmAudio) return;
+    if (bgmAudio.paused) {
+      const pr = bgmAudio.play();
+      if (pr && pr.catch) pr.catch(() => {});
+      try { localStorage.setItem('rfm_bgm_active', 'true'); } catch (e) {}
+    } else {
+      bgmAudio.pause();
+      try { localStorage.setItem('rfm_bgm_active', 'false'); } catch (e) {}
+    }
+    syncUI();
+  }
+
+  function loadTrack(i, andPlay = true) {
+    cur = i;
+    const t = TRACKS[i];
+    try {
+      localStorage.setItem('rfm_bgm_track', t.src);
+      localStorage.setItem('rfm_bgm_track_custom', 'true');
+    } catch (e) {}
+
+    if (bgmAudio) {
+      const curSrc = bgmAudio.src ? decodeURIComponent(bgmAudio.src).replace(/\\/g, '/') : '';
+      if (!curSrc.endsWith(t.src)) {
+        bgmAudio.src = t.src;
+      }
+      if (andPlay) {
+        const pr = bgmAudio.play();
+        if (pr && pr.catch) pr.catch(() => {});
+        try { localStorage.setItem('rfm_bgm_active', 'true'); } catch (e) {}
+      }
+    }
+
+    const settingBgmTrack = $('settingBgmTrack');
+    if (settingBgmTrack) {
+      settingBgmTrack.value = t.src;
+      if (typeof updatePreviewTitle === 'function') updatePreviewTitle();
+    }
+    syncUI();
+  }
+
+  function next() {
+    if (typeof playSound === 'function') playSound('click');
+    const nextIdx = (getCurTrackIndex() + 1) % TRACKS.length;
+    loadTrack(nextIdx, true);
+  }
+
+  function prev() {
+    if (typeof playSound === 'function') playSound('click');
+    if (bgmAudio && bgmAudio.currentTime > 3) {
+      bgmAudio.currentTime = 0;
+      syncProgress();
+      return;
+    }
+    const prevIdx = (getCurTrackIndex() - 1 + TRACKS.length) % TRACKS.length;
+    loadTrack(prevIdx, true);
+  }
+
+  function seekTo(sec) {
+    if (bgmAudio && bgmAudio.duration) {
+      bgmAudio.currentTime = sec;
+    }
+    syncProgress();
+  }
+
+  /* Listeners ke bgmAudio untuk sinkronisasi 100% */
+  bgmAudio.addEventListener('play', syncUI);
+  bgmAudio.addEventListener('pause', syncUI);
+  bgmAudio.addEventListener('timeupdate', syncProgress);
+  bgmAudio.addEventListener('loadedmetadata', () => { syncProgress(); syncUI(); });
+  bgmAudio.addEventListener('volumechange', syncVolUI);
+  bgmAudio.addEventListener('ended', () => { next(); });
+
+  /* Kontrol Popup Pergamen */
+  function setOpen(o) {
+    sc.classList.toggle('open', o);
+    sl.setAttribute('aria-expanded', String(o));
+    sl.classList.remove('hint');
+    if (typeof playSound === 'function') playSound(o ? 'open' : 'click');
+  }
+
+  sl.onclick = function(e) {
+    e.stopPropagation();
+    setOpen(!sc.classList.contains('open'));
+  };
+
+  if (scx) {
+    scx.onclick = function(e) {
+      e.stopPropagation();
+      setOpen(false);
+    };
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && sc.classList.contains('open')) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    if (sc.classList.contains('open') && !sc.contains(e.target) && !sl.contains(e.target)) {
+      setOpen(false);
+    }
+  });
+
+  mpl.onclick = toggle;
+  if (mnx) mnx.onclick = next;
+  if (mpv) mpv.onclick = prev;
+
+  mseek.addEventListener('input', function() {
+    drag = true;
+    if (bgmAudio && bgmAudio.duration) {
+      const targetTime = (parseFloat(mseek.value) / 1000) * bgmAudio.duration;
+      const mcurEl = $('mcur');
+      if (mcurEl) mcurEl.textContent = fmt(targetTime);
+      mseek.style.setProperty('--p', (mseek.value / 10) + '%');
+    }
+  });
+
+  mseek.addEventListener('change', function() {
+    drag = false;
+    if (bgmAudio && bgmAudio.duration) {
+      seekTo((parseFloat(mseek.value) / 1000) * bgmAudio.duration);
+    }
+  });
+
+  mvol.addEventListener('input', function() {
+    setVol(parseFloat(mvol.value) / 100);
+  });
+
+  const mvolBtn = $('mvolBtn');
+  if (mvolBtn) {
+    mvolBtn.onclick = function() {
+      if (typeof playSound === 'function') playSound('click');
+      if (bgmAudio && bgmAudio.volume > 0) {
+        lastNonZeroVol = bgmAudio.volume;
+        setVol(0);
+      } else {
+        setVol(lastNonZeroVol > 0 ? lastNonZeroVol : 0.7);
+      }
+    };
+  }
+
+  mlist.addEventListener('click', function(e) {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const i = +b.dataset.i;
+    if (i === getCurTrackIndex()) {
+      toggle();
+      return;
+    }
+    loadTrack(i, true);
+  });
+
+  // Inisialisasi awal sinkron dengan lagu yang sedang berjalan (Music 5)
+  renderList();
+  syncUI();
+})();
