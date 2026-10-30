@@ -103,6 +103,25 @@ p{position:absolute;top:calc(84px + clamp(26px,6vw,56px));width:100%;text-align:
 .bolt{position:fixed;left:0;top:0;z-index:98;pointer-events:none;overflow:visible;animation:bf .32s forwards}
 @keyframes bf{from{opacity:1}to{opacity:0}}
 .dragon.hit i{filter:brightness(2) saturate(.3)}
+/* ===== ksatria: pedang cahaya abadi ===== */
+.excal .sword{opacity:1;transform:rotate(0deg);animation:none;filter:drop-shadow(0 0 5px #ffd84a) drop-shadow(0 0 12px #ffb300)}
+.excal .sword::before{background:linear-gradient(90deg,#fffbe0,#ffd23a)}
+.excal .sword::after{background:#ffe27a}
+.excal .body{transform:scale(1.07)}
+.excal .eye{background:#fff6b0;box-shadow:0 0 12px #ffd84a;transform:scaleY(.7)}
+.exc-dim{position:fixed;z-index:47;left:0;right:0;top:0;bottom:14px;pointer-events:none;opacity:0;transition:opacity .6s;background:radial-gradient(ellipse at 50% 100%,rgba(30,15,80,.5),rgba(6,3,28,.74))}
+.exc-clip{position:fixed;z-index:60;left:0;top:0;right:0;bottom:14px;overflow:hidden;pointer-events:none}
+.exc{position:absolute;width:0;height:0;transform-origin:0 0}
+.blade{position:absolute;left:0;bottom:0;width:22px;height:24px;transform:translateX(-50%);border-radius:11px 11px 0 0;background:linear-gradient(90deg,#ffb300,#ffe27a 28%,#fff 50%,#ffe27a 72%,#ffb300);filter:drop-shadow(0 0 6px #fff3b0) drop-shadow(0 0 16px #ffc61a) drop-shadow(0 0 34px #ff9d00)}
+.blade::before{content:"";position:absolute;top:0;bottom:0;left:-46px;right:-46px;background:linear-gradient(90deg,transparent,rgba(255,205,60,.38) 50%,transparent)}
+.blade::after{content:"";position:absolute;inset:0;border-radius:inherit;background:repeating-linear-gradient(0deg,rgba(255,255,255,0) 0 28px,rgba(255,255,255,.85) 28px 36px,rgba(255,255,255,0) 36px 64px);animation:flow .45s linear infinite}
+@keyframes flow{to{background-position:0 -64px}}
+.flare{position:absolute;left:-60px;top:-60px;width:120px;height:120px;border-radius:50%;opacity:0;background:radial-gradient(circle,#fff 0,rgba(255,235,140,.9) 18%,rgba(255,190,40,.4) 45%,transparent 70%);animation:fp .5s ease-in-out infinite alternate}
+.flare::before{content:"";position:absolute;left:-120px;right:-120px;top:58px;height:4px;background:linear-gradient(90deg,transparent,#fff 50%,transparent);filter:drop-shadow(0 0 6px #ffd84a)}
+.flare::after{content:"";position:absolute;top:-30px;bottom:-30px;left:58px;width:4px;background:linear-gradient(0deg,transparent,#fff 50%,transparent);filter:drop-shadow(0 0 6px #ffd84a)}
+@keyframes fp{from{transform:scale(.85)}to{transform:scale(1.15)}}
+.exc-flash{position:fixed;left:0;top:0;right:0;bottom:0;z-index:100;pointer-events:none;background:radial-gradient(circle at var(--x) var(--y),rgba(255,248,200,.85),rgba(255,210,80,.35) 40%,transparent 70%);animation:ff .45s forwards}
+@keyframes ff{to{opacity:0}}
 .guest{position:absolute;right:max(20px,3%);bottom:56px;display:flex;gap:10px;align-items:center;background:#f6ecc9;color:#2b1a0e;border:3px solid #2b1a0e;box-shadow:5px 5px 0 #2b1a0e;border-radius:10px;padding:11px 20px;font:inherit;font-size:16px;cursor:pointer}
 .guest span{background:#2b1a0e;color:#f6ecc9;border-radius:6px;padding:1px 8px;font-size:14px}
 </style>
@@ -156,13 +175,66 @@ class Mascot{
     if(this.sleeping){await this.wake();await this.say('Hah? Hamba tertidur…',1800,false)}
     else{this.el.classList.add('jump');await this.say(this.hello,1800);this.el.classList.remove('jump')}}
   async fight(mx){
+    const el=this.el;
     this.fighting=true;this.hits=[];
-    if(this.sleeping){this.sleeping=false;this.el.classList.remove('sleep')}
-    this.el.classList.add('fight',(this.el.offsetLeft+38<mx)?'look-r':'look-l');
-    this.say('Hadapi aku, naga!',1800,false);
-    await wait(3800);
-    this.el.classList.remove('fight','look-l','look-r');
-    this.say('Hmph! Jangan kembali!',1400,false);
+    if(this.sleeping){this.sleeping=false;el.classList.remove('sleep')}
+    el.style.transitionDuration='0s';el.style.left=el.offsetLeft+'px';el.classList.remove('walk','scared');
+    const cx=()=>{const r=el.getBoundingClientRect();return r.left+r.width/2};
+    const side=()=>dragonPos()[0]>=cx()?1:-1;
+    let sd=side();
+    el.classList.add('excal',sd>0?'look-r':'look-l');
+    this.say('Cahaya abadi, bangkitlah!',2200,false);
+    const dim=document.createElement('div');dim.className='exc-dim';document.body.appendChild(dim);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>dim.style.opacity='1'));
+    const sw=el.querySelector('.sword'),r=sw.getBoundingClientRect();
+    const bx=r.left+r.width/2,by=r.top+r.height*38/58;
+    // 1) pedang berubah emas, cahaya berkumpul
+    for(let i=0;i<16;i++){
+      const an=rand(0,6.28),d=rand(60,110);
+      const p=dot('pt',bx+Math.cos(an)*d,by-20+Math.sin(an)*d,'#ffd84a',rand(4,8));
+      p.animate([{transform:'translate(0,0)',opacity:0},{opacity:1,offset:.3},{transform:`translate(${-Math.cos(an)*d}px,${-Math.sin(an)*d+20}px) scale(.3)`,opacity:0}],{duration:rand(500,800),delay:i*45,fill:'both'});
+      setTimeout(()=>p.remove(),1700);
+    }
+    await wait(900);
+    // 2) pedang memanjang ke atas
+    const L=Math.hypot(innerWidth,innerHeight)*1.15;
+    const clip=document.createElement('div');clip.className='exc-clip';
+    clip.innerHTML='<div class="exc"><i class="flare"></i><div class="blade"></div></div>';
+    document.body.appendChild(clip);
+    const ex=clip.firstChild,bl=ex.lastChild,fl=ex.firstChild;
+    ex.style.left=bx+'px';ex.style.top=by+'px';
+    bl.animate([{height:'24px',width:'12px'},{height:L+'px',width:'22px'}],{duration:700,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+    fl.animate([{opacity:0},{opacity:1}],{duration:400,fill:'forwards'});
+    for(let i=0;i<10;i++)setTimeout(()=>{
+      const p=dot('pt',bx+rand(-26,26),by-rand(30,Math.min(L,innerHeight*.8)),'#ffe27a',rand(3,7));
+      p.animate([{transform:'translateY(0)',opacity:1},{transform:`translateY(${-rand(30,90)}px) scale(.2)`,opacity:0}],{duration:rand(500,900)});
+      setTimeout(()=>p.remove(),950)},i*70);
+    await wait(1250);
+    // 3) ayunan satu kali
+    sd=side();
+    const floorY=innerHeight-14,h=Math.max(40,floorY-by);
+    let d=Math.min(Math.max(Math.abs(dragonPos()[0]-bx)+90,320),720);
+    d=Math.max(160,Math.min(d,sd>0?innerWidth-70-bx:bx-70));
+    const end=Math.PI/2+Math.atan2(h,d); // sedikit melewati horizontal supaya menancap ke lantai
+    el.classList.remove('look-l','look-r');el.classList.add(sd>0?'look-r':'look-l');
+    const setA=a=>ex.style.transform=`rotate(${a}rad)`;
+    const tween=(f,t,ms,ease,cb)=>new Promise(res=>{const t0=performance.now();
+      (function fr(n){const k=Math.max(0,Math.min(1,(n-t0)/ms)),a=f+(t-f)*ease(k);setA(a);cb&&cb(a);k<1?requestAnimationFrame(fr):res()})(t0)});
+    let hit=false;
+    const along=a=>{const [px,py]=dragonPos(),vx=px-bx,vy=py-by,dx=Math.sin(a),dy=-Math.cos(a);
+      return {t:vx*dx+vy*dy,perp:Math.abs(vx*dy-vy*dx),px,py}};
+    const check=a=>{if(hit)return;const o=along(a);
+      if(o.t>0&&o.t<L&&o.perp<75){hit=true;impact(o.px,o.py,'#ffd84a');burst(o.px,o.py,'#fff2a0')}};
+    await tween(0,-sd*.2,260,k=>1-Math.pow(1-k,3));
+    await tween(-sd*.2,sd*end,340,k=>Math.pow(k,2.3),check);
+    // 4) pedang menancap ke tanah: layar bergetar
+    if(!hit){const o=along(sd*end);if(o.t>0&&o.perp<170)impact(o.px,o.py,'#ffd84a')}
+    slam(bx+sd*d,floorY);
+    await wait(700);
+    clip.style.transition='opacity .5s';clip.style.opacity='0';dim.style.opacity='0';
+    await wait(520);clip.remove();dim.remove();
+    el.classList.remove('excal','look-l','look-r');
+    this.say('Hmph! Jangan kembali!',1500,false);
     await wait(500);this.fighting=false}
   async cast(mx){
     this.fighting=true;this.hits=[];
@@ -289,9 +361,22 @@ function shoot(type,sx,sy){
     requestAnimationFrame(step);
   })(last);
 }
+function slam(x,y){
+  document.body.animate([{transform:'translate(0,0)'},{transform:'translate(-14px,10px)'},{transform:'translate(12px,-9px)'},{transform:'translate(-9px,7px)'},{transform:'translate(7px,-5px)'},{transform:'translate(-4px,3px)'},{transform:'translate(0,0)'}],{duration:650,easing:'ease-out'});
+  const f=document.createElement('div');f.className='exc-flash';f.style.setProperty('--x',x+'px');f.style.setProperty('--y',y+'px');
+  document.body.appendChild(f);setTimeout(()=>f.remove(),500);
+  const g=document.createElement('div');g.className='ring';
+  g.style.cssText=`--c:#ffd84a;left:${x-120}px;top:${y-28}px;width:240px;height:56px`;
+  document.body.appendChild(g);setTimeout(()=>g.remove(),500);
+  for(let i=0;i<16;i++){
+    const gold=i%2,p=dot('pt',x+rand(-70,70),y-4,gold?'#ffd84a':'#d9c28a',gold?rand(4,8):rand(9,17));
+    p.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${rand(-110,110)}px,${-rand(25,gold?150:70)}px) scale(${gold?.3:2})`,opacity:0}],{duration:rand(500,850),easing:'ease-out'});
+    setTimeout(()=>p.remove(),900);
+  }
+}
 const a=new Mascot(document.getElementById('a'),'Salam, Tuan!',true);
 const b=new Mascot(document.getElementById('b'),'Salam, Puan!');
-b.mage=true;
+b.mage=true;a.holy=true;
 addEventListener('pointermove',e=>{
   if(e.pointerType!=='mouse')return;
   for(const m of [a,b]){
@@ -300,7 +385,7 @@ addEventListener('pointermove',e=>{
     if(m.fighting){
       const L=e.clientX<r.left+r.width/2;
       m.el.classList.toggle('look-l',L);m.el.classList.toggle('look-r',!L);
-      if(d<150&&!m.mage)recoil(e.clientX,e.clientY);
+      if(d<150&&!m.mage&&!m.holy)recoil(e.clientX,e.clientY);
     }else if(d<130)m.flee(e.clientX);
   }
 });
